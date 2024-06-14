@@ -1,0 +1,8 @@
+.parallax-content {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
+}
