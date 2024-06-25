@@ -44,8 +44,8 @@ const OurWork = () => {
             <Element name="special">
                 <div className="special-section">
                     <h2>Nothing But Special</h2>
-                    <div className="image" style={{ backgroundImage: "url('/special1.jpg')" }}></div>
-                    <div className="image" style={{ backgroundImage: "url('/special2.jpg')" }}></div>
+                    <div className="image" style={{ backgroundImage: "url('/special1.png')" }}></div>
+                    <div className="image" style={{ backgroundImage: "url('/special2.png')" }}></div>
                 </div>
             </Element>
         </div>
