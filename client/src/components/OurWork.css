@@ -16,16 +16,31 @@
     cursor: pointer;
 }
 
-.dynamic-section .image {
+.slideshow-container {
     width: 45%;
-    height: 1000px;
-    background-size: cover;
-    background-position: center;
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+}
+
+.description {
+    width: 50%;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    color: white;
-    text-shadow: 2px 2px 4px #000000;
+    padding: 20px;
+}
+
+.description h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.description p {
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
 .special-section {
@@ -34,10 +49,26 @@
     background-color: #ffffff;
 }
 
-.special-section .image {
+.special-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gallery-carousel {
     width: 45%;
-    height: 300px;
-    background-size: cover;
-    background-position: center;
-    margin: 20px auto;
+}
+
+.testimonials {
+    width: 45%;
+    text-align: left;
+}
+
+.testimonial {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.fade-in {
+    opacity: 1;
 }

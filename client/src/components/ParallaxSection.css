@@ -1,3 +1,12 @@
+.parallax-wrapper {
+    opacity: 0; /* Initially hidden */
+    transition: opacity 2s ease-in-out; /* Animation duration */
+}
+
+.parallax-wrapper.fade-in {
+    opacity: 1; /* Fade-in effect */
+}
+
 .parallax-content {
     height: 100vh;
     display: flex;
