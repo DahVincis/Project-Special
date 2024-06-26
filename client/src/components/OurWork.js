@@ -34,8 +34,14 @@ const OurWork = () => {
     ];
 
     const testimonials = [
-        { text: "Special Finishes transformed our home beyond our expectations. Their attention to detail is unparalleled.", client: "Client Name 1" },
-        { text: "The team at Special Finishes is amazing. They brought our vision to life with such creativity and professionalism.", client: "Client Name 2" },
+        { text: "Ruiter runs a very efficient business. Everyone that works for him is a Profesional.  The workers arrive on time and the work is done to perfection.  He just renovated the bathroom in our rental condo. We suspected undetected problems with pipes due to a neighbors renovation.  No surprise when bathroom was gutted to find a broken pipe.  The problem was handled quickly,  efficiently and didn't break the bank.  I rate our experience 5 stars. I would hire him again in a second.  Thank you for a beautiful job!", client: "Valerie" },
+        { text: "The team at Special Finishes is amazing. They brought our vision to life with such creativity and professionalism.", client: "John Doe" },
+    ];
+
+    const remodelTexts = [
+        "Transform your home with our expert remodeling services. We bring your vision to life with precision and creativity.",
+        "Our remodeling services are tailored to meet your unique needs and preferences. Experience unparalleled craftsmanship and attention to detail.",
+        "From concept to completion, our team ensures a seamless and stress-free remodeling experience. Trust us to enhance the beauty and functionality of your home."
     ];
 
     return (
@@ -62,16 +68,23 @@ const OurWork = () => {
 
             {/* Before and After Parallax Section */}
             <Element name="beforeAfter">
-                <Parallax bgImage="/before.png" strength={500} onClick={() => scrollToNextSection('interiorExterior')}>
-                    <div className="parallax-content">
-                        <h2>Before</h2>
+                <div className="before-after-section">
+                    <div className="text-container">
+                        {remodelTexts.map((text, index) => (
+                            <div key={index} className="text-slide">
+                                <p>{text}</p>
+                            </div>
+                        ))}
                     </div>
-                </Parallax>
-                <Parallax bgImage="/after.png" strength={500} onClick={() => scrollToNextSection('interiorExterior')}>
-                    <div className="parallax-content">
-                        <h2>After</h2>
+                    <div className="parallax-container">
+                        <Parallax bgImage="/before.png" strength={500}>
+                            <div className="parallax-content"></div>
+                        </Parallax>
+                        <Parallax bgImage="/after.png" strength={500}>
+                            <div className="parallax-content"></div>
+                        </Parallax>
                     </div>
-                </Parallax>
+                </div>
             </Element>
 
             {/* Nothing But Special Section */}
