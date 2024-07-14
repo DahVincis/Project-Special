@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import { Parallax } from 'react-parallax';
 import { Element, scroller } from 'react-scroll';
+import { fetchOurWork } from '../api';
 import './OurWork.css';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 
 const OurWork = () => {
+    const [projects, setProjects] = useState([]);
     const [currentSlide, setCurrentSlide] = useState(0);
+
+    useEffect(() => {
+        const getProjects = async () => {
+            const data = await fetchOurWork();
+            setProjects(data.projects);
+        };
+
+        getProjects();
+    }, []);
 
     const scrollToNextSection = (section) => {
         scroller.scrollTo(section, {
@@ -28,13 +39,8 @@ const OurWork = () => {
         beforeChange: (current, next) => setCurrentSlide(next),
     };
 
-    const projects = [
-        { img: "/special1.png", description: "Special Project 1 Description" },
-        { img: "/special2.png", description: "Special Project 2 Description" },
-    ];
-
     const testimonials = [
-        { text: "Ruiter runs a very efficient business. Everyone that works for him is a Profesional.  The workers arrive on time and the work is done to perfection.  He just renovated the bathroom in our rental condo. We suspected undetected problems with pipes due to a neighbors renovation.  No surprise when bathroom was gutted to find a broken pipe.  The problem was handled quickly,  efficiently and didn't break the bank.  I rate our experience 5 stars. I would hire him again in a second.  Thank you for a beautiful job!", client: "Valerie" },
+        { text: "Ruiter runs a very efficient business. Everyone that works for him is a Professional. The workers arrive on time and the work is done to perfection. He just renovated the bathroom in our rental condo. We suspected undetected problems with pipes due to a neighbor's renovation. No surprise when the bathroom was gutted to find a broken pipe. The problem was handled quickly, efficiently and didn't break the bank. I rate our experience 5 stars. I would hire him again in a second. Thank you for a beautiful job!", client: "Valerie" },
         { text: "The team at Special Finishes is amazing. They brought our vision to life with such creativity and professionalism.", client: "John Doe" },
     ];
 
