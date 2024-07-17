@@ -11,9 +11,11 @@ const ParallaxSection = () => {
 
     return (
         <div ref={ref} className={`parallax-wrapper ${inView ? 'fade-in' : ''}`}>
-            <Parallax bgImage="sf7.png" strength={500}>
-                <div className="parallax-content">
-                    {/* You can add any overlay text or content here if needed */}
+            <Parallax bgImage="/sf7.png" strength={400}>
+                <div style={{ height: '80vh' }}>
+                    <div className="parallax-content">
+                        {/* Centered content */}
+                    </div>
                 </div>
             </Parallax>
         </div>

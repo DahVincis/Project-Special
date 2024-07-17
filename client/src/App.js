@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from './components/Header';
 import ParallaxSection from './components/ParallaxSection';
 import About from './components/About';
 import MeetOwner from './components/MeetOwner';
@@ -8,6 +9,7 @@ import OurWork from './components/OurWork';
 function App() {
     return (
         <div className="App">
+            <Header />
             <ParallaxSection />
             <OurWork />
             <About />

@@ -1,19 +1,19 @@
-.our-work .parallax-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    text-shadow: 2px 2px 4px #000000;
+.our-work {
+    background-color: #f9f9f9;
 }
 
 .dynamic-section {
     display: flex;
-    justify-content: space-around;
-    background-color: #f9f9f9;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #514947;
+    padding: 60px 20px;
 }
 
 .slideshow-container {
-    width: 45%;
+    width: 100%;
+    max-width: 600px;
 }
 
 .slide img {
@@ -22,93 +22,81 @@
 }
 
 .description {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    width: 100%;
+    max-width: 800px;
     padding: 20px;
+    color: #f9f9f9;
 }
 
 .description h2 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin-bottom: 20px;
-    text-align: center;
 }
 
 .description p {
     font-size: 1rem;
     line-height: 1.5;
-    text-align: center;
 }
 
 .special-section {
-    padding: 50px;
-    text-align: center;
-    background-color: #f9f9f9;
+    padding: 60px 20px;
+    background-color: #0e0c08;
+    color: #f9f9f9;
 }
 
 .special-content {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    text-align: left;
+}
+
+.NBS-H2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #f9f9f9;
+    text-align: center;
+    width: 100%;
 }
 
 .gallery-carousel {
-    width: 40%; /* Smaller size for the image container */
+    width: 45%; /* Adjusted width for images */
+    max-width: 800px;
 }
 
 .gallery-carousel .slide img {
     width: 100%;
-    height: 1200px; /* Define a fixed height for the images */
-    object-fit: cover;
+    height: auto;
 }
 
 .testimonials {
-    width: 50%;
+    width: 45%; /* Adjusted width for testimonials */
+    max-width: 500px;
     text-align: left;
-    font-size: 2rem;
+    font-size: 1rem;
+    color: #f9f9f9;
+    padding-left: 20px; /* Add padding for spacing */
 }
 
-.testimonial {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.fade-in {
-    opacity: 1;
-}
-
-.before-after-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.parallax-ba {
     height: 80vh;
-    position: relative;
-    background-color: #f9f9f9;
-    padding-bottom: 220vh;
-}
-
-.text-container {
-    width: 50%;
-    padding: 20px;
-    background: #f9f9f9;
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    text-align: left;
+    align-items: center;
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
 }
 
-.text-container .text-slide {
-    margin-bottom: 50px;
-}
+@media (max-width: 768px) {
+    .special-content {
+        flex-direction: column;
+        align-items: center;
+    }
 
-.parallax-container {
-    width: 50%;
-    height: 80vh;
-    position: relative;
-}
-
-.parallax-container .parallax-content {
-    height: 150vh;
-    width: 100%;
+    .gallery-carousel, .testimonials {
+        width: 100%;
+        max-width: 100%;
+        padding-left: 0;
+    }
 }

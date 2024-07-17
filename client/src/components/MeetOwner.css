@@ -1,5 +1,24 @@
 .meet-owner-section {
     padding: 50px;
     text-align: center;
-    background-color: #f9f9f9;
+    background-color: #514947;
+}
+
+.meet-owner-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #f9f9f9;
+}
+
+.meet-owner-section img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    margin: 20px 0;
+}
+
+.meet-owner-section p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #f9f9f9;
 }
