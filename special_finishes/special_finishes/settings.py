@@ -45,7 +45,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://specialfinishes.s3-website-us-east-1.amazonaws.com",
+]
+
 
 ROOT_URLCONF = "special_finishes.urls"
 
