@@ -17,7 +17,7 @@ const About = () => {
     return (
         <div className="about-section">
             <h2>About Special Finishes</h2>
-            <p>{about.description}</p>
+            <p>{about.data}</p>
         </div>
     );
 }

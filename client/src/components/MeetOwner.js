@@ -5,7 +5,7 @@ const MeetOwner = () => {
     return (
         <div className="meet-owner-section">
             <h2>Meet the Owner</h2>
-            <p>John Doe, the visionary behind Special Finishes, has over 20 years of experience in the industry.</p>
+            <p>Ruiter Fernandes, the visionary behind Special Finishes, has over 20 years of experience in the industry.</p>
         </div>
     );
 }
