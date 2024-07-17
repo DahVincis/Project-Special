@@ -17,3 +17,6 @@ def our_work(request):
         {'title': 'Project 3', 'description': 'Description of project 3'},
     ]
     return JsonResponse({'projects': projects})
+
+def home(request):
+    return JsonResponse({'message': 'Welcome to Special Finishes Home Page'})
