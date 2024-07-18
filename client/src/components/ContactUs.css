@@ -23,3 +23,12 @@
     border: none;
     cursor: pointer;
 }
+
+.contact-us-section button:hover {
+    background-color: #0e0c08;
+}
+
+.contact-us-section h2 {
+    color: #f9f9f9;
+    margin-bottom: 20px;
+}

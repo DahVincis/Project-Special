@@ -51,6 +51,10 @@ const OurWork = () => {
             {/* Interior and Exterior Section */}
             <Element name="interiorExterior">
                 <div className="dynamic-section" onClick={() => scrollToNextSection('special')}>
+                    <div className="description">
+                        <h2>{interiorExterior.title}</h2>
+                        <p>{interiorExterior.description}</p>
+                    </div>
                     <div className="slideshow-container">
                         <Slider {...settings}>
                             <div className="slide">
@@ -60,10 +64,6 @@ const OurWork = () => {
                                 <img src="/exterior.png" alt="Exterior Design" />
                             </div>
                         </Slider>
-                    </div>
-                    <div className="description">
-                        <h2>{interiorExterior.title}</h2>
-                        <p>{interiorExterior.description}</p>
                     </div>
                 </div>
             </Element>

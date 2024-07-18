@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = 'ec2-3-82-102-221.compute-1.amazonaws.com';
 
 export const fetchAboutCompany = async () => {
     const response = await axios.get(`${API_URL}/about/`);

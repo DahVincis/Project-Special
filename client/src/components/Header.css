@@ -12,6 +12,10 @@
     color: #f9f9f9;
 }
 
+.header span {
+    font-size: 1.5rem;
+}   
+
 .header.scrolled {
     background-color: rgba(0, 0, 0, 0.8);
 }
@@ -28,7 +32,7 @@
 }
 
 .header .contact {
-    font-size: 1rem;
+    font-size: 1.5rem;
     margin-right: 40px;
 }
 

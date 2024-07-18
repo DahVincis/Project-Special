@@ -47,8 +47,8 @@
 .special-content {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    align-items: center; /* Align items to the start */
+    justify-content: center;
     text-align: left;
 }
 
@@ -63,6 +63,8 @@
 .gallery-carousel {
     width: 45%; /* Adjusted width for images */
     max-width: 800px;
+    margin-bottom: 0; /* Ensure no extra margin at the bottom */
+    padding-right: 10%;
 }
 
 .gallery-carousel .slide img {
@@ -77,6 +79,7 @@
     font-size: 1rem;
     color: #f9f9f9;
     padding-left: 20px; /* Add padding for spacing */
+    margin-top: 0; /* Ensure no extra margin at the top */
 }
 
 .parallax-ba {
