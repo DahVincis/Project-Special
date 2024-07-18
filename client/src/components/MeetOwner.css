@@ -10,6 +10,12 @@
     color: #f9f9f9;
 }
 
+.meet-owner-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #f9f9f9;
+}
+
 .meet-owner-section img {
     width: 100%;
     max-width: 400px;

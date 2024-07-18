@@ -1,13 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import { Parallax } from 'react-parallax';
 import { Element, scroller } from 'react-scroll';
 import './OurWork.css';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import { fetchTestimonials, fetchInteriorExterior } from '../api';
 
 const OurWork = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [testimonials, setTestimonials] = useState([]);
+    const [interiorExterior, setInteriorExterior] = useState({});
+
+    useEffect(() => {
+        const getTestimonials = async () => {
+            const data = await fetchTestimonials();
+            setTestimonials(data.testimonials);
+        };
+
+        const getInteriorExterior = async () => {
+            const data = await fetchInteriorExterior();
+            setInteriorExterior(data.data);
+        };
+
+        getTestimonials();
+        getInteriorExterior();
+    }, []);
 
     const scrollToNextSection = (section) => {
         scroller.scrollTo(section, {
@@ -28,11 +46,6 @@ const OurWork = () => {
         beforeChange: (current, next) => setCurrentSlide(next),
     };
 
-    const testimonials = [
-        { text: "Ruiter runs a very efficient business. Everyone that works for him is a Professional. The workers arrive on time and the work is done to perfection. He just renovated the bathroom in our rental condo. We suspected undetected problems with pipes due to a neighbor's renovation. No surprise when the bathroom was gutted to find a broken pipe. The problem was handled quickly, efficiently and didn't break the bank. I rate our experience 5 stars. I would hire him again in a second. Thank you for a beautiful job!", client: "Valerie" },
-        { text: "The team at Special Finishes is amazing. They brought our vision to life with such creativity and professionalism.", client: "John Doe" },
-    ];
-
     return (
         <div className="our-work">
             {/* Interior and Exterior Section */}
@@ -49,8 +62,8 @@ const OurWork = () => {
                         </Slider>
                     </div>
                     <div className="description">
-                        <h2>Our Work in Interior and Exterior Design</h2>
-                        <p>We specialize in creating beautiful and functional interior and exterior spaces. Our team of experienced designers and craftsmen work together to bring your vision to life. Whether it's a cozy living room or a stunning outdoor patio, we ensure every detail is perfect.</p>
+                        <h2>{interiorExterior.title}</h2>
+                        <p>{interiorExterior.description}</p>
                     </div>
                 </div>
             </Element>

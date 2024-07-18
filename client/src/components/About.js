@@ -17,7 +17,14 @@ const About = () => {
     return (
         <div className="about-section">
             <h2>About Special Finishes</h2>
-            <p>{about.data}</p>
+            {about.data ? (
+                <>
+                    <h3>{about.data.name}</h3>
+                    <p>{about.data.description}</p>
+                </>
+            ) : (
+                <p>Loading...</p>
+            )}
         </div>
     );
 }

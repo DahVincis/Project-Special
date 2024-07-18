@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://dsit36td3e5be.cloudfront.net/api';
+const API_URL = 'http://localhost:8000/api';
 
 export const fetchAboutCompany = async () => {
     const response = await axios.get(`${API_URL}/about/`);
@@ -9,5 +9,20 @@ export const fetchAboutCompany = async () => {
 
 export const fetchOurWork = async () => {
     const response = await axios.get(`${API_URL}/work/`);
+    return response.data;
+};
+
+export const fetchTestimonials = async () => {
+    const response = await axios.get(`${API_URL}/testimonials/`);
+    return response.data;
+};
+
+export const fetchMeetOwner = async () => {
+    const response = await axios.get(`${API_URL}/meet_owner/`);
+    return response.data;
+};
+
+export const fetchInteriorExterior = async () => {
+    const response = await axios.get(`${API_URL}/interior_exterior/`);
     return response.data;
 };

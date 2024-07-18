@@ -22,7 +22,7 @@ ALLOWED_HOSTS = [
     'ec2-3-82-102-221.compute-1.amazonaws.com', 
     'dsit36td3e5be.cloudfront.net', 
     'localhost', 
-    '127.0.0.1'
+    '127.0.0.1',
 ]
 
 # Application definition
@@ -51,9 +51,11 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
     "http://specialfinishes.s3-website-us-east-1.amazonaws.com",
     "https://dsit36td3e5be.cloudfront.net",
 ]
+
 
 
 
