@@ -18,10 +18,15 @@ const MeetOwner = () => {
         <div className="meet-owner-section">
             <h2>Meet the Owner</h2>
             {owner ? (
-                <>
-                    <h3>{owner.name}</h3>
-                    <p>{owner.description}</p>
-                </>
+                <div className="owner-content">
+                    <div className="owner-text">
+                        <h3>{owner.name}</h3>
+                        <p>{owner.description}</p>
+                    </div>
+                    <div className="owner-image">
+                        <img src={"/RF.png"} alt="Owner" />
+                    </div>
+                </div>
             ) : (
                 <p>Loading...</p>
             )}

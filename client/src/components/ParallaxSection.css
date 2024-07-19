@@ -8,7 +8,7 @@
 }
 
 .parallax-content {
-    height: 150vh;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,6 +25,6 @@
 
 @media (max-width: 768px) {
     .parallax-content {
-        height: 60vh; /* Adjusted height for mobile */
+        height: 60dvh; /* Adjusted height for mobile */
     }
 }

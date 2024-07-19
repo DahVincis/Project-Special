@@ -28,7 +28,7 @@ const Header = () => {
                 <span>Special Finishes HI</span>
             </div>
             <div className="contact">
-                Contact Us: 123-456-7890
+                Contact Us: 203-443-6007
             </div>
         </header>
     );

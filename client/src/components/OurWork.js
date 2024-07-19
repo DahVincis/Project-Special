@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
-import { Parallax } from 'react-parallax';
 import { Element, scroller } from 'react-scroll';
 import './OurWork.css';
 import "slick-carousel/slick/slick.css"; 
@@ -43,6 +42,7 @@ const OurWork = () => {
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
+        arrows: false, // Disable arrows
         beforeChange: (current, next) => setCurrentSlide(next),
     };
 
@@ -55,28 +55,35 @@ const OurWork = () => {
                         <h2>{interiorExterior.title}</h2>
                         <p>{interiorExterior.description}</p>
                     </div>
-                    <div className="slideshow-container">
-                        <Slider {...settings}>
-                            <div className="slide">
-                                <img src="/interior.png" alt="Interior Design" />
+                    <div className="grid-container">
+                        <div className="grid-item">
+                            <img src="/interior.png" alt="Interior Design" className="grid-image" />
+                            <div className="overlay">
+                                <p>Interior Design</p>
                             </div>
-                            <div className="slide">
-                                <img src="/exterior.png" alt="Exterior Design" />
+                        </div>
+                        <div className="grid-item">
+                            <img src="/exterior.png" alt="Exterior Design" className="grid-image" />
+                            <div className="overlay">
+                                <p>Exterior Design</p>
                             </div>
-                        </Slider>
+                        </div>
                     </div>
                 </div>
             </Element>
 
-            {/* Before and After Parallax Section */}
+            {/* Before and After Section */}
             <Element name="beforeAfter">
-                <div className="parallax-container">
-                    <Parallax bgImage="/before.png" strength={250}>
-                        <div className="parallax-ba"></div>
-                    </Parallax>
-                    <Parallax bgImage="/after.png" strength={250}>
-                        <div className="parallax-ba"></div>
-                    </Parallax>
+                <div className="before-after-section">
+                    <h2>Before and After</h2>
+                    <div className="before-after-images">
+                        <div className="before-image">
+                            <img src="/before.png" alt="Before" className="before-after-image" />
+                        </div>
+                        <div className="after-image">
+                            <img src="/after.png" alt="After" className="before-after-image" />
+                        </div>
+                    </div>
                 </div>
             </Element>
 
@@ -89,9 +96,15 @@ const OurWork = () => {
                             <Slider {...settings}>
                                 <div className="slide">
                                     <img src="/special1.png" alt="Special Project 1" />
+                                    <div className="overlay">
+                                        <p>Special Project 1</p>
+                                    </div>
                                 </div>
                                 <div className="slide">
                                     <img src="/special2.png" alt="Special Project 2" />
+                                    <div className="overlay">
+                                        <p>Special Project 2</p>
+                                    </div>
                                 </div>
                             </Slider>
                         </div>
