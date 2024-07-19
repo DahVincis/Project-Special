@@ -76,6 +76,7 @@
 .before-after-image {
     width: 100%;
     max-width: 600px;
+    height: auto;
     border-radius: 10px;
 }
 
@@ -123,7 +124,7 @@
 
 .testimonials {
     width: 45%;
-    max-width: 500px;
+    max-width: 600px;
     text-align: left;
     font-size: 1.25rem;
     color: #f9f9f9;
