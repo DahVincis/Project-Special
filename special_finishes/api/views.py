@@ -41,3 +41,12 @@ def interior_exterior(request):
         'description': "We specialize in creating beautiful and functional interior and exterior spaces. Our team of experienced designers and craftsmen work together to bring your vision to life. Whether it's a cozy living room or a stunning outdoor patio, we ensure every detail is perfect."
     }
     return JsonResponse({'data': data})
+
+def echo_headers(request):
+    """
+    Satisfies Interview Req: "endpoint that returns all HTTP request headers"
+    """
+    headers = {}
+    for key, value in request.headers.items():
+        headers[key] = value
+    return JsonResponse(headers)

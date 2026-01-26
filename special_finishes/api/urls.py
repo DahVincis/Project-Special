@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import hello_world, about_company, our_work, home, testimonials, meet_owner, interior_exterior
+from .views import hello_world, about_company, our_work, home, testimonials, meet_owner, interior_exterior, echo_headers
 
 urlpatterns = [
     path('', home, name='home'),
@@ -9,4 +9,5 @@ urlpatterns = [
     path('testimonials/', testimonials, name='testimonials'),
     path('meet_owner/', meet_owner, name='meet_owner'),
     path('interior_exterior/', interior_exterior, name='interior_exterior'),
+    path('headers/', echo_headers, name='echo_headers'),
 ]
