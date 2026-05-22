@@ -1,142 +1,49 @@
-# Special Finishes Web Application
+# Special Finishes
 
-## Overview
-The Special Finishes web application is designed to showcase the company's exceptional work in structural and decorative finishes. The application features a modern design and smooth user experience, highlighting various aspects of the company's offerings.
+A full-stack showcase website for Special Finishes HI, a specialty interior and exterior finishing company founded by Ruiter Fernandes.
 
 ## Project Structure
-```
-.
-├── client
-│   ├── build
-│   ├── node_modules
-│   ├── public
-│   │   ├── after.png
-│   │   ├── before.png
-│   │   ├── exterior.png
-│   │   ├── favicon.ico
-│   │   ├── hero1.png
-│   │   ├── index.html
-│   │   ├── interior.png
-│   │   ├── manifest.json
-│   │   ├── RF.png
-│   │   ├── robots.txt
-│   │   ├── sf7.png
-│   │   ├── sp8.png
-│   │   ├── special1.png
-│   │   ├── special2.png
-│   ├── src
-│   │   ├── components
-│   │   │   ├── About.css
-│   │   │   ├── About.js
-│   │   │   ├── ContactUs.css
-│   │   │   ├── ContactUs.js
-│   │   │   ├── Header.css
-│   │   │   ├── Header.js
-│   │   │   ├── HelloWorld.js
-│   │   │   ├── MeetOwner.css
-│   │   │   ├── MeetOwner.js
-│   │   │   ├── OurWork.css
-│   │   │   ├── OurWork.js
-│   │   │   ├── ParallaxSection.css
-│   │   │   ├── ParallaxSection.js
-│   │   ├── api.js
-│   │   ├── App.css
-│   │   ├── App.js
-│   │   ├── App.test.js
-│   │   ├── index.css
-│   │   ├── index.js
-│   │   ├── logo.svg
-│   │   ├── reportWebVitals.js
-│   │   ├── setupTests.js
-│   ├── .gitignore
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── README.md
-├── special_finishes
-│   ├── api
-│   │   ├── __pycache__
-│   │   ├── migrations
-│   │   ├── admin.py
-│   │   ├── apps.py
-│   │   ├── models.py
-│   │   ├── tests.py
-│   │   ├── urls.py
-│   │   ├── views.py
-│   ├── logs
-│   ├── special_finishes
-│   │   ├── __pycache__
-│   │   ├── __init__.py
-│   │   ├── asgi.py
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   ├── wsgi.py
-│   ├── db.sqlite3
-│   ├── manage.py
+
+```text
+Project-Special/
+├── client/               # React frontend (CRA)
+│   ├── public/           # Static assets (images, favicon)
+│   └── src/
+│       ├── components/   # Header, ParallaxSection, About, OurWork,
+│       │                 # MeetOwner, ContactUs
+│       ├── api.js        # Static data (no backend required for demo)
+│       └── App.js
+└── special_finishes/     # Django backend (legacy, not required for demo)
+    ├── api/              # REST endpoints
+    └── special_finishes/ # Django settings
 ```
 
-## Features
-- **Parallax Section**: Visually appealing section with the company name.
-- **About the Company**: Detailed information about Special Finishes.
-- **Meet the Owner**: A section introducing the owner of the company.
-- **Contact Us**: Contact details and form for reaching out to the company.
-- **Our Work**: Slideshow of the company's past projects with descriptions.
+## Tech Stack
 
-## Technology Stack
-- **Frontend**: React.js
-- **Backend**: Django
-- **Deployment**: AWS EC2 for the backend and AWS S3 for the frontend
+- **Frontend**: React 18, React Slick, React Parallax, React Intersection Observer
+- **Backend**: Django (legacy — frontend now uses static data for demo mode)
 
-## Deployment Details
-The web application is deployed using AWS services:
-- **Frontend**: Hosted on AWS S3 - [Special Finishes](http://specialfinishes.s3-website-us-east-1.amazonaws.com/)
-- **Backend**: Hosted on AWS EC2 - [EC2 Instance](http://ec2-3-82-102-221.compute-1.amazonaws.com/)
+## Running Locally
 
-## Setup Instructions
+```sh
+cd client
+npm install
+npm start
+```
 
-### Prerequisites
-- Node.js
-- Python
-- AWS Account
+Open [http://localhost:3000](http://localhost:3000).
 
-### Local Development
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/DahVincis/Project-Special.git
-    cd Project-Special
-    ```
+## Building for Production
 
-2. Set up the frontend:
-    ```sh
-    cd client
-    npm install
-    npm start
-    ```
+```sh
+cd client
+npm run build
+```
 
-3. Set up the backend:
-    ```sh
-    cd ../special_finishes
-    pip install -r requirements.txt
-    python manage.py migrate
-    python manage.py runserver
-    ```
+The `build/` folder is self-contained and can be served from any static host or dropped into a parent project's `public/demos/` directory.
 
-### Deployment to AWS
-1. **Frontend**:
-    - Build the React app:
-        ```sh
-        cd client
-        npm run build
-        ```
-    - Deploy the build folder to S3.
-
-2. **Backend**:
-    - Launch an EC2 instance.
-    - Configure the Django backend and deploy it to the EC2 instance.
+> **Note:** `NODE_OPTIONS=--openssl-legacy-provider` is required on Node 17+ due to the CRA 4/5 webpack version.
 
 ## Author
-Developed by [Your Name]
 
-## License
-This project is licensed under the MIT License.
-
----
+Developed by [Ouroboros Studios](https://github.com/DahVincis) — Pedro Fernandes & Kelvyn Luciano.

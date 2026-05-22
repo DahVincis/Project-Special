@@ -18,7 +18,7 @@ const MeetOwner = () => {
                 </div>
                 <div className="owner-text-wrap">
                     <span className="section-label">The Team</span>
-                    <h2>{owner.name || 'Rafael Figueroa'}</h2>
+                    <h2>{owner.name || 'Ruiter Fernandes'}</h2>
                     <div className="owner-title">Founder &amp; Master Craftsman</div>
                     <div className="owner-rule" />
                     <p>{owner.description}</p>

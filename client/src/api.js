@@ -22,9 +22,9 @@ const staticData = {
   },
   owner: {
     owner: {
-      name: 'Rafael Figueroa',
+      name: 'Ruiter Fernandes',
       description:
-        'With over 15 years of experience in specialty finishes, Rafael founded Special Finishes with a commitment to excellence and an eye for detail. His passion for craftsmanship drives every project from start to finish.',
+        'With over 15 years of experience in specialty finishes, Ruiter founded Special Finishes with a commitment to excellence and an eye for detail. His passion for craftsmanship drives every project from start to finish.',
     },
   },
 };
