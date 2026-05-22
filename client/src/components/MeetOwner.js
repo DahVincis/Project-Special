@@ -24,7 +24,7 @@ const MeetOwner = () => {
                         <p>{owner.description}</p>
                     </div>
                     <div className="owner-image">
-                        <img src={"/RF.png"} alt="Owner" />
+                        <img src={"./RF.png"} alt="Owner" />
                     </div>
                 </div>
             ) : (

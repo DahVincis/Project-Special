@@ -57,13 +57,13 @@ const OurWork = () => {
                     </div>
                     <div className="grid-container">
                         <div className="grid-item">
-                            <img src="/interior.png" alt="Interior Design" className="grid-image" />
+                            <img src="./interior.png" alt="Interior Design" className="grid-image" />
                             <div className="overlay">
                                 <p>Interior Design</p>
                             </div>
                         </div>
                         <div className="grid-item">
-                            <img src="/exterior.png" alt="Exterior Design" className="grid-image" />
+                            <img src="./exterior.png" alt="Exterior Design" className="grid-image" />
                             <div className="overlay">
                                 <p>Exterior Design</p>
                             </div>
@@ -78,10 +78,10 @@ const OurWork = () => {
                     <h2>Before and After</h2>
                     <div className="before-after-images">
                         <div className="before-image">
-                            <img src="/before.png" alt="Before" className="before-after-image" />
+                            <img src="./before.png" alt="Before" className="before-after-image" />
                         </div>
                         <div className="after-image">
-                            <img src="/after.png" alt="After" className="before-after-image" />
+                            <img src="./after.png" alt="After" className="before-after-image" />
                         </div>
                     </div>
                 </div>
@@ -95,13 +95,13 @@ const OurWork = () => {
                         <div className="gallery-carousel">
                             <Slider {...settings}>
                                 <div className="slide">
-                                    <img src="/special1.png" alt="Special Project 1" />
+                                    <img src="./special1.png" alt="Special Project 1" />
                                     <div className="overlay">
                                         <p>Special Project 1</p>
                                     </div>
                                 </div>
                                 <div className="slide">
-                                    <img src="/special2.png" alt="Special Project 2" />
+                                    <img src="./special2.png" alt="Special Project 2" />
                                     <div className="overlay">
                                         <p>Special Project 2</p>
                                     </div>
