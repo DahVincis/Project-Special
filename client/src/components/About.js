@@ -6,27 +6,33 @@ const About = () => {
     const [about, setAbout] = useState({});
 
     useEffect(() => {
-        const getAbout = async () => {
-            const data = await fetchAboutCompany();
-            setAbout(data);
-        };
-
-        getAbout();
+        fetchAboutCompany().then(data => setAbout(data));
     }, []);
 
     return (
-        <div className="about-section">
-            <h2>About Special Finishes</h2>
-            {about.data ? (
-                <>
-                    <h3>{about.data.name}</h3>
-                    <p>{about.data.description}</p>
-                </>
-            ) : (
-                <p>Loading...</p>
-            )}
-        </div>
+        <section id="about" className="about-section">
+            <div className="about-text">
+                <span className="about-label">Who We Are</span>
+                <h2>Craftsmanship in<br />Every Finish</h2>
+                <p>{about.data?.description}</p>
+            </div>
+            <div className="about-divider" />
+            <div className="about-stat-block">
+                <div className="about-stat">
+                    <div className="about-stat-number">15<span>+</span></div>
+                    <div className="about-stat-label">Years Experience</div>
+                </div>
+                <div className="about-stat">
+                    <div className="about-stat-number">500<span>+</span></div>
+                    <div className="about-stat-label">Projects Completed</div>
+                </div>
+                <div className="about-stat">
+                    <div className="about-stat-number">100<span>%</span></div>
+                    <div className="about-stat-label">Client Satisfaction</div>
+                </div>
+            </div>
+        </section>
     );
-}
+};
 
 export default About;

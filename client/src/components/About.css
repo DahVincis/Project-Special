@@ -1,30 +1,94 @@
 .about-section {
-    padding: 50px;
-    text-align: center;
-    background-color: #514947;
+  padding: 120px 72px;
+  background-color: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  gap: 80px;
 }
 
-.about-section h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #f9f9f9;
+.about-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
 }
 
-.about-section h3 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    color: #f9f9f9;
+.about-text {
+  flex: 1;
+  max-width: 560px;
 }
 
-.about-section img {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    margin: 20px 0;
+.about-text h2 {
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin-bottom: 28px;
 }
 
-.about-section p {
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #f9f9f9;
+.about-text p {
+  font-size: 0.88rem;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  margin-bottom: 0;
+}
+
+.about-divider {
+  flex: none;
+  width: 1px;
+  height: 220px;
+  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+  opacity: 0.5;
+}
+
+.about-stat-block {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.about-stat {
+  text-align: left;
+}
+
+.about-stat-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.about-stat-number span {
+  color: var(--accent);
+}
+
+.about-stat-label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .about-section {
+    flex-direction: column;
+    gap: 48px;
+    padding: 80px 28px;
+  }
+  .about-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--accent), transparent);
+  }
+  .about-stat-block {
+    flex-direction: row;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
 }

@@ -1,13 +1,4 @@
 .App {
-  text-align: center;
-}
-
-section {
-  padding: 60px 20px;
-}
-
-@media (max-width: 768px) {
-  section {
-    padding: 40px 15px;
-  }
+  min-height: 100vh;
+  overflow-x: hidden;
 }

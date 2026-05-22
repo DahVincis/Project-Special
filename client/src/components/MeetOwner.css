@@ -1,38 +1,99 @@
 .meet-owner-section {
-    padding: 50px;
-    text-align: center;
-    background-color: #0e0c08;
+  padding: 120px 72px;
+  background-color: var(--bg-secondary);
 }
 
-.meet-owner-section h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #f9f9f9;
+.meet-owner-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-.meet-owner-section h3 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    color: #f9f9f9;
+.owner-image-wrap {
+  position: relative;
 }
 
-.meet-owner-section img {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    margin: 20px 0;
+.owner-image-wrap img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  filter: grayscale(20%);
+  transition: filter 0.4s ease;
 }
 
-.meet-owner-section p {
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #f9f9f9;
+.owner-image-wrap:hover img {
+  filter: grayscale(0%);
 }
 
-.owner-image img {
-    width: 100%;
-    max-width: 800px;
-    height: auto;
-    border-radius: 50%;
-    margin: 20px 0;
+.owner-image-accent {
+  position: absolute;
+  bottom: -16px;
+  right: -16px;
+  width: 60%;
+  height: 60%;
+  border: 1px solid var(--accent);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.owner-text-wrap .section-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.owner-text-wrap h2 {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 300;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.owner-title {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 32px;
+}
+
+.owner-text-wrap p {
+  font-size: 0.87rem;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  margin-bottom: 0;
+}
+
+.owner-rule {
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+  margin: 28px 0;
+}
+
+@media (max-width: 900px) {
+  .meet-owner-section {
+    padding: 80px 28px;
+  }
+  .meet-owner-inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .owner-image-wrap img {
+    aspect-ratio: 4 / 3;
+    max-height: 400px;
+  }
+  .owner-image-accent {
+    display: none;
+  }
 }

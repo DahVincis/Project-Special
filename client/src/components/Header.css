@@ -1,47 +1,105 @@
 .header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: transparent;
-    transition: background-color 0.3s ease-in-out;
-    z-index: 1000;
-    color: #f9f9f9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 48px;
+  background: transparent;
+  transition: background 0.4s ease, padding 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1000;
+  color: var(--text-primary);
 }
 
-.header span {
-    font-size: 1.5rem;
-}   
-
 .header.scrolled {
-    background-color: rgba(0, 0, 0, 0.8);
+  background: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 12px 48px;
+  box-shadow: 0 1px 0 var(--border);
 }
 
 .header .logo {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
 }
 
 .header .logo img {
-    height: 40px;
-    margin-right: 10px;
-    color: #f9f9f9;
+  height: 36px;
 }
 
-.header .contact {
-    font-size: 1.5rem;
-    margin-right: 40px;
+.header .logo span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-primary);
 }
 
-@media (max-width: 768px) {
-    .header .contact {
-        font-size: 0.8rem;
-    }
+.header nav {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+}
 
-    .header .logo img {
-        height: 30px;
-    }
+.header nav a {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(242, 242, 240, 0.7);
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.header nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+
+.header nav a:hover {
+  color: var(--text-primary);
+}
+
+.header nav a:hover::after {
+  width: 100%;
+}
+
+.header .header-contact {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: rgba(242, 242, 240, 0.6);
+}
+
+@media (max-width: 900px) {
+  .header {
+    padding: 16px 24px;
+  }
+  .header.scrolled {
+    padding: 10px 24px;
+  }
+  .header nav {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .header nav {
+    display: none;
+  }
+  .header .header-contact {
+    font-size: 0.65rem;
+  }
 }
