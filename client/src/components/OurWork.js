@@ -67,37 +67,25 @@ const OurWork = () => {
                 </div>
             </Element>
 
-            <Element name="special">
+            <Element name="testimonials">
                 <div className="special-section">
                     <div className="section-header">
-                        <span className="section-label">Portfolio</span>
-                        <h2>Nothing But Special</h2>
+                        <span className="section-label">Client Feedback</span>
+                        <h2>What Our Clients Say</h2>
                     </div>
-                    <div className="special-content">
-                        <div className="gallery-carousel">
+                    <div className="testimonials">
+                        {testimonials.length > 0 && (
                             <Slider {...sliderSettings}>
-                                <div className="slide">
-                                    <img src="./special1.png" alt="Special Project 1" />
-                                </div>
-                                <div className="slide">
-                                    <img src="./special2.png" alt="Special Project 2" />
-                                </div>
-                            </Slider>
-                        </div>
-                        <div className="testimonials">
-                            {testimonials.length > 0 && (
-                                <Slider {...sliderSettings}>
-                                    {testimonials.map((t, i) => (
-                                        <div key={i}>
-                                            <div className="testimonial fade-in">
-                                                <p>"{t.text}"</p>
-                                                <p>— {t.client}</p>
-                                            </div>
+                                {testimonials.map((t, i) => (
+                                    <div key={i}>
+                                        <div className="testimonial fade-in">
+                                            <p>"{t.text}"</p>
+                                            <p>— {t.client}</p>
                                         </div>
-                                    ))}
-                                </Slider>
-                            )}
-                        </div>
+                                    </div>
+                                ))}
+                            </Slider>
+                        )}
                     </div>
                 </div>
             </Element>

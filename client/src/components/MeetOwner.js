@@ -14,7 +14,6 @@ const MeetOwner = () => {
             <div className="meet-owner-inner">
                 <div className="owner-image-wrap">
                     <img src="./RF.png" alt={owner.name || 'Owner'} />
-                    <div className="owner-image-accent" />
                 </div>
                 <div className="owner-text-wrap">
                     <span className="section-label">The Team</span>
