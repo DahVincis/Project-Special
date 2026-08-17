@@ -19,34 +19,38 @@ const sliderSettings = {
     arrows: false,
 };
 
-const galleryImages = [
+const expertiseImages = [
     { src: storageUrl('interior.jpg'), alt: 'Interior Design' },
     { src: storageUrl('exterior.jpg'), alt: 'Exterior Design' },
+];
+
+const beforeAfterImages = [
     { src: storageUrl('before.jpg'), alt: 'Pool construction before' },
     { src: storageUrl('after.jpg'), alt: 'Finished pool and spa' },
     { src: storageUrl('stair-before.jpg'), alt: 'Entryway staircase before' },
     { src: storageUrl('stair-after.jpg'), alt: 'Finished entryway staircase' },
-    { src: storageUrl('driveway.jpg'), alt: 'Driveway paving project' },
+];
+
+const portfolioImages = [
     { src: storageUrl('wainscoting.jpg'), alt: 'Wainscoting wall finish' },
     { src: storageUrl('kitchen2.jpg'), alt: 'Kitchen remodel' },
     { src: storageUrl('bathroom1.jpg'), alt: 'Bathroom remodel with glass shower' },
     { src: storageUrl('bathroom2.jpg'), alt: 'Bathroom remodel with vanity' },
-    { src: storageUrl('bathroom3.jpg'), alt: 'Bathroom remodel' },
 ];
-
-const indexOf = (alt) => galleryImages.findIndex((img) => img.alt === alt);
 
 const OurWork = () => {
     const [testimonials, setTestimonials] = useState([]);
     const [interiorExterior, setInteriorExterior] = useState({});
-    const [lightboxIndex, setLightboxIndex] = useState(null);
+    const [lightbox, setLightbox] = useState(null);
 
     useEffect(() => {
         fetchTestimonials().then(data => setTestimonials(data.testimonials));
         fetchInteriorExterior().then(data => setInteriorExterior(data.data));
     }, []);
 
-    const openLightbox = (alt) => setLightboxIndex(indexOf(alt));
+    // Lightbox is scoped to the section it was opened from, so arrowing through
+    // it never wanders into another section's photos.
+    const openLightbox = (images, index) => setLightbox({ images, index });
 
     return (
         <div id="work" className="our-work">
@@ -58,14 +62,16 @@ const OurWork = () => {
                         <p>{interiorExterior.description}</p>
                     </div>
                     <div className="grid-container">
-                        <button className="grid-item" onClick={() => openLightbox('Interior Design')}>
-                            <img src={storageUrl('interior.jpg')} alt="Interior Design" className="grid-image" />
-                            <div className="overlay"><p>Interior Design</p></div>
-                        </button>
-                        <button className="grid-item" onClick={() => openLightbox('Exterior Design')}>
-                            <img src={storageUrl('exterior.jpg')} alt="Exterior Design" className="grid-image" />
-                            <div className="overlay"><p>Exterior Design</p></div>
-                        </button>
+                        {expertiseImages.map((img, i) => (
+                            <button
+                                key={img.src}
+                                className="grid-item"
+                                onClick={() => openLightbox(expertiseImages, i)}
+                            >
+                                <img src={img.src} alt={img.alt} className="grid-image" loading="lazy" />
+                                <div className="overlay"><p>{img.alt}</p></div>
+                            </button>
+                        ))}
                     </div>
                 </div>
             </Element>
@@ -77,22 +83,21 @@ const OurWork = () => {
                         <h2>Before &amp; After</h2>
                     </div>
                     <div className="before-after-images">
-                        <button className="before-image" onClick={() => openLightbox('Pool construction before')}>
-                            <img src={storageUrl('before.jpg')} alt="Pool construction before" className="before-after-image" />
-                            <span className="ba-label">Before</span>
-                        </button>
-                        <button className="after-image" onClick={() => openLightbox('Finished pool and spa')}>
-                            <img src={storageUrl('after.jpg')} alt="Finished pool and spa" className="before-after-image" />
-                            <span className="ba-label">After</span>
-                        </button>
-                        <button className="before-image" onClick={() => openLightbox('Entryway staircase before')}>
-                            <img src={storageUrl('stair-before.jpg')} alt="Entryway staircase before" className="before-after-image" />
-                            <span className="ba-label">Before</span>
-                        </button>
-                        <button className="after-image" onClick={() => openLightbox('Finished entryway staircase')}>
-                            <img src={storageUrl('stair-after.jpg')} alt="Finished entryway staircase" className="before-after-image" />
-                            <span className="ba-label">After</span>
-                        </button>
+                        {beforeAfterImages.map((img, i) => (
+                            <button
+                                key={img.src}
+                                className={i % 2 === 0 ? 'before-image' : 'after-image'}
+                                onClick={() => openLightbox(beforeAfterImages, i)}
+                            >
+                                <img
+                                    src={img.src}
+                                    alt={img.alt}
+                                    className="before-after-image"
+                                    loading="lazy"
+                                />
+                                <span className="ba-label">{i % 2 === 0 ? 'Before' : 'After'}</span>
+                            </button>
+                        ))}
                     </div>
                 </div>
             </Element>
@@ -105,24 +110,16 @@ const OurWork = () => {
                     </div>
                     <div className="gallery-carousel">
                         <Slider {...sliderSettings}>
-                            <button className="slide" onClick={() => openLightbox('Driveway paving project')}>
-                                <img src={storageUrl('driveway.jpg')} alt="Driveway paving project" />
-                            </button>
-                            <button className="slide" onClick={() => openLightbox('Wainscoting wall finish')}>
-                                <img src={storageUrl('wainscoting.jpg')} alt="Wainscoting wall finish" />
-                            </button>
-                            <button className="slide" onClick={() => openLightbox('Kitchen remodel')}>
-                                <img src={storageUrl('kitchen2.jpg')} alt="Kitchen remodel" />
-                            </button>
-                            <button className="slide" onClick={() => openLightbox('Bathroom remodel with glass shower')}>
-                                <img src={storageUrl('bathroom1.jpg')} alt="Bathroom remodel with glass shower" />
-                            </button>
-                            <button className="slide" onClick={() => openLightbox('Bathroom remodel with vanity')}>
-                                <img src={storageUrl('bathroom2.jpg')} alt="Bathroom remodel with vanity" />
-                            </button>
-                            <button className="slide" onClick={() => openLightbox('Bathroom remodel')}>
-                                <img src={storageUrl('bathroom3.jpg')} alt="Bathroom remodel" />
-                            </button>
+                            {portfolioImages.map((img, i) => (
+                                <button
+                                    key={img.src}
+                                    className="slide"
+                                    onClick={() => openLightbox(portfolioImages, i)}
+                                >
+                                    <img src={img.src} alt={img.alt} loading="lazy" />
+                                    <span className="slide-caption">{img.alt}</span>
+                                </button>
+                            ))}
                         </Slider>
                     </div>
                 </div>
@@ -151,12 +148,12 @@ const OurWork = () => {
                 </div>
             </Element>
 
-            {lightboxIndex !== null && (
+            {lightbox && (
                 <Lightbox
-                    images={galleryImages}
-                    index={lightboxIndex}
-                    onClose={() => setLightboxIndex(null)}
-                    onNavigate={setLightboxIndex}
+                    images={lightbox.images}
+                    index={lightbox.index}
+                    onClose={() => setLightbox(null)}
+                    onNavigate={(index) => setLightbox((lb) => ({ ...lb, index }))}
                 />
             )}
         </div>
