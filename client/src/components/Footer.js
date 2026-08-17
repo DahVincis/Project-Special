@@ -1,5 +1,5 @@
 import React from 'react';
-import favicon from './favicon.ico';
+import logo from './logo.png';
 import './Footer.css';
 
 const Footer = () => {
@@ -10,7 +10,7 @@ const Footer = () => {
             <div className="footer-inner">
                 <div className="footer-brand">
                     <div className="footer-logo">
-                        <img src={favicon} alt="Special Finishes" />
+                        <img src={logo} alt="Special Finishes" />
                         <span>Special Finishes</span>
                     </div>
                     <p>Premium interior &amp; exterior finishing, crafted to last.</p>

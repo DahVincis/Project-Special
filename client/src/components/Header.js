@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Header.css';
-import favicon from './favicon.ico';
+import logo from './logo.png';
 
 const Header = () => {
     const [scrolled, setScrolled] = useState(false);
@@ -14,7 +14,7 @@ const Header = () => {
     return (
         <header className={`header ${scrolled ? 'scrolled' : ''}`}>
             <div className="logo">
-                <img src={favicon} alt="Special Finishes" />
+                <img src={logo} alt="Special Finishes" />
                 <span>Special Finishes</span>
             </div>
             <nav>
