@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchMeetOwner } from '../api';
+import { storageUrl } from '../storage';
 import './MeetOwner.css';
 
 const MeetOwner = () => {
@@ -13,7 +14,7 @@ const MeetOwner = () => {
         <section id="owner" className="meet-owner-section">
             <div className="meet-owner-inner">
                 <div className="owner-image-wrap">
-                    <img src="./RF.png" alt={owner.name || 'Owner'} />
+                    <img src={storageUrl('RF.png')} alt={owner.name || 'Owner'} />
                 </div>
                 <div className="owner-text-wrap">
                     <span className="section-label">The Team</span>

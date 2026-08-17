@@ -47,11 +47,12 @@ The `build/` folder is self-contained and can be served from any static host.
 
 ## Images
 
-Portfolio photos currently live in `client/public/` as compressed JPEGs. This works but
-means new/updated photos still get committed to git. Once a Supabase project exists,
-migrate these to Supabase Storage (S3-compatible + CDN) and reference the Storage CDN
-URLs from the components instead — see `client/src/components/OurWork.js` and
-`MeetOwner.js` for the current image references.
+Portfolio photos are hosted in a public Supabase Storage bucket, not committed to git.
+`client/src/storage.js` builds the public CDN URL from `REACT_APP_SUPABASE_URL` and
+`REACT_APP_SUPABASE_BUCKET` (see `client/.env.example`). To add or replace a photo:
+compress it (see `scripts/upload-portfolio-images.mjs` for the pattern), upload it via
+the Supabase dashboard's Storage UI or the script, and reference it with
+`storageUrl('filename.jpg')` in the component.
 
 ## Author
 

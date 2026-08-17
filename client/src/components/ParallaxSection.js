@@ -1,6 +1,7 @@
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Parallax } from 'react-parallax';
+import { storageUrl } from '../storage';
 import './ParallaxSection.css';
 
 const ParallaxSection = () => {
@@ -8,7 +9,7 @@ const ParallaxSection = () => {
 
     return (
         <div ref={ref} className={`parallax-wrapper ${inView ? 'fade-in' : ''}`}>
-            <Parallax bgImage="./sp8.jpg" strength={350}>
+            <Parallax bgImage={storageUrl('sp8.jpg')} strength={350}>
                 <div>
                     <div className="parallax-content">
                         <div className="hero-text">
