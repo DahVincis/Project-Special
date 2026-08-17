@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { whatsappUrlFromForm } from '../whatsapp';
 import './ContactUs.css';
 
 const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
@@ -14,26 +15,32 @@ const ContactUs = () => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
+
+        // Hand off to WhatsApp first and synchronously: a window opened after an
+        // await has lost the user-gesture context and gets blocked as a popup.
+        window.open(whatsappUrlFromForm(form), '_blank', 'noopener');
+
+        // The Supabase row is the backup record of the lead. It must never gate
+        // the WhatsApp handoff, so its failure only downgrades the status message.
         setStatus('submitting');
-        try {
-            const res = await fetch(`${SUPABASE_URL}/rest/v1/contact_submissions`, {
-                method: 'POST',
-                headers: {
-                    apikey: SUPABASE_ANON_KEY,
-                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-                    'Content-Type': 'application/json',
-                    Prefer: 'return=minimal',
-                },
-                body: JSON.stringify(form),
-            });
-            if (!res.ok) throw new Error('Request failed');
-            setStatus('success');
-            setForm(initialForm);
-        } catch (err) {
-            setStatus('error');
-        }
+        fetch(`${SUPABASE_URL}/rest/v1/contact_submissions`, {
+            method: 'POST',
+            headers: {
+                apikey: SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                Prefer: 'return=minimal',
+            },
+            body: JSON.stringify(form),
+        })
+            .then((res) => {
+                if (!res.ok) throw new Error('Request failed');
+                setStatus('success');
+                setForm(initialForm);
+            })
+            .catch(() => setStatus('error'));
     };
 
     return (
@@ -80,16 +87,18 @@ const ContactUs = () => {
                         required
                     />
                     <button type="submit" disabled={status === 'submitting'}>
-                        {status === 'submitting' ? 'Sending…' : 'Send Message'}
+                        {status === 'submitting' ? 'Sending…' : 'Send via WhatsApp'}
                     </button>
                     {status === 'success' && (
                         <p className="form-status form-status-success">
-                            Thanks — we'll be in touch soon.
+                            WhatsApp is opening with your details — hit send there and
+                            we'll be in touch.
                         </p>
                     )}
                     {status === 'error' && (
                         <p className="form-status form-status-error">
-                            Something went wrong. Please call or email us directly.
+                            WhatsApp should have opened with your details. If it didn't,
+                            call or email us directly.
                         </p>
                     )}
                 </form>
