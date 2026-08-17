@@ -37,11 +37,11 @@ const OurWork = () => {
                     </div>
                     <div className="grid-container">
                         <div className="grid-item">
-                            <img src="./interior.png" alt="Interior Design" className="grid-image" />
+                            <img src="./interior.jpg" alt="Interior Design" className="grid-image" />
                             <div className="overlay"><p>Interior Design</p></div>
                         </div>
                         <div className="grid-item">
-                            <img src="./exterior.png" alt="Exterior Design" className="grid-image" />
+                            <img src="./exterior.jpg" alt="Exterior Design" className="grid-image" />
                             <div className="overlay"><p>Exterior Design</p></div>
                         </div>
                     </div>
@@ -56,13 +56,52 @@ const OurWork = () => {
                     </div>
                     <div className="before-after-images">
                         <div className="before-image">
-                            <img src="./before.png" alt="Before" className="before-after-image" />
+                            <img src="./before.jpg" alt="Pool construction before" className="before-after-image" />
                             <span className="ba-label">Before</span>
                         </div>
                         <div className="after-image">
-                            <img src="./after.png" alt="After" className="before-after-image" />
+                            <img src="./after.jpg" alt="Finished pool and spa" className="before-after-image" />
                             <span className="ba-label">After</span>
                         </div>
+                        <div className="before-image">
+                            <img src="./stair-before.jpg" alt="Entryway staircase before" className="before-after-image" />
+                            <span className="ba-label">Before</span>
+                        </div>
+                        <div className="after-image">
+                            <img src="./stair-after.jpg" alt="Finished entryway staircase" className="before-after-image" />
+                            <span className="ba-label">After</span>
+                        </div>
+                    </div>
+                </div>
+            </Element>
+
+            <Element name="portfolio">
+                <div className="special-section">
+                    <div className="section-header">
+                        <span className="section-label">Portfolio</span>
+                        <h2>Nothing But Special</h2>
+                    </div>
+                    <div className="gallery-carousel">
+                        <Slider {...sliderSettings}>
+                            <div className="slide">
+                                <img src="./driveway.jpg" alt="Driveway paving project" />
+                            </div>
+                            <div className="slide">
+                                <img src="./wainscoting.jpg" alt="Wainscoting wall finish" />
+                            </div>
+                            <div className="slide">
+                                <img src="./kitchen2.jpg" alt="Kitchen remodel" />
+                            </div>
+                            <div className="slide">
+                                <img src="./bathroom1.jpg" alt="Bathroom remodel with glass shower" />
+                            </div>
+                            <div className="slide">
+                                <img src="./bathroom2.jpg" alt="Bathroom remodel with vanity" />
+                            </div>
+                            <div className="slide">
+                                <img src="./bathroom3.jpg" alt="Bathroom remodel" />
+                            </div>
+                        </Slider>
                     </div>
                 </div>
             </Element>

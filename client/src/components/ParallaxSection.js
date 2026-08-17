@@ -8,7 +8,7 @@ const ParallaxSection = () => {
 
     return (
         <div ref={ref} className={`parallax-wrapper ${inView ? 'fade-in' : ''}`}>
-            <Parallax bgImage="./sp8.png" strength={350}>
+            <Parallax bgImage="./sp8.jpg" strength={350}>
                 <div>
                     <div className="parallax-content">
                         <div className="hero-text">

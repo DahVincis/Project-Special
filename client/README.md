@@ -19,7 +19,7 @@ src/
 │   ├── Header          # Glass navbar with anchor nav
 │   ├── ParallaxSection # Full-height hero with text overlay
 │   ├── About           # Company intro + stats
-│   ├── OurWork         # Interior/exterior grid, before/after, testimonials
+│   ├── OurWork         # Interior/exterior grid, before/after, portfolio gallery, testimonials
 │   ├── MeetOwner       # Founder bio (Ruiter Fernandes)
 │   └── ContactUs       # Contact form
 ├── api.js              # Static data — no backend required
