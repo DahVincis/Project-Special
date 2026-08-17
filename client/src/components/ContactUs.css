@@ -116,6 +116,25 @@
   color: #fff;
 }
 
+.contact-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-status {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  margin: 4px 0 0;
+}
+
+.form-status-success {
+  color: #6fcf97;
+}
+
+.form-status-error {
+  color: #eb5757;
+}
+
 @media (max-width: 900px) {
   .contact-us-section {
     padding: 80px 28px;
