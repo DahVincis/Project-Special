@@ -10,12 +10,15 @@ import Footer from './components/Footer';
 function App() {
     return (
         <div className="App">
+            <a href="#main-content" className="skip-link">Skip to content</a>
             <Header />
-            <ParallaxSection />
-            <About />
-            <OurWork />
-            <MeetOwner />
-            <ContactUs />
+            <main id="main-content">
+                <ParallaxSection />
+                <About />
+                <OurWork />
+                <MeetOwner />
+                <ContactUs />
+            </main>
             <Footer />
         </div>
     );

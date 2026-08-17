@@ -58,14 +58,14 @@ const OurWork = () => {
                         <p>{interiorExterior.description}</p>
                     </div>
                     <div className="grid-container">
-                        <div className="grid-item" onClick={() => openLightbox('Interior Design')}>
+                        <button className="grid-item" onClick={() => openLightbox('Interior Design')}>
                             <img src={storageUrl('interior.jpg')} alt="Interior Design" className="grid-image" />
                             <div className="overlay"><p>Interior Design</p></div>
-                        </div>
-                        <div className="grid-item" onClick={() => openLightbox('Exterior Design')}>
+                        </button>
+                        <button className="grid-item" onClick={() => openLightbox('Exterior Design')}>
                             <img src={storageUrl('exterior.jpg')} alt="Exterior Design" className="grid-image" />
                             <div className="overlay"><p>Exterior Design</p></div>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </Element>
@@ -77,22 +77,22 @@ const OurWork = () => {
                         <h2>Before &amp; After</h2>
                     </div>
                     <div className="before-after-images">
-                        <div className="before-image" onClick={() => openLightbox('Pool construction before')}>
+                        <button className="before-image" onClick={() => openLightbox('Pool construction before')}>
                             <img src={storageUrl('before.jpg')} alt="Pool construction before" className="before-after-image" />
                             <span className="ba-label">Before</span>
-                        </div>
-                        <div className="after-image" onClick={() => openLightbox('Finished pool and spa')}>
+                        </button>
+                        <button className="after-image" onClick={() => openLightbox('Finished pool and spa')}>
                             <img src={storageUrl('after.jpg')} alt="Finished pool and spa" className="before-after-image" />
                             <span className="ba-label">After</span>
-                        </div>
-                        <div className="before-image" onClick={() => openLightbox('Entryway staircase before')}>
+                        </button>
+                        <button className="before-image" onClick={() => openLightbox('Entryway staircase before')}>
                             <img src={storageUrl('stair-before.jpg')} alt="Entryway staircase before" className="before-after-image" />
                             <span className="ba-label">Before</span>
-                        </div>
-                        <div className="after-image" onClick={() => openLightbox('Finished entryway staircase')}>
+                        </button>
+                        <button className="after-image" onClick={() => openLightbox('Finished entryway staircase')}>
                             <img src={storageUrl('stair-after.jpg')} alt="Finished entryway staircase" className="before-after-image" />
                             <span className="ba-label">After</span>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </Element>
@@ -105,24 +105,24 @@ const OurWork = () => {
                     </div>
                     <div className="gallery-carousel">
                         <Slider {...sliderSettings}>
-                            <div className="slide" onClick={() => openLightbox('Driveway paving project')}>
+                            <button className="slide" onClick={() => openLightbox('Driveway paving project')}>
                                 <img src={storageUrl('driveway.jpg')} alt="Driveway paving project" />
-                            </div>
-                            <div className="slide" onClick={() => openLightbox('Wainscoting wall finish')}>
+                            </button>
+                            <button className="slide" onClick={() => openLightbox('Wainscoting wall finish')}>
                                 <img src={storageUrl('wainscoting.jpg')} alt="Wainscoting wall finish" />
-                            </div>
-                            <div className="slide" onClick={() => openLightbox('Kitchen remodel')}>
+                            </button>
+                            <button className="slide" onClick={() => openLightbox('Kitchen remodel')}>
                                 <img src={storageUrl('kitchen2.jpg')} alt="Kitchen remodel" />
-                            </div>
-                            <div className="slide" onClick={() => openLightbox('Bathroom remodel with glass shower')}>
+                            </button>
+                            <button className="slide" onClick={() => openLightbox('Bathroom remodel with glass shower')}>
                                 <img src={storageUrl('bathroom1.jpg')} alt="Bathroom remodel with glass shower" />
-                            </div>
-                            <div className="slide" onClick={() => openLightbox('Bathroom remodel with vanity')}>
+                            </button>
+                            <button className="slide" onClick={() => openLightbox('Bathroom remodel with vanity')}>
                                 <img src={storageUrl('bathroom2.jpg')} alt="Bathroom remodel with vanity" />
-                            </div>
-                            <div className="slide" onClick={() => openLightbox('Bathroom remodel')}>
+                            </button>
+                            <button className="slide" onClick={() => openLightbox('Bathroom remodel')}>
                                 <img src={storageUrl('bathroom3.jpg')} alt="Bathroom remodel" />
-                            </div>
+                            </button>
                         </Slider>
                     </div>
                 </div>

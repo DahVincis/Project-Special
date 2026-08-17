@@ -1,7 +1,11 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import './Lightbox.css';
 
 const Lightbox = ({ images, index, onClose, onNavigate }) => {
+    const overlayRef = useRef(null);
+    const closeRef = useRef(null);
+    const previouslyFocused = useRef(null);
+
     const goPrev = useCallback(
         () => onNavigate((index - 1 + images.length) % images.length),
         [index, images.length, onNavigate]
@@ -12,10 +16,28 @@ const Lightbox = ({ images, index, onClose, onNavigate }) => {
     );
 
     useEffect(() => {
+        previouslyFocused.current = document.activeElement;
+        closeRef.current?.focus();
+        return () => previouslyFocused.current?.focus?.();
+    }, []);
+
+    useEffect(() => {
         const handleKey = (e) => {
             if (e.key === 'Escape') onClose();
             if (e.key === 'ArrowLeft') goPrev();
             if (e.key === 'ArrowRight') goNext();
+            if (e.key === 'Tab') {
+                const focusable = overlayRef.current.querySelectorAll('button');
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
         };
         window.addEventListener('keydown', handleKey);
         return () => window.removeEventListener('keydown', handleKey);
@@ -24,8 +46,15 @@ const Lightbox = ({ images, index, onClose, onNavigate }) => {
     const current = images[index];
 
     return (
-        <div className="lightbox-overlay" onClick={onClose}>
-            <button className="lightbox-close" onClick={onClose} aria-label="Close">
+        <div
+            className="lightbox-overlay"
+            onClick={onClose}
+            role="dialog"
+            aria-modal="true"
+            aria-label={current.alt}
+            ref={overlayRef}
+        >
+            <button className="lightbox-close" onClick={onClose} aria-label="Close" ref={closeRef}>
                 &times;
             </button>
             <button
