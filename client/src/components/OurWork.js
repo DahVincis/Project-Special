@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import { Element } from 'react-scroll';
 import { storageUrl } from '../storage';
+import Lightbox from './Lightbox';
 import './OurWork.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -18,14 +19,34 @@ const sliderSettings = {
     arrows: false,
 };
 
+const galleryImages = [
+    { src: storageUrl('interior.jpg'), alt: 'Interior Design' },
+    { src: storageUrl('exterior.jpg'), alt: 'Exterior Design' },
+    { src: storageUrl('before.jpg'), alt: 'Pool construction before' },
+    { src: storageUrl('after.jpg'), alt: 'Finished pool and spa' },
+    { src: storageUrl('stair-before.jpg'), alt: 'Entryway staircase before' },
+    { src: storageUrl('stair-after.jpg'), alt: 'Finished entryway staircase' },
+    { src: storageUrl('driveway.jpg'), alt: 'Driveway paving project' },
+    { src: storageUrl('wainscoting.jpg'), alt: 'Wainscoting wall finish' },
+    { src: storageUrl('kitchen2.jpg'), alt: 'Kitchen remodel' },
+    { src: storageUrl('bathroom1.jpg'), alt: 'Bathroom remodel with glass shower' },
+    { src: storageUrl('bathroom2.jpg'), alt: 'Bathroom remodel with vanity' },
+    { src: storageUrl('bathroom3.jpg'), alt: 'Bathroom remodel' },
+];
+
+const indexOf = (alt) => galleryImages.findIndex((img) => img.alt === alt);
+
 const OurWork = () => {
     const [testimonials, setTestimonials] = useState([]);
     const [interiorExterior, setInteriorExterior] = useState({});
+    const [lightboxIndex, setLightboxIndex] = useState(null);
 
     useEffect(() => {
         fetchTestimonials().then(data => setTestimonials(data.testimonials));
         fetchInteriorExterior().then(data => setInteriorExterior(data.data));
     }, []);
+
+    const openLightbox = (alt) => setLightboxIndex(indexOf(alt));
 
     return (
         <div id="work" className="our-work">
@@ -37,11 +58,11 @@ const OurWork = () => {
                         <p>{interiorExterior.description}</p>
                     </div>
                     <div className="grid-container">
-                        <div className="grid-item">
+                        <div className="grid-item" onClick={() => openLightbox('Interior Design')}>
                             <img src={storageUrl('interior.jpg')} alt="Interior Design" className="grid-image" />
                             <div className="overlay"><p>Interior Design</p></div>
                         </div>
-                        <div className="grid-item">
+                        <div className="grid-item" onClick={() => openLightbox('Exterior Design')}>
                             <img src={storageUrl('exterior.jpg')} alt="Exterior Design" className="grid-image" />
                             <div className="overlay"><p>Exterior Design</p></div>
                         </div>
@@ -56,19 +77,19 @@ const OurWork = () => {
                         <h2>Before &amp; After</h2>
                     </div>
                     <div className="before-after-images">
-                        <div className="before-image">
+                        <div className="before-image" onClick={() => openLightbox('Pool construction before')}>
                             <img src={storageUrl('before.jpg')} alt="Pool construction before" className="before-after-image" />
                             <span className="ba-label">Before</span>
                         </div>
-                        <div className="after-image">
+                        <div className="after-image" onClick={() => openLightbox('Finished pool and spa')}>
                             <img src={storageUrl('after.jpg')} alt="Finished pool and spa" className="before-after-image" />
                             <span className="ba-label">After</span>
                         </div>
-                        <div className="before-image">
+                        <div className="before-image" onClick={() => openLightbox('Entryway staircase before')}>
                             <img src={storageUrl('stair-before.jpg')} alt="Entryway staircase before" className="before-after-image" />
                             <span className="ba-label">Before</span>
                         </div>
-                        <div className="after-image">
+                        <div className="after-image" onClick={() => openLightbox('Finished entryway staircase')}>
                             <img src={storageUrl('stair-after.jpg')} alt="Finished entryway staircase" className="before-after-image" />
                             <span className="ba-label">After</span>
                         </div>
@@ -84,22 +105,22 @@ const OurWork = () => {
                     </div>
                     <div className="gallery-carousel">
                         <Slider {...sliderSettings}>
-                            <div className="slide">
+                            <div className="slide" onClick={() => openLightbox('Driveway paving project')}>
                                 <img src={storageUrl('driveway.jpg')} alt="Driveway paving project" />
                             </div>
-                            <div className="slide">
+                            <div className="slide" onClick={() => openLightbox('Wainscoting wall finish')}>
                                 <img src={storageUrl('wainscoting.jpg')} alt="Wainscoting wall finish" />
                             </div>
-                            <div className="slide">
+                            <div className="slide" onClick={() => openLightbox('Kitchen remodel')}>
                                 <img src={storageUrl('kitchen2.jpg')} alt="Kitchen remodel" />
                             </div>
-                            <div className="slide">
+                            <div className="slide" onClick={() => openLightbox('Bathroom remodel with glass shower')}>
                                 <img src={storageUrl('bathroom1.jpg')} alt="Bathroom remodel with glass shower" />
                             </div>
-                            <div className="slide">
+                            <div className="slide" onClick={() => openLightbox('Bathroom remodel with vanity')}>
                                 <img src={storageUrl('bathroom2.jpg')} alt="Bathroom remodel with vanity" />
                             </div>
-                            <div className="slide">
+                            <div className="slide" onClick={() => openLightbox('Bathroom remodel')}>
                                 <img src={storageUrl('bathroom3.jpg')} alt="Bathroom remodel" />
                             </div>
                         </Slider>
@@ -129,6 +150,15 @@ const OurWork = () => {
                     </div>
                 </div>
             </Element>
+
+            {lightboxIndex !== null && (
+                <Lightbox
+                    images={galleryImages}
+                    index={lightboxIndex}
+                    onClose={() => setLightboxIndex(null)}
+                    onNavigate={setLightboxIndex}
+                />
+            )}
         </div>
     );
 };

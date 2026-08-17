@@ -107,6 +107,7 @@
 .after-image {
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .before-after-image {
@@ -160,6 +161,7 @@
 .gallery-carousel .slide {
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .gallery-carousel .slide img {

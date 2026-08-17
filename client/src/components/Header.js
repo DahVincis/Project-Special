@@ -23,7 +23,10 @@ const Header = () => {
                 <a href="#owner">Team</a>
                 <a href="#contact">Contact</a>
             </nav>
-            <div className="header-contact">203-443-6007</div>
+            <div className="header-actions">
+                <a href="tel:2034436007" className="header-phone">203-443-6007</a>
+                <a href="#contact" className="header-cta">Free Estimate</a>
+            </div>
         </header>
     );
 };

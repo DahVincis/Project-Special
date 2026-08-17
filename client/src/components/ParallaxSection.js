@@ -16,7 +16,10 @@ const ParallaxSection = () => {
                             <span className="hero-tagline">Specialty Finishes</span>
                             <h1>Transforming Spaces.<br />Defining Excellence.</h1>
                             <p>Premium interior &amp; exterior finishing — crafted to last.</p>
-                            <a href="#about" className="hero-cta">Discover Our Work</a>
+                            <div className="hero-actions">
+                                <a href="#contact" className="hero-cta">Get a Free Estimate</a>
+                                <a href="#work" className="hero-cta-secondary">See Our Work</a>
+                            </div>
                         </div>
                     </div>
                 </div>
