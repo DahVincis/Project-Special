@@ -46,7 +46,7 @@ const ContactUs = () => {
     return (
         <section id="contact" className="contact-us-section">
             <div className="contact-inner">
-                <div className="contact-info">
+                <div className="contact-info" data-num="07">
                     <span className="section-label">Get In Touch</span>
                     <h2>Let's Create<br />Something Special</h2>
                     <p>Ready to transform your space? Reach out and let's discuss your project.</p>

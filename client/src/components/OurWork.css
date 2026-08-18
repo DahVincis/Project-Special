@@ -13,7 +13,9 @@
 }
 
 .section-label {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
   font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.3em;
@@ -22,9 +24,17 @@
   margin-bottom: 16px;
 }
 
+.section-label::before {
+  content: '';
+  width: 44px;
+  height: 1px;
+  background: var(--accent);
+}
+
 .section-header h2 {
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-size: clamp(2rem, 3.6vw, 3.2rem);
   font-weight: 300;
+  line-height: 1.1;
   color: var(--text-primary);
   margin-bottom: 14px;
 }
@@ -72,7 +82,7 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(10,10,10,0.75) 0%, transparent 50%);
+  background: linear-gradient(to top, rgba(var(--scrim), 0.8) 0%, transparent 50%);
   display: flex;
   align-items: flex-end;
   padding: 20px 24px;
@@ -99,8 +109,27 @@
   background-color: var(--bg-secondary);
 }
 
+/* Breaks the run of identical left-aligned headers. */
 .before-after-section .section-header {
   margin-bottom: 56px;
+}
+
+@media (min-width: 901px) {
+  .before-after-section .section-header {
+    text-align: right;
+    margin-left: auto;
+    max-width: 560px;
+  }
+  .before-after-section .section-header p {
+    margin-left: auto;
+  }
+  .before-after-section .section-label {
+    flex-direction: row-reverse;
+  }
+  .before-after-section .section-header[data-num]::before {
+    left: auto;
+    right: -0.08em;
+  }
 }
 
 .before-after-images {
@@ -147,7 +176,7 @@
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--text-primary);
-  background: rgba(10,10,10,0.65);
+  background: rgba(var(--scrim), 0.7);
   padding: 6px 14px;
   backdrop-filter: blur(6px);
 }
@@ -162,11 +191,8 @@
   margin-bottom: 56px;
 }
 
-.special-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 56px;
-  align-items: center;
+.testimonials-section {
+  background-color: var(--bg-primary);
 }
 
 .gallery-carousel {
@@ -198,7 +224,7 @@
   left: 0;
   right: 0;
   padding: 40px 28px 20px;
-  background: linear-gradient(to top, rgba(10, 10, 10, 0.8) 0%, transparent 100%);
+  background: linear-gradient(to top, rgba(var(--scrim), 0.85) 0%, transparent 100%);
   font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -207,12 +233,40 @@
   text-align: left;
 }
 
-.gallery-carousel .slick-dots li button:before {
-  color: var(--text-secondary);
+/* Slick's default dots read as a template. Counter + hairline progress instead. */
+.carousel-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 22px;
 }
 
-.gallery-carousel .slick-dots li.slick-active button:before {
-  color: var(--accent);
+.carousel-count {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.carousel-count i {
+  font-style: normal;
+  color: var(--text-secondary);
+  margin: 0 2px;
+}
+
+.carousel-track {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.carousel-track i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.5s ease;
 }
 
 .testimonials {
@@ -225,10 +279,10 @@
   padding: 0 4px;
 }
 
+/* Pull-quote, not a card — no box, oversized quote mark, serif at reading size. */
 .testimonial {
-  padding: 40px;
-  border: 1px solid var(--border);
-  background: var(--bg-secondary);
+  padding: 0 0 8px 78px;
+  max-width: 860px;
   position: relative;
   opacity: 0;
   transition: opacity 0.5s ease;
@@ -241,24 +295,23 @@
 .testimonial::before {
   content: '\201C';
   font-family: 'Cormorant Garamond', serif;
-  font-size: 5rem;
+  font-size: 9rem;
   color: var(--accent);
-  opacity: 0.3;
+  opacity: 0.35;
   position: absolute;
-  top: 8px;
-  left: 24px;
+  top: -0.28em;
+  left: 0;
   line-height: 1;
 }
 
 .testimonial p:first-child {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.15rem;
+  font-size: clamp(1.3rem, 2.2vw, 1.9rem);
   font-style: italic;
   font-weight: 300;
   color: var(--text-primary);
-  line-height: 1.7;
-  margin-bottom: 20px;
-  padding-top: 20px;
+  line-height: 1.55;
+  margin-bottom: 24px;
 }
 
 .testimonial p:last-child {
@@ -293,12 +346,16 @@
     grid-template-columns: 1fr;
   }
 
-  .special-content {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
   .gallery-carousel .slide {
     aspect-ratio: 4 / 3;
+  }
+
+  .testimonial {
+    padding: 46px 0 8px;
+  }
+
+  .testimonial::before {
+    font-size: 6rem;
+    top: -0.18em;
   }
 }

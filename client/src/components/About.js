@@ -11,7 +11,7 @@ const About = () => {
 
     return (
         <section id="about" className="about-section">
-            <div className="about-text">
+            <div className="about-text" data-num="01">
                 <span className="about-label">Who We Are</span>
                 <h2>Craftsmanship in<br />Every Finish</h2>
                 <p>{about.data?.description}</p>

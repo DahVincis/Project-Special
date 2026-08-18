@@ -38,10 +38,13 @@ const portfolioImages = [
     { src: storageUrl('bathroom2.jpg'), alt: 'Bathroom remodel with vanity' },
 ];
 
+const pad = (n) => String(n).padStart(2, '0');
+
 const OurWork = () => {
     const [testimonials, setTestimonials] = useState([]);
     const [interiorExterior, setInteriorExterior] = useState({});
     const [lightbox, setLightbox] = useState(null);
+    const [slide, setSlide] = useState(0);
 
     useEffect(() => {
         fetchTestimonials().then(data => setTestimonials(data.testimonials));
@@ -56,7 +59,7 @@ const OurWork = () => {
         <div id="work" className="our-work">
             <Element name="interiorExterior">
                 <div className="dynamic-section">
-                    <div className="section-header">
+                    <div className="section-header" data-num="02">
                         <span className="section-label">Our Expertise</span>
                         <h2>{interiorExterior.title || 'Interior & Exterior Design'}</h2>
                         <p>{interiorExterior.description}</p>
@@ -78,7 +81,7 @@ const OurWork = () => {
 
             <Element name="beforeAfter">
                 <div className="before-after-section">
-                    <div className="section-header">
+                    <div className="section-header" data-num="03">
                         <span className="section-label">Transformations</span>
                         <h2>Before &amp; After</h2>
                     </div>
@@ -104,12 +107,12 @@ const OurWork = () => {
 
             <Element name="portfolio">
                 <div className="special-section">
-                    <div className="section-header">
+                    <div className="section-header" data-num="04">
                         <span className="section-label">Portfolio</span>
                         <h2>Nothing But Special</h2>
                     </div>
                     <div className="gallery-carousel">
-                        <Slider {...sliderSettings}>
+                        <Slider {...sliderSettings} dots={false} afterChange={setSlide}>
                             {portfolioImages.map((img, i) => (
                                 <button
                                     key={img.src}
@@ -121,13 +124,25 @@ const OurWork = () => {
                                 </button>
                             ))}
                         </Slider>
+                        <div className="carousel-meta" aria-hidden="true">
+                            <span className="carousel-count">
+                                {pad(slide + 1)} <i>/</i> {pad(portfolioImages.length)}
+                            </span>
+                            <span className="carousel-track">
+                                <i
+                                    style={{
+                                        width: `${((slide + 1) / portfolioImages.length) * 100}%`,
+                                    }}
+                                />
+                            </span>
+                        </div>
                     </div>
                 </div>
             </Element>
 
             <Element name="testimonials">
-                <div className="special-section">
-                    <div className="section-header">
+                <div className="special-section testimonials-section">
+                    <div className="section-header" data-num="05">
                         <span className="section-label">Client Feedback</span>
                         <h2>What Our Clients Say</h2>
                     </div>
