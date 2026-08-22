@@ -11,16 +11,33 @@ returned a hardcoded dict and no model or migration ever existed. Site copy live
 
 ## Build / run
 
-`NODE_OPTIONS=--openssl-legacy-provider` is **required** on every build and dev run
-(CRA 5 webpack on Node 24), otherwise it dies on an OpenSSL hash error:
-
 ```sh
-cd client && NODE_OPTIONS=--openssl-legacy-provider npm start          # dev, :3000
-cd client && NODE_OPTIONS=--openssl-legacy-provider CI=true npm run build
+cd client && npm start                    # dev, :3000
+cd client && CI=true npm run build        # production build -> client/build
 lsof -ti:3000 -sTCP:LISTEN | xargs -r kill                            # free the port
 ```
 
+`NODE_OPTIONS=--openssl-legacy-provider` is baked into both npm scripts (CRA 5 webpack
+dies on an OpenSSL hash error without it on Node 17+). Do not strip it from
+`client/package.json`, and do not pass it manually — it is already there.
+
 Delete `build/` after a verification build — it is gitignored but clutters the tree.
+
+## Deploy
+
+Cloudflare Pages, Git integration on `main`. Project settings that must stay in sync
+with this repo: root directory `client`, build command `npm run build`, output
+directory `build` (relative to root, i.e. `client/build`). Node version comes from
+`client/.node-version`.
+
+The three `REACT_APP_SUPABASE_*` vars live in the Pages dashboard as **build-time**
+environment variables (set for Production *and* Preview). They are inlined into the
+bundle at build time — if they are missing, the build still succeeds and ships a site
+with every image 404ing and a dead contact form. Check a deploy preview before
+promoting.
+
+Domain: `specialfinisheshi.com`, registered at Hostinger (paid to 2028), served through
+Cloudflare.
 
 ## Images
 
