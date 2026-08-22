@@ -86,11 +86,17 @@ dashboard's Storage UI takes a drag-and-drop.
 
 ## Contact form
 
-Submitting opens WhatsApp prefilled (`client/src/whatsapp.js`) **and** inserts a backup row
-into the Supabase `contact_submissions` table. Two constraints:
+Three channels — email (default, filled accent), WhatsApp, SMS — defined in
+`client/src/whatsapp.js` as `CHANNELS`. Every one builds the same prefilled message and
+every submit also inserts a backup row into the Supabase `contact_submissions` table, so
+the lead survives whichever the visitor picks. Constraints:
 
-- Open the WhatsApp window **synchronously** in the submit handler. After an `await` the
+- Open the channel **synchronously** in the submit handler. After an `await` the
   user-gesture context is gone and the popup gets blocked.
+- WhatsApp opens in a new tab; `mailto:` and `sms:` navigate in place, because a new tab
+  for those is left blank once the native app takes over.
+- Every button is `type="submit"` so the browser's required-field validation runs for all
+  three; `e.nativeEvent.submitter.value` says which one was used.
 - The table has insert-only RLS: the anon key can write leads but never read them back.
   Do not expect to query submissions from the client, and don't leave test rows behind —
   the anon key cannot delete them, so cleanup falls on the user.
