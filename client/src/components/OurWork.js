@@ -24,18 +24,29 @@ const expertiseImages = [
     { src: storageUrl('exterior.jpg'), alt: 'Exterior Design' },
 ];
 
+// The Wilton renovation, told in pairs. Order matters: the grid is two columns,
+// so every 'before' has to sit immediately beside its own 'after'.
 const beforeAfterImages = [
-    { src: storageUrl('before.jpg'), alt: 'Pool construction before' },
-    { src: storageUrl('after.jpg'), alt: 'Finished pool and spa' },
-    { src: storageUrl('stair-before.jpg'), alt: 'Entryway staircase before' },
-    { src: storageUrl('stair-after.jpg'), alt: 'Finished entryway staircase' },
+    { src: storageUrl('wilton-front-before.jpg'), alt: 'Front elevation before renovation' },
+    { src: storageUrl('wilton-front-after.jpg'), alt: 'Front elevation after renovation, lit at night' },
+    { src: storageUrl('wilton-kitchen-before.jpg'), alt: 'Kitchen stripped back to the studs' },
+    { src: storageUrl('wilton-kitchen-after.jpg'), alt: 'Finished galley kitchen with reclaimed beams' },
+    { src: storageUrl('wilton-family-before.jpg'), alt: 'Family room down to bare subfloor' },
+    { src: storageUrl('wilton-family-after.jpg'), alt: 'Finished family room with stone fireplace' },
+    { src: storageUrl('wilton-bath-before.jpg'), alt: 'Master bathroom demolished to the framing' },
+    { src: storageUrl('wilton-bath-after.jpg'), alt: 'Finished master bathroom with freestanding tub' },
 ];
 
+// Carousel crops to 3/2, so every one of these has to be landscape.
 const portfolioImages = [
-    { src: storageUrl('wainscoting.jpg'), alt: 'Wainscoting wall finish' },
-    { src: storageUrl('kitchen2.jpg'), alt: 'Kitchen remodel' },
-    { src: storageUrl('bathroom1.jpg'), alt: 'Bathroom remodel with glass shower' },
-    { src: storageUrl('bathroom2.jpg'), alt: 'Bathroom remodel with vanity' },
+    { src: storageUrl('wilton-rear-night.jpg'), alt: 'Rear elevation at dusk' },
+    { src: storageUrl('wilton-living.jpg'), alt: 'Living room seen from the upper landing' },
+    { src: storageUrl('wilton-vista.jpg'), alt: 'Double-height living room and gallery wall' },
+    { src: storageUrl('wilton-dining.jpg'), alt: 'Dining room beneath the clerestory windows' },
+    { src: storageUrl('wilton-bedroom.jpg'), alt: 'Master bedroom with floating bed' },
+    { src: storageUrl('wilton-shower.jpg'), alt: 'Master shower in teal penny tile' },
+    { src: storageUrl('wilton-entry.jpg'), alt: 'Entryway and open stair' },
+    { src: storageUrl('wilton-ceiling.jpg'), alt: 'Living room ceiling and clerestory glazing' },
 ];
 
 const pad = (n) => String(n).padStart(2, '0');
@@ -84,6 +95,11 @@ const OurWork = () => {
                     <div className="section-header" data-num="03">
                         <span className="section-label">Transformations</span>
                         <h2>Before &amp; After</h2>
+                        <p>
+                            A 1970s modernist home in Wilton, Connecticut &mdash; bought with
+                            no kitchen and no bathrooms, and no bank willing to finance it.
+                            Demolition, permitting, construction and decorating: 70 days.
+                        </p>
                     </div>
                     <div className="before-after-images">
                         {beforeAfterImages.map((img, i) => (

@@ -1,14 +1,14 @@
-// One-off utility: uploads client/public's portfolio JPEGs to a public
-// Supabase Storage bucket. Run locally with your own service role key —
+// Uploads the given image files to the public Supabase Storage bucket, keyed by
+// their basename. Run locally with your own service role key —
 // never commit it, never paste it into chat:
 //
-//   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key node scripts/upload-portfolio-images.mjs
+//   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key \
+//     node scripts/upload-portfolio-images.mjs path/to/photo.jpg [more.jpg ...]
 //
 // Requires Node 18+ (built-in fetch). No dependencies.
 
 import { readFile } from 'node:fs/promises';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { basename } from 'node:path';
 
 const SUPABASE_URL = 'https://xmppgfzkkmlqhvufvtff.supabase.co';
 const BUCKET = 'Special';
@@ -19,30 +19,17 @@ if (!SERVICE_ROLE_KEY) {
   process.exit(1);
 }
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const PUBLIC_DIR = join(__dirname, '..', 'client', 'public');
+const FILES = process.argv.slice(2);
 
-const FILES = [
-  'interior.jpg',
-  'exterior.jpg',
-  'before.jpg',
-  'after.jpg',
-  'stair-before.jpg',
-  'stair-after.jpg',
-  'driveway.jpg',
-  'wainscoting.jpg',
-  'kitchen2.jpg',
-  'bathroom1.jpg',
-  'bathroom2.jpg',
-  'bathroom3.jpg',
-  'sp8.jpg',
-  'RF.png',
-];
+if (FILES.length === 0) {
+  console.error('Usage: node scripts/upload-portfolio-images.mjs <file> [file ...]');
+  process.exit(1);
+}
 
 const contentType = (name) => (name.endsWith('.png') ? 'image/png' : 'image/jpeg');
 
-async function upload(name) {
-  const filePath = join(PUBLIC_DIR, name);
+async function upload(filePath) {
+  const name = basename(filePath);
   const body = await readFile(filePath);
   const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${name}`, {
     method: 'POST',
@@ -61,11 +48,11 @@ async function upload(name) {
   console.log(`uploaded ${name} (${(body.length / 1024).toFixed(0)}KB)`);
 }
 
-for (const name of FILES) {
+for (const filePath of FILES) {
   try {
-    await upload(name);
+    await upload(filePath);
   } catch (err) {
-    console.error(`FAILED ${name}:`, err.message);
+    console.error(`FAILED ${filePath}:`, err.message);
   }
 }
 
