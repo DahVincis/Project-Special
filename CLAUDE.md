@@ -25,16 +25,32 @@ Delete `build/` after a verification build — it is gitignored but clutters the
 
 ## Deploy
 
-Cloudflare Pages, Git integration on `main`. Project settings that must stay in sync
-with this repo: root directory `client`, build command `npm run build`, output
-directory `build` (relative to root, i.e. `client/build`). Node version comes from
-`client/.node-version`.
+**Cloudflare Workers Static Assets** (not Pages — Cloudflare steers new projects to
+Workers now, and the dashboard's Pages flow is on its way out). Git integration on
+`main` via Workers Builds.
 
-The three `REACT_APP_SUPABASE_*` vars live in the Pages dashboard as **build-time**
-environment variables (set for Production *and* Preview). They are inlined into the
-bundle at build time — if they are missing, the build still succeeds and ships a site
-with every image 404ing and a dead contact form. Check a deploy preview before
-promoting.
+`client/wrangler.jsonc` is the source of truth for the Worker name and the asset
+directory. Workers Builds settings that must match it:
+
+| Field | Value |
+|---|---|
+| Root directory | `client/` |
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` |
+| Version command | `npx wrangler versions upload` |
+
+Workers Builds runs **two** commands — build, then deploy. Pages ran only one. Putting
+`npm run build` in the deploy field (an easy mistake, the fields are adjacent) builds
+twice and never deploys.
+
+The three `REACT_APP_SUPABASE_*` vars go in the Worker's **build** variables
+(Settings → Build → Variables), not runtime variables — CRA inlines them at build time
+and nothing reads `process.env` at runtime. If they are missing the build still
+succeeds and ships a site with every image 404ing and a dead contact form. Check the
+preview version before promoting.
+
+`wrangler` is a pinned devDependency so a wrangler major bump cannot break a production
+deploy on its own.
 
 Domain: `specialfinisheshi.com`, registered at Hostinger (paid to 2028), served through
 Cloudflare.
