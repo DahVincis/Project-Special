@@ -56,8 +56,10 @@ body::after {
   content: attr(data-num);
   position: absolute;
   z-index: -1;
-  top: -0.42em;
-  left: -0.08em;
+  /* Sits behind the h2, not the eyebrow label. At a negative offset the numeral
+     lands on the label and its accent hairline and reads as a rendering bug. */
+  top: 0.24em;
+  left: -0.06em;
   font-family: 'Cormorant Garamond', serif;
   font-size: 8rem;
   font-weight: 300;
@@ -70,7 +72,7 @@ body::after {
 @media (max-width: 900px) {
   [data-num]::before {
     font-size: 5rem;
-    top: -0.3em;
+    top: 0.3em;
   }
 }
 

@@ -100,7 +100,9 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--text-primary);
-  background: linear-gradient(to top, rgba(var(--scrim), 0.9), transparent);
+  /* Held to 0.95 and ramped early: several of these photographs end on a
+     sunlit floor, and a soft gradient leaves the caption unreadable there. */
+  background: linear-gradient(to top, rgba(var(--scrim), 0.95) 30%, transparent);
 }
 
 @media (min-width: 901px) {

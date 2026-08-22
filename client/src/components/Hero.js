@@ -41,8 +41,8 @@ const Hero = () => (
         </div>
         <div className="hero-figure">
             <img
-                src={storageUrl('wilton-rear-night.jpg')}
-                alt="A renovated modernist home in Wilton, Connecticut, lit at dusk"
+                src={storageUrl('wilton-hero.jpg')}
+                alt="Double-height living room of a renovated modernist home in Wilton, Connecticut"
                 fetchpriority="high"
             />
             <span className="hero-figure-caption">Wilton, CT — gut renovation in 70 days</span>

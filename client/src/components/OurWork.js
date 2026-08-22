@@ -11,12 +11,15 @@ const galleryImages = [
     { file: 'wilton-living.jpg', alt: 'Living room seen from the upper landing', span: 7, tall: true },
     { file: 'wilton-kitchen-after.jpg', alt: 'Galley kitchen with reclaimed beams', span: 5 },
     { file: 'wilton-shower.jpg', alt: 'Master shower in teal penny tile', span: 5 },
-    { file: 'wilton-dining.jpg', alt: 'Dining room beneath the clerestory windows', span: 6 },
-    { file: 'wilton-bedroom.jpg', alt: 'Master bedroom with floating bed', span: 6 },
+    // Tall: a building at dusk needs vertical room. In a one-row slot this
+    // crops to a letterbox band of windows and stops reading as a house.
+    { file: 'wilton-rear-night.jpg', alt: 'Rear elevation at dusk', span: 8, tall: true },
     { file: 'wilton-entry.jpg', alt: 'Entryway and open stair', span: 4 },
-    { file: 'wilton-vista.jpg', alt: 'Double-height living room and gallery wall', span: 8 },
-    { file: 'interior.jpg', alt: 'Interior finish work', span: 5 },
-    { file: 'exterior.jpg', alt: 'Exterior finish work', span: 7 },
+    { file: 'wilton-dining.jpg', alt: 'Dining room beneath the clerestory windows', span: 4 },
+    { file: 'wilton-bedroom.jpg', alt: 'Master bedroom with floating bed', span: 6 },
+    { file: 'wilton-vista.jpg', alt: 'Double-height living room and gallery wall', span: 6 },
+    { file: 'interior.jpg', alt: 'Interior finish work', span: 6 },
+    { file: 'exterior.jpg', alt: 'Exterior finish work', span: 6 },
 ].map((t) => ({ ...t, src: storageUrl(t.file) }));
 
 // Four rooms, each shot from the same wall before and after.

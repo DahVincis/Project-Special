@@ -29,8 +29,10 @@
   font-size: 0.6rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--text-secondary);
-  background: linear-gradient(to top, rgba(var(--scrim), 0.92), transparent);
+  /* Primary, not secondary: this sits over a photograph whose bottom edge can
+     be a sunlit floor, and #a39a8e does not clear AA against that. */
+  color: var(--text-primary);
+  background: linear-gradient(to top, rgba(var(--scrim), 0.95) 35%, transparent);
 }
 
 .hero-type {
