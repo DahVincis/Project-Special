@@ -97,9 +97,15 @@
   height: 120px;
 }
 
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
 .contact-form button {
   align-self: flex-start;
-  margin-top: 8px;
   padding: 16px 40px;
   background: transparent;
   border: 1px solid var(--accent);
@@ -113,9 +119,42 @@
   transition: background 0.25s ease, color 0.25s ease;
 }
 
-.contact-form button:hover {
+.contact-form button {
+  /* 44px minimum tap target — these wrap to their own row on a phone. */
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 15px 24px;
+}
+
+.contact-form button svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+/* WhatsApp stays the filled default; the alternatives are outlined so the
+   choice reads as a choice rather than three equal-weight buttons. */
+.contact-form button.is-primary {
   background: var(--accent);
   color: var(--accent-ink);
+  border-color: var(--accent);
+}
+
+.contact-form button.is-primary:hover {
+  background: #ff6a2c;
+}
+
+.contact-form button:not(.is-primary) {
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.contact-form button:not(.is-primary):hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: transparent;
 }
 
 .contact-form button:disabled {

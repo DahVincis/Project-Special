@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import { whatsappUrlFromForm } from '../whatsapp';
+import { CHANNELS } from '../whatsapp';
+import { MailIcon, SmsIcon, WhatsAppIcon } from './Icons';
 import './ContactUs.css';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../storage';
 
 const initialForm = { name: '', email: '', project_type: '', message: '' };
 
+const ICONS = { mail: MailIcon, sms: SmsIcon, whatsapp: WhatsAppIcon };
+
 const ContactUs = () => {
     const [form, setForm] = useState(initialForm);
     const [status, setStatus] = useState('idle');
+    const [sentVia, setSentVia] = useState('email');
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,9 +20,20 @@ const ContactUs = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Hand off to WhatsApp first and synchronously: a window opened after an
-        // await has lost the user-gesture context and gets blocked as a popup.
-        window.open(whatsappUrlFromForm(form), '_blank', 'noopener');
+        // Every button in this form is a submit, so the browser's own required-field
+        // validation runs whichever channel the visitor picks. `submitter` tells us
+        // which one they used; it predates no browser we support, but default anyway.
+        const key = e.nativeEvent.submitter?.value || 'email';
+        const channel = CHANNELS[key] || CHANNELS.email;
+        setSentVia(key);
+
+        // Hand off first and synchronously: a window opened after an await has lost
+        // the user-gesture context and gets blocked as a popup.
+        if (channel.newTab) {
+            window.open(channel.url(form), '_blank', 'noopener');
+        } else {
+            window.location.href = channel.url(form);
+        }
 
         // The Supabase row is the backup record of the lead. It must never gate
         // the WhatsApp handoff, so its failure only downgrades the status message.
@@ -84,19 +99,37 @@ const ContactUs = () => {
                         onChange={handleChange}
                         required
                     />
-                    <button type="submit" disabled={status === 'submitting'}>
-                        {status === 'submitting' ? 'Sending…' : 'Send via WhatsApp'}
-                    </button>
+                    <div className="contact-actions">
+                        {Object.entries(CHANNELS).map(([key, channel]) => {
+                            const Icon = ICONS[channel.icon];
+                            return (
+                                <button
+                                    key={key}
+                                    type="submit"
+                                    name="channel"
+                                    value={key}
+                                    className={channel.primary ? 'is-primary' : undefined}
+                                    disabled={status === 'submitting'}
+                                >
+                                    <Icon />
+                                    {channel.label}
+                                </button>
+                            );
+                        })}
+                    </div>
                     {status === 'success' && (
                         <p className="form-status form-status-success">
-                            WhatsApp is opening with your details — hit send there and
-                            we'll be in touch.
+                            {sentVia === 'whatsapp'
+                                ? 'WhatsApp is opening with your details — hit send there and we\u2019ll be in touch.'
+                                : sentVia === 'email'
+                                ? 'Your email app is opening with your details — hit send there and we\u2019ll be in touch.'
+                                : 'Your messages app is opening with your details — hit send there and we\u2019ll be in touch.'}
                         </p>
                     )}
                     {status === 'error' && (
                         <p className="form-status form-status-error">
-                            WhatsApp should have opened with your details. If it didn't,
-                            call or email us directly.
+                            We have your details. If nothing opened, call 203-443-6007 or
+                            email specialfinisheshi@gmail.com directly.
                         </p>
                     )}
                 </form>
