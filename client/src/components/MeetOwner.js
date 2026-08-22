@@ -16,7 +16,7 @@ const MeetOwner = () => {
                 <div className="owner-image-wrap">
                     <img src={storageUrl('RF.png')} alt={owner.name || 'Owner'} />
                 </div>
-                <div className="owner-text-wrap" data-num="06">
+                <div className="owner-text-wrap" data-num="05">
                     <span className="section-label">The Team</span>
                     <h2>{owner.name || 'Ruiter Fernandes'}</h2>
                     <div className="owner-title">Founder &amp; Master Craftsman</div>

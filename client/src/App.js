@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './components/Header';
-import ParallaxSection from './components/ParallaxSection';
+import Hero from './components/Hero';
 import About from './components/About';
 import MeetOwner from './components/MeetOwner';
 import ContactUs from './components/ContactUs';
@@ -14,7 +14,7 @@ function App() {
             <a href="#main-content" className="skip-link">Skip to content</a>
             <Header />
             <main id="main-content">
-                <ParallaxSection />
+                <Hero />
                 <About />
                 <OurWork />
                 <MeetOwner />

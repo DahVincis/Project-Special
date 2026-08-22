@@ -13,13 +13,6 @@ const staticData = {
       { text: 'The attention to detail is unmatched. Our office looks incredible now.', client: 'Carlos R.' },
     ],
   },
-  interiorExterior: {
-    data: {
-      title: 'Interior & Exterior Design',
-      description:
-        'We offer a full range of specialty finishes for both interior and exterior surfaces. Our team brings expertise and passion to every project, ensuring lasting beauty and quality.',
-    },
-  },
   owner: {
     owner: {
       name: 'Ruiter Fernandes',
@@ -30,7 +23,5 @@ const staticData = {
 };
 
 export const fetchAboutCompany = async () => staticData.about;
-export const fetchOurWork = async () => ({});
 export const fetchTestimonials = async () => staticData.testimonials;
 export const fetchMeetOwner = async () => staticData.owner;
-export const fetchInteriorExterior = async () => staticData.interiorExterior;

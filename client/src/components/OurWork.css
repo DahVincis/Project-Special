@@ -1,361 +1,304 @@
-.our-work {
-  background-color: var(--bg-primary);
+.work {
+  background: var(--bg-primary);
 }
 
-/* ── Interior & Exterior ── */
-.dynamic-section {
-  padding: 120px 72px;
-  background-color: var(--bg-primary);
+.work-selected,
+.case,
+.quotes {
+  padding: clamp(72px, 11vw, 150px) clamp(20px, 5vw, 84px);
 }
 
-.section-header {
-  margin-bottom: 64px;
+.case {
+  background: var(--bg-secondary);
+}
+
+/* ---- shared editorial header ------------------------------------------- */
+
+.rule-header {
+  margin-bottom: clamp(40px, 6vw, 72px);
 }
 
 .section-label {
   display: inline-flex;
   align-items: center;
   gap: 14px;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .section-label::before {
   content: '';
-  width: 44px;
+  width: 46px;
   height: 1px;
   background: var(--accent);
 }
 
-.section-header h2 {
-  font-size: clamp(2rem, 3.6vw, 3.2rem);
+.rule-header h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
-  line-height: 1.1;
+  font-size: clamp(2.3rem, 6.4vw, 4.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
   color: var(--text-primary);
-  margin-bottom: 14px;
-}
-
-.section-header p {
-  font-size: 0.87rem;
-  color: var(--text-secondary);
-  max-width: 520px;
-  line-height: 1.85;
-  margin-bottom: 0;
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
-
-.grid-item {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 4 / 3;
-  cursor: pointer;
-  border: none;
-  padding: 0;
-  background: none;
-  display: block;
-  width: 100%;
-  font: inherit;
-}
-
-.grid-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 0;
-  transition: transform 0.6s ease;
-  display: block;
-}
-
-.grid-item:hover .grid-image {
-  transform: scale(1.05);
-}
-
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(var(--scrim), 0.8) 0%, transparent 50%);
-  display: flex;
-  align-items: flex-end;
-  padding: 20px 24px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.grid-item:hover .overlay {
-  opacity: 1;
-}
-
-.overlay p {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #fff;
   margin: 0;
 }
 
-/* ── Before & After ── */
-.before-after-section {
-  padding: 120px 72px;
-  background-color: var(--bg-secondary);
+.rule-header h2 em {
+  font-style: italic;
+  color: var(--text-secondary);
 }
 
-/* Breaks the run of identical left-aligned headers. */
-.before-after-section .section-header {
-  margin-bottom: 56px;
+/* ---- selected work grid ------------------------------------------------ */
+
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.work-tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: var(--bg-tertiary);
+  cursor: pointer;
+  overflow: hidden;
+  font: inherit;
+  aspect-ratio: 4 / 3;
+}
+
+.work-tile.is-tall {
+  aspect-ratio: 3 / 4;
+}
+
+.work-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-tile:hover img {
+  transform: scale(1.045);
+}
+
+.work-tile-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 52px 18px 15px;
+  text-align: left;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  background: linear-gradient(to top, rgba(var(--scrim), 0.9), transparent);
 }
 
 @media (min-width: 901px) {
-  .before-after-section .section-header {
-    text-align: right;
-    margin-left: auto;
-    max-width: 560px;
+  .work-grid {
+    grid-template-columns: repeat(12, 1fr);
+    /* Fixed row height instead of per-tile aspect-ratio, so the two-row feature
+       tile lines up exactly with the two tiles beside it. */
+    grid-auto-rows: clamp(210px, 20vw, 330px);
+    gap: 16px;
   }
-  .before-after-section .section-header p {
-    margin-left: auto;
+
+  .work-tile,
+  .work-tile.is-tall {
+    aspect-ratio: auto;
+    height: 100%;
   }
-  .before-after-section .section-label {
-    flex-direction: row-reverse;
-  }
-  .before-after-section .section-header[data-num]::before {
-    left: auto;
-    right: -0.08em;
-  }
+
+  .span-4 { grid-column: span 4; }
+  .span-5 { grid-column: span 5; }
+  .span-6 { grid-column: span 6; }
+  .span-7 { grid-column: span 7; }
+  .span-8 { grid-column: span 8; }
+  .is-tall { grid-row: span 2; }
 }
 
-.before-after-images {
+/* ---- case study -------------------------------------------------------- */
+
+.case-intro {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 34px;
+  margin-bottom: clamp(48px, 7vw, 88px);
 }
 
-.before-image,
-.after-image {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  border: none;
-  padding: 0;
-  background: none;
-  display: block;
-  width: 100%;
-  font: inherit;
-  /* Sources in these pairs are 4:3, 1:1 and 16:9 — a fixed pixel height turned the
-     wider ones into thin bands. A shared aspect box keeps pairs aligned instead. */
-  aspect-ratio: 4 / 3;
-}
-
-.before-after-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.6s ease;
-}
-
-.before-image:hover .before-after-image,
-.after-image:hover .before-after-image {
-  transform: scale(1.03);
-}
-
-.ba-label {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  background: rgba(var(--scrim), 0.7);
-  padding: 6px 14px;
-  backdrop-filter: blur(6px);
-}
-
-/* ── Nothing But Special ── */
-.special-section {
-  padding: 120px 72px;
-  background-color: var(--bg-tertiary);
-}
-
-.special-section .section-header {
-  margin-bottom: 56px;
-}
-
-.testimonials-section {
-  background-color: var(--bg-primary);
-}
-
-.gallery-carousel {
-  width: 100%;
-}
-
-.gallery-carousel .slide {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  border: none;
-  padding: 0;
-  background: none;
-  width: 100%;
-  font: inherit;
-  aspect-ratio: 3 / 2;
-}
-
-.gallery-carousel .slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.slide-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 40px 28px 20px;
-  background: linear-gradient(to top, rgba(var(--scrim), 0.85) 0%, transparent 100%);
-  font-size: 0.66rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  text-align: left;
-}
-
-/* Slick's default dots read as a template. Counter + hairline progress instead. */
-.carousel-meta {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-top: 22px;
-}
-
-.carousel-count {
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  color: var(--text-primary);
-  white-space: nowrap;
-}
-
-.carousel-count i {
-  font-style: normal;
+.case-lede {
+  font-size: 0.95rem;
+  line-height: 1.9;
   color: var(--text-secondary);
-  margin: 0 2px;
-}
-
-.carousel-track {
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-  overflow: hidden;
-}
-
-.carousel-track i {
-  display: block;
-  height: 100%;
-  background: var(--accent);
-  transition: width 0.5s ease;
-}
-
-.testimonials {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.testimonials .slick-slide {
-  padding: 0 4px;
-}
-
-/* Pull-quote, not a card — no box, oversized quote mark, serif at reading size. */
-.testimonial {
-  padding: 0 0 8px 78px;
-  max-width: 860px;
-  position: relative;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.testimonial.fade-in {
-  opacity: 1;
-}
-
-.testimonial::before {
-  content: '\201C';
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 9rem;
-  color: var(--accent);
-  opacity: 0.35;
-  position: absolute;
-  top: -0.28em;
-  left: 0;
-  line-height: 1;
-}
-
-.testimonial p:first-child {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.3rem, 2.2vw, 1.9rem);
-  font-style: italic;
-  font-weight: 300;
-  color: var(--text-primary);
-  line-height: 1.55;
-  margin-bottom: 24px;
-}
-
-.testimonial p:last-child {
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent);
+  max-width: 56ch;
   margin: 0;
 }
 
-.testimonials .slick-dots li button:before {
-  color: var(--text-secondary);
+.case-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px 52px;
+  margin: 0;
+  padding-top: 30px;
+  border-top: 1px solid var(--border);
 }
 
-.testimonials .slick-dots li.slick-active button:before {
+.case-stats dt {
+  font-size: 0.58rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 9px;
+}
+
+.case-stats dd {
+  margin: 0;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  line-height: 1;
   color: var(--accent);
 }
 
-@media (max-width: 900px) {
-  .dynamic-section,
-  .before-after-section,
-  .special-section {
-    padding: 80px 28px;
+@media (min-width: 901px) {
+  .case-intro {
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    column-gap: 64px;
   }
 
-  .grid-container {
-    grid-template-columns: 1fr;
+  .case-intro .rule-header {
+    margin-bottom: 0;
   }
 
-  .before-after-images {
-    grid-template-columns: 1fr;
+  .case-stats {
+    grid-column: 1 / -1;
   }
+}
 
-  .gallery-carousel .slide {
-    aspect-ratio: 4 / 3;
+.case-pairs {
+  display: grid;
+  gap: clamp(34px, 5vw, 60px);
+}
+
+.pair {
+  margin: 0;
+}
+
+/* Stays two-up even on phones — a before/after that you have to scroll between
+   is not a comparison. */
+.pair-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.pair-shot {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: var(--bg-tertiary);
+  cursor: pointer;
+  overflow: hidden;
+  font: inherit;
+  aspect-ratio: 4 / 3;
+}
+
+.pair-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pair-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 5px 12px;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  background: rgba(var(--scrim), 0.78);
+  backdrop-filter: blur(6px);
+}
+
+.pair-tag.is-after {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.pair figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 18px;
+  padding-top: 16px;
+}
+
+.pair-room {
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.pair-note {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+@media (min-width: 901px) {
+  .case-pairs {
+    grid-template-columns: 1fr 1fr;
+    gap: 60px 44px;
   }
+}
 
-  .testimonial {
-    padding: 46px 0 8px;
-  }
+/* ---- testimonials ------------------------------------------------------ */
 
-  .testimonial::before {
-    font-size: 6rem;
-    top: -0.18em;
+.quote-list {
+  display: grid;
+  gap: 44px;
+}
+
+.quote {
+  margin: 0;
+  padding-left: 24px;
+  border-left: 1px solid var(--accent);
+}
+
+.quote p {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.15rem, 2.3vw, 1.6rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin: 0 0 16px;
+}
+
+.quote cite {
+  font-style: normal;
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+@media (min-width: 901px) {
+  .quote-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
   }
 }

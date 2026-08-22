@@ -1,0 +1,176 @@
+/* Mobile-first: the photograph leads, the type block sits under it. Deliberately
+   NOT text-over-image on phones — the night exterior has bright lit windows and
+   no scrim value clears AA across all of them. */
+.hero {
+  display: flex;
+  flex-direction: column-reverse;
+  background: var(--bg-primary);
+}
+
+.hero-figure {
+  position: relative;
+  margin: 0;
+}
+
+.hero-figure img {
+  display: block;
+  width: 100%;
+  height: 56vh;
+  min-height: 300px;
+  object-fit: cover;
+}
+
+.hero-figure-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 48px 24px 16px;
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: linear-gradient(to top, rgba(var(--scrim), 0.92), transparent);
+}
+
+.hero-type {
+  padding: 40px 24px 56px;
+}
+
+.hero-eyebrow {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 22px;
+}
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  /* The one place on the site type is allowed to get genuinely large. */
+  font-size: clamp(3rem, 13vw, 8.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0 0 26px;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-lede {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 42ch;
+  margin: 0 0 34px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 44px;
+}
+
+.hero-cta,
+.hero-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 30px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.25s, color 0.25s, border-color 0.25s;
+}
+
+/* Dark ink on the accent: white on #e95517 is 3.64:1 and fails AA. */
+.hero-cta {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.hero-cta:hover {
+  background: #ff6a2c;
+}
+
+.hero-cta-secondary {
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+.hero-cta-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px 44px;
+  margin: 0;
+  padding-top: 30px;
+  border-top: 1px solid var(--border);
+}
+
+.hero-meta dt {
+  font-size: 0.58rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 7px;
+}
+
+.hero-meta dd {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.hero-meta dd a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hero-meta dd a:hover {
+  color: var(--accent);
+}
+
+/* Split at desktop: type left, full-height photograph right. */
+@media (min-width: 901px) {
+  .hero {
+    flex-direction: row;
+    align-items: stretch;
+    min-height: 100vh;
+  }
+
+  .hero-type {
+    flex: 1 1 52%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px clamp(40px, 5vw, 84px) 80px;
+  }
+
+  .hero-figure {
+    flex: 1 1 48%;
+    position: relative;
+  }
+
+  .hero-figure img {
+    height: 100%;
+    min-height: 100vh;
+  }
+
+  .hero-figure-caption {
+    padding: 64px 32px 28px;
+  }
+}

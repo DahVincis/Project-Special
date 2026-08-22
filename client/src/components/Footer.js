@@ -30,7 +30,7 @@ const Footer = () => {
 
                 <div className="footer-contact">
                     <a href="tel:2034436007">203-443-6007</a>
-                    <a href="mailto:info@specialfinisheshi.com">info@specialfinisheshi.com</a>
+                    <a href="mailto:specialfinisheshi@gmail.com">specialfinisheshi@gmail.com</a>
                 </div>
             </div>
             <div className="footer-bottom">

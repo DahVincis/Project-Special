@@ -46,13 +46,13 @@ const ContactUs = () => {
     return (
         <section id="contact" className="contact-us-section">
             <div className="contact-inner">
-                <div className="contact-info" data-num="07">
+                <div className="contact-info" data-num="06">
                     <span className="section-label">Get In Touch</span>
                     <h2>Let's Create<br />Something Special</h2>
                     <p>Ready to transform your space? Reach out and let's discuss your project.</p>
                     <div className="contact-detail">
                         <a href="tel:2034436007">203-443-6007</a>
-                        <a href="mailto:info@specialfinisheshi.com">info@specialfinisheshi.com</a>
+                        <a href="mailto:specialfinisheshi@gmail.com">specialfinisheshi@gmail.com</a>
                     </div>
                 </div>
                 <form className="contact-form" onSubmit={handleSubmit}>
