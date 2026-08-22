@@ -1,7 +1,7 @@
 {
   // Pure static site — no Worker script, just the CRA build output.
   // Cloudflare recommends Workers Static Assets over Pages for new projects.
-  "name": "special-finishes",
+  "name": "special-finishes-hi",
   "compatibility_date": "2026-08-22",
   "assets": {
     "directory": "./build"
