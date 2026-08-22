@@ -43,11 +43,12 @@ Workers Builds runs **two** commands — build, then deploy. Pages ran only one.
 `npm run build` in the deploy field (an easy mistake, the fields are adjacent) builds
 twice and never deploys.
 
-The three `REACT_APP_SUPABASE_*` vars go in the Worker's **build** variables
-(Settings → Build → Variables), not runtime variables — CRA inlines them at build time
-and nothing reads `process.env` at runtime. If they are missing the build still
-succeeds and ships a site with every image 404ing and a dead contact form. Check the
-preview version before promoting.
+Nothing needs configuring in the dashboard. `client/src/storage.js` hardcodes the
+Supabase URL, bucket and anon key as defaults, with `REACT_APP_SUPABASE_*` still
+overriding them if set. That is deliberate: those values ship inside the public bundle
+regardless, so the env vars protected nothing while silently shipping a site with every
+image 404ing whenever a build variable was forgotten — which happened on two
+consecutive deploys. Do not "restore" them to required env vars.
 
 `wrangler` is a pinned devDependency so a wrangler major bump cannot break a production
 deploy on its own.
@@ -74,10 +75,14 @@ with their own key — never ask for, echo, or handle a `service_role`/secret ke
 
 ## Secrets
 
-`client/.env` is gitignored and holds `REACT_APP_SUPABASE_URL`,
-`REACT_APP_SUPABASE_BUCKET`, `REACT_APP_SUPABASE_ANON_KEY`; `client/.env.example` documents
-them. The anon key is safe in frontend code. The `service_role` key must never enter the
-repo or the chat.
+`client/src/storage.js` is the single source of truth for the Supabase URL, bucket and
+anon key, and exports all three. `client/.env` still works as a local override but is no
+longer required for a working build. The anon key is safe in frontend code and in the
+repo — it ships in the bundle either way, and `contact_submissions` is insert-only RLS.
+
+The `service_role` (or newer `sb_secret_…`) key is the real secret and must never enter
+the repo or the chat. Uploading portfolio images does not need it at all — the Supabase
+dashboard's Storage UI takes a drag-and-drop.
 
 ## Contact form
 

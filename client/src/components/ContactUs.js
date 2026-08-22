@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { whatsappUrlFromForm } from '../whatsapp';
 import './ContactUs.css';
-
-const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY;
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../storage';
 
 const initialForm = { name: '', email: '', project_type: '', message: '' };
 
