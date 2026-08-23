@@ -1,59 +1,78 @@
 # Special Finishes
 
-Showcase website for Special Finishes HI, a specialty interior and exterior finishing company founded by Ruiter Fernandes.
+Website for Special Finishes HI, a specialty interior and exterior finishing company in
+Connecticut, founded by Ruiter Fernandes.
 
-## Project Structure
+**Live:** [specialfinisheshi.com](https://specialfinisheshi.com)
+
+## Project structure
 
 ```text
 Project-Special/
-└── client/               # React frontend (CRA) — the entire project
-    ├── public/            # Static assets (images, favicon)
-    └── src/
-        ├── components/    # Header, ParallaxSection, About, OurWork, MeetOwner, ContactUs
-        ├── api.js         # Static content (no backend)
-        └── App.js
+├── client/                    # React frontend (CRA) — the entire project
+│   ├── public/                # index.html, favicon, PWA icons. No photographs.
+│   ├── src/
+│   │   ├── components/        # Header, Hero, About, OurWork, MeetOwner,
+│   │   │                      #   ContactUs, Footer, Lightbox, WhatsAppButton, Icons
+│   │   ├── api.js             # Site copy (no backend)
+│   │   ├── storage.js         # Supabase config + storageUrl() helper
+│   │   └── whatsapp.js        # Contact channel definitions
+│   └── wrangler.jsonc         # Cloudflare Workers deploy config
+└── scripts/
+    └── upload-portfolio-images.mjs
 ```
 
 There is no backend. The Django project that used to live at `special_finishes/` was
 removed — it had no models, no database usage, and every endpoint returned a hardcoded
-dict. All site content now lives directly in `client/src/api.js`.
+dict.
 
-## Tech Stack
-
-React 18, React Slick, React Parallax, React Intersection Observer. Pure static site —
-deployable to any static host (S3, Netlify, Vercel, etc.).
-
-## Running Locally
+## Develop
 
 ```sh
 cd client
 npm install
-npm start
+npm start                    # dev server on :3000
+CI=true npm run build        # production build -> client/build
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+`NODE_OPTIONS=--openssl-legacy-provider` is baked into both npm scripts; CRA 5's webpack
+fails on an OpenSSL hash error without it on Node 17+. Don't pass it manually and don't
+strip it.
 
-## Building for Production
+## Photographs
+
+Portfolio images live in a **public Supabase Storage bucket**, never in this repo.
+Reference them with `storageUrl('name.jpg')` from `client/src/storage.js`.
+
+To add images, either drag them into the bucket from the Supabase dashboard, or:
 
 ```sh
-cd client
-npm run build
+SUPABASE_SERVICE_ROLE_KEY=... node scripts/upload-portfolio-images.mjs path/to/*.jpg
 ```
 
-The `build/` folder is self-contained and can be served from any static host.
+Two rules learned the hard way, both in `CLAUDE.md`: **look at an image before wiring it
+in** (a file named `bathroom3.jpg` turned out to be the company logo and shipped to
+production), and **check for faces and identifying details** before publishing.
 
-> **Note:** `NODE_OPTIONS=--openssl-legacy-provider` is required on Node 17+ due to the
-> CRA 4/5 webpack version.
+## Deploy
 
-## Images
+Cloudflare Workers static assets, built and deployed automatically from `main` — roughly
+80 seconds from push to live. `client/wrangler.jsonc` is the source of truth. No
+environment variables need to be configured anywhere; see `CLAUDE.md` for why.
 
-Portfolio photos are hosted in a public Supabase Storage bucket, not committed to git.
-`client/src/storage.js` builds the public CDN URL from `REACT_APP_SUPABASE_URL` and
-`REACT_APP_SUPABASE_BUCKET` (see `client/.env.example`). To add or replace a photo:
-compress it (see `scripts/upload-portfolio-images.mjs` for the pattern), upload it via
-the Supabase dashboard's Storage UI or the script, and reference it with
-`storageUrl('filename.jpg')` in the component.
+## Contact form
 
-## Author
+Three channels — email, WhatsApp, SMS — each opening the visitor's own app with a
+prefilled message. Every submission also writes a backup row to the Supabase
+`contact_submissions` table, which has insert-only RLS.
 
-Developed by [Ouroboros Studios](https://github.com/DahVincis) — Pedro Fernandes & Kelvyn Luciano.
+## Analytics
+
+Google Analytics 4, with a weekly visitor report scheduled out of Looker Studio to the
+company address.
+
+## Notes for contributors
+
+`CLAUDE.md` holds the working conventions — build quirks, deploy configuration,
+accessibility invariants that must not regress, and a record of which approaches were
+tried and rejected, with reasons. Read it before changing build or deploy setup.

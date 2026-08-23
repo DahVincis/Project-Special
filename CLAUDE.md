@@ -7,7 +7,17 @@
 Static React site (CRA) in `client/` — that is the whole project. There is no backend;
 the Django app that used to live in `special_finishes/` was deleted because every endpoint
 returned a hardcoded dict and no model or migration ever existed. Site copy lives in
-`client/src/api.js`.
+`client/src/api.js`, except section headings and the case-study text, which are inline in
+their components alongside the markup they title.
+
+Page order is Hero, About, OurWork (selected work + case study + testimonials), MeetOwner,
+ContactUs. Sections carry `data-num` for the ghosted numeral; keep them sequential when
+adding or reordering.
+
+Deleted and not coming back: `react-slick`, `slick-carousel`, `react-scroll`,
+`react-parallax`, `react-intersection-observer`. The editorial rebuild made all five
+unused and cut the bundle by a third. Do not reintroduce a carousel library for a gallery
+that CSS grid already handles.
 
 ## Build / run
 
@@ -112,6 +122,13 @@ the lead survives whichever the visitor picks. Constraints:
 - The table has insert-only RLS: the anon key can write leads but never read them back.
   Do not expect to query submissions from the client, and don't leave test rows behind —
   the anon key cannot delete them, so cleanup falls on the user.
+
+## Repo hygiene
+
+The GitHub repo is **public**. Photographs never belong in git — partly for size, mostly
+because history is permanent and public: `client/public/driveway.jpg` was pulled for
+showing workers' faces and a neighbour's kid's graduation banner, and it is still
+retrievable from history. Git history keeps its own copy of every mistake.
 
 ## Accessibility invariants — do not regress
 
