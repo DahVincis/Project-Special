@@ -56,6 +56,18 @@ deploy on its own.
 Domain: `specialfinisheshi.com`, registered at Hostinger (paid to 2028), served through
 Cloudflare.
 
+## Analytics
+
+Google Analytics 4 (`G-GWN3YMGKKH`), tag inline in `client/public/index.html`. A weekly
+visitor report is scheduled out of Looker Studio to the company address.
+
+Cloudflare Web Analytics was tried first and rejected: it is cookieless and needs no
+consent banner, but its only location dimension is **country**, and city-level was the
+requirement. A Cloudflare-native digest Worker was written and then dropped — Email
+Sending is a paid feature, and the free alternative (Email Routing) seizes the root MX
+records, which would break the client's UENI mail. Do not revisit that path without
+solving both.
+
 ## Images
 
 Portfolio photos live in a **public Supabase Storage bucket** (`Special`), never in git.
