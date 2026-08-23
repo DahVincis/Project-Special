@@ -12,6 +12,12 @@ export const WHATSAPP_URL = waLink(
     "Hi Special Finishes — I'd like a free estimate."
 );
 
+// iPadOS reports itself as MacIntel, so touch points are the only way to tell it
+// from a desktop Mac — which wants the Android-style separator.
+const isIOS = () =>
+    /iP(hone|od|ad)/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
 const bodyFromForm = ({ name, email, project_type, message }) => {
     const lines = [
         "Hi Special Finishes — I'd like a free estimate.",
@@ -50,7 +56,12 @@ export const CHANNELS = {
         label: 'Text us',
         icon: 'sms',
         newTab: false,
-        // `?&body=` is the form iOS and Android both accept.
-        url: (form) => `sms:+${PHONE}?&body=${encodeURIComponent(bodyFromForm(form))}`,
+        // RFC 5724 says `?body=`, and that is what Android and macOS Messages
+        // want — but iOS only fills the message in when the separator is `&`.
+        // The `?&body=` hybrid is widely repeated and works on neither reliably.
+        url: (form) =>
+            `sms:+${PHONE}${isIOS() ? '&' : '?'}body=${encodeURIComponent(
+                bodyFromForm(form)
+            )}`,
     },
 };
