@@ -14,14 +14,15 @@
 
 .owner-image-wrap {
   position: relative;
-  isolation: isolate;
 }
 
 .owner-image-wrap img {
-  width: 100%;
-  aspect-ratio: 3 / 4;
+  width: min(100%, 420px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border-radius: 50%;
   object-fit: cover;
-  object-position: top center;
+  object-position: center 15%;
   display: block;
   filter: grayscale(20%);
   transition: filter 0.4s ease;
@@ -29,15 +30,6 @@
 
 .owner-image-wrap:hover img {
   filter: grayscale(0%);
-}
-
-.owner-image-accent {
-  position: absolute;
-  inset: 20px -20px -20px 20px;
-  z-index: -1;
-  border: 1px solid var(--accent);
-  opacity: 0.6;
-  pointer-events: none;
 }
 
 .owner-text-wrap .section-label {
@@ -91,10 +83,6 @@
     gap: 48px;
   }
   .owner-image-wrap img {
-    aspect-ratio: 4 / 3;
-    max-height: 400px;
-  }
-  .owner-image-accent {
-    inset: 12px -12px -12px 12px;
+    width: min(100%, 260px);
   }
 }
