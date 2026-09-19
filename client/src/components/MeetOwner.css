@@ -22,23 +22,14 @@
   object-fit: cover;
   object-position: top center;
   display: block;
+  border-radius: 999px 999px 0 0;
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 98%);
   filter: grayscale(20%);
   transition: filter 0.4s ease;
 }
 
 .owner-image-wrap:hover img {
   filter: grayscale(0%);
-}
-
-.owner-image-accent {
-  position: absolute;
-  bottom: -16px;
-  right: -16px;
-  width: 60%;
-  height: 60%;
-  border: 1px solid var(--accent);
-  opacity: 0.3;
-  pointer-events: none;
 }
 
 .owner-text-wrap .section-label {
@@ -91,11 +82,8 @@
     grid-template-columns: 1fr;
     gap: 48px;
   }
-  .owner-image-wrap img {
-    aspect-ratio: 4 / 3;
-    max-height: 400px;
-  }
-  .owner-image-accent {
-    display: none;
+  .owner-image-wrap {
+    width: min(100%, 320px);
+    margin: 0 auto;
   }
 }
