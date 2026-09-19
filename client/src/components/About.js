@@ -19,7 +19,7 @@ const About = () => {
             <div className="about-divider" />
             <div className="about-stat-block">
                 <div className="about-stat">
-                    <div className="about-stat-number">15<span>+</span></div>
+                    <div className="about-stat-number">20<span>+</span></div>
                     <div className="about-stat-label">Years Experience</div>
                 </div>
                 <div className="about-stat">

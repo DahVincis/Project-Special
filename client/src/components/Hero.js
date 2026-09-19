@@ -31,7 +31,7 @@ const Hero = () => (
                 </div>
                 <div>
                     <dt>Experience</dt>
-                    <dd>15+ years</dd>
+                    <dd>20+ years</dd>
                 </div>
                 <div>
                     <dt>Direct</dt>

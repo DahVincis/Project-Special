@@ -14,7 +14,7 @@ const MeetOwner = () => {
         <section id="owner" className="meet-owner-section">
             <div className="meet-owner-inner">
                 <div className="owner-image-wrap">
-                    <img src={storageUrl('RF.png')} alt={owner.name || 'Owner'} />
+                    <img src={storageUrl('ruiter.jpeg')} alt={owner.name || 'Owner'} />
                 </div>
                 <div className="owner-text-wrap" data-num="05">
                     <span className="section-label">The Team</span>

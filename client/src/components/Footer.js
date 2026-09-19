@@ -18,7 +18,7 @@ const Footer = () => {
 
                 <div className="footer-badges">
                     <span className="footer-badge">Licensed &amp; Insured</span>
-                    <span className="footer-badge">15+ Years Experience</span>
+                    <span className="footer-badge">20+ Years Experience</span>
                 </div>
 
                 <nav className="footer-nav">
