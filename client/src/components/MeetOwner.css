@@ -14,6 +14,7 @@
 
 .owner-image-wrap {
   position: relative;
+  isolation: isolate;
 }
 
 .owner-image-wrap img {
@@ -22,14 +23,21 @@
   object-fit: cover;
   object-position: top center;
   display: block;
-  border-radius: 999px 999px 0 0;
-  mask-image: linear-gradient(to bottom, #000 62%, transparent 98%);
   filter: grayscale(20%);
   transition: filter 0.4s ease;
 }
 
 .owner-image-wrap:hover img {
   filter: grayscale(0%);
+}
+
+.owner-image-accent {
+  position: absolute;
+  inset: 20px -20px -20px 20px;
+  z-index: -1;
+  border: 1px solid var(--accent);
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 .owner-text-wrap .section-label {
@@ -82,8 +90,11 @@
     grid-template-columns: 1fr;
     gap: 48px;
   }
-  .owner-image-wrap {
-    width: min(100%, 320px);
-    margin: 0 auto;
+  .owner-image-wrap img {
+    aspect-ratio: 4 / 3;
+    max-height: 400px;
+  }
+  .owner-image-accent {
+    inset: 12px -12px -12px 12px;
   }
 }
