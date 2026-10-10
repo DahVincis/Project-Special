@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { storageUrl } from '../storage';
 import Lightbox from './Lightbox';
 import './OurWork.css';
-import { fetchTestimonials } from '../api';
 
 // Editorial grid. `span` is the desktop column count out of 12; `tall` makes a
 // tile claim two rows. Tiles are laid out in source order, so the spans have to
@@ -36,12 +35,7 @@ const pairImages = pairs.flatMap(({ room, before, after }) => [
 ]);
 
 const OurWork = () => {
-    const [testimonials, setTestimonials] = useState([]);
     const [lightbox, setLightbox] = useState(null);
-
-    useEffect(() => {
-        fetchTestimonials().then((data) => setTestimonials(data.testimonials));
-    }, []);
 
     // Lightbox stays scoped to the section it was opened from, so arrowing
     // through it never wanders into another section's photos.
@@ -121,20 +115,6 @@ const OurWork = () => {
                                 <span className="pair-note">{note}</span>
                             </figcaption>
                         </figure>
-                    ))}
-                </div>
-            </section>
-
-            <section className="quotes">
-                <div className="rule-header" data-num="05">
-                    <span className="section-label">Client Feedback</span>
-                </div>
-                <div className="quote-list">
-                    {testimonials.map((t) => (
-                        <blockquote className="quote" key={t.client}>
-                            <p>{t.text}</p>
-                            <cite>{t.client}</cite>
-                        </blockquote>
                     ))}
                 </div>
             </section>

@@ -6,6 +6,7 @@ import Services from './components/Services';
 import MeetOwner from './components/MeetOwner';
 import ContactUs from './components/ContactUs';
 import OurWork from './components/OurWork';
+import Reviews from './components/Reviews';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 
@@ -19,6 +20,7 @@ function App() {
                 <About />
                 <Services />
                 <OurWork />
+                <Reviews />
                 <MeetOwner />
                 <ContactUs />
             </main>

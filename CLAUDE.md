@@ -10,9 +10,9 @@ returned a hardcoded dict and no model or migration ever existed. Site copy live
 `client/src/api.js`, except section headings and the case-study text, which are inline in
 their components alongside the markup they title.
 
-Page order is Hero, About, OurWork (selected work + case study + testimonials), MeetOwner,
-ContactUs. Sections carry `data-num` for the ghosted numeral; keep them sequential when
-adding or reordering.
+Page order is Hero, About, Services, OurWork (selected work + case study), Reviews (live
+from Google Places, see `googleReviews.js`), MeetOwner, ContactUs. Sections carry
+`data-num` for the ghosted numeral; keep them sequential when adding or reordering.
 
 Deleted and not coming back: `react-slick`, `slick-carousel`, `react-scroll`,
 `react-parallax`, `react-intersection-observer`. The editorial rebuild made all five
@@ -65,6 +65,16 @@ deploy on its own.
 
 Domain: `specialfinisheshi.com`, registered at Hostinger (paid to 2028), served through
 Cloudflare.
+
+## Google reviews
+
+`client/src/googleReviews.js` loads reviews from the Places API in the browser (Google's
+bootstrap loader, injected only when the Reviews section nears the viewport). The key is
+`GOOGLE_MAPS_KEY` there, overridable with `REACT_APP_GOOGLE_MAPS_KEY`; it is empty until
+one is created, and the section then shows only its heading and the two Google links. A
+browser key is public once shipped, so restrict it by HTTP referrer and to the Places API
+in Google Cloud. Reviews must render as shown by Google (no editing) with the "Google
+Maps" text attribution.
 
 ## Analytics
 

@@ -24,6 +24,7 @@ const Header = () => {
                 <a href="#about" onClick={closeMenu}>About</a>
                 <a href="#services" onClick={closeMenu}>Services</a>
                 <a href="#work" onClick={closeMenu}>Work</a>
+                <a href="#reviews" onClick={closeMenu}>Reviews</a>
                 <a href="#owner" onClick={closeMenu}>Team</a>
                 <a href="#contact" onClick={closeMenu}>Contact</a>
             </nav>
