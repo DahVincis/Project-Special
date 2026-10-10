@@ -1,0 +1,195 @@
+.reviews {
+  padding: clamp(72px, 11vw, 150px) clamp(20px, 5vw, 84px);
+  background: var(--bg-primary);
+}
+
+/* Reserves roughly the summary + one card so the page doesn't jump when the
+   reviews arrive. Static on purpose: nothing here animates. */
+.reviews-loading {
+  min-height: 220px;
+  margin-bottom: 44px;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+}
+
+/* ---- stars -------------------------------------------------------------- */
+
+.stars {
+  position: relative;
+  display: inline-block;
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.stars-base {
+  color: #756d63; /* >=3:1 on --bg-tertiary: decorative, the aria-label carries the value */
+}
+
+.stars-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  color: var(--accent);
+}
+
+/* ---- summary ------------------------------------------------------------ */
+
+.reviews-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 40px;
+}
+
+.reviews-score {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 3rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+.reviews-summary .stars {
+  font-size: 1.3rem;
+}
+
+.reviews-count {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+/* ---- review cards (the old .quote look: serif italic, accent rule) ------- */
+
+.review-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  margin: 0 0 48px;
+  padding: 0;
+  list-style: none;
+}
+
+/* Google content stays visibly separate from site content: border + fill. */
+.review {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 28px 28px 24px;
+  border: 1px solid var(--border);
+  border-left: 1px solid var(--accent);
+  background: var(--bg-tertiary);
+}
+
+.review-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin: 18px 0 12px;
+  /* Reviews are the visitor's own line breaks; show them. */
+  white-space: pre-line;
+}
+
+.review-text.is-clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  overflow: hidden;
+}
+
+.review-more {
+  min-height: 44px;
+  margin: -8px 0 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.review-more:hover,
+.review-meta a:hover,
+.reviews-links a:hover {
+  color: var(--accent);
+}
+
+.review-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.review-meta a {
+  color: var(--text-primary);
+  text-underline-offset: 4px;
+}
+
+/* ---- links + attribution ------------------------------------------------ */
+
+.reviews-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 36px;
+}
+
+.reviews-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+/* Google's text-attribution spec: "Google Maps" in Roboto/sans-serif, 400,
+   normal style and spacing, 12-16px, white, never wrapped. */
+.reviews-attrib {
+  margin: 28px 0 0;
+  font-family: Roboto, sans-serif;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  color: #fff;
+}
+
+.reviews-attrib span {
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .review-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .review-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

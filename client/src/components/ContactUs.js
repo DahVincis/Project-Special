@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CHANNELS } from '../whatsapp';
 import { MailIcon, SmsIcon, WhatsAppIcon } from './Icons';
 import './ContactUs.css';
+import { services } from '../api';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../storage';
 
 const initialForm = { name: '', email: '', project_type: '', message: '' };
@@ -59,7 +60,7 @@ const ContactUs = () => {
     return (
         <section id="contact" className="contact-us-section">
             <div className="contact-inner">
-                <div className="contact-info" data-num="06">
+                <div className="contact-info" data-num="07">
                     <span className="section-label">Get In Touch</span>
                     <h2>Let's Create<br />Something Special</h2>
                     <p>Ready to transform your space? Reach out and let's discuss your project.</p>
@@ -89,9 +90,13 @@ const ContactUs = () => {
                         type="text"
                         name="project_type"
                         placeholder="Project Type"
+                        list="project-types"
                         value={form.project_type}
                         onChange={handleChange}
                     />
+                    <datalist id="project-types">
+                        {services.map((s) => <option key={s} value={s} />)}
+                    </datalist>
                     <textarea
                         name="message"
                         placeholder="Tell Us About Your Project"

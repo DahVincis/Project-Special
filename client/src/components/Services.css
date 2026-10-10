@@ -1,0 +1,55 @@
+.services {
+  padding: clamp(72px, 11vw, 150px) clamp(20px, 5vw, 84px);
+  background: var(--bg-secondary);
+}
+
+/* Mobile-first: one column, widening to two and three. */
+.services-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin: 0 0 clamp(40px, 6vw, 72px);
+  padding: 0;
+  list-style: none;
+}
+
+.services-list li {
+  padding: 22px 24px;
+  border: 1px solid var(--border);
+  background: var(--bg-tertiary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.services-cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 30px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  /* Dark ink on the accent: white on #e95517 is 3.64:1 and fails AA. */
+  background: var(--accent);
+  color: var(--accent-ink);
+  transition: background 0.25s;
+}
+
+.services-cta:hover {
+  background: #ff6a2c;
+}
+
+@media (min-width: 640px) {
+  .services-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .services-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

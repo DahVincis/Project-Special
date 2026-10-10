@@ -10,9 +10,9 @@ returned a hardcoded dict and no model or migration ever existed. Site copy live
 `client/src/api.js`, except section headings and the case-study text, which are inline in
 their components alongside the markup they title.
 
-Page order is Hero, About, OurWork (selected work + case study + testimonials), MeetOwner,
-ContactUs. Sections carry `data-num` for the ghosted numeral; keep them sequential when
-adding or reordering.
+Page order is Hero, About, Services, OurWork (selected work + case study), Reviews (live
+from Google Places, see `googleReviews.js`), MeetOwner, ContactUs. Sections carry
+`data-num` for the ghosted numeral; keep them sequential when adding or reordering.
 
 Deleted and not coming back: `react-slick`, `slick-carousel`, `react-scroll`,
 `react-parallax`, `react-intersection-observer`. The editorial rebuild made all five
@@ -65,6 +65,30 @@ deploy on its own.
 
 Domain: `specialfinisheshi.com`, registered at Hostinger (paid to 2028), served through
 Cloudflare.
+
+## Google reviews
+
+`client/src/googleReviews.js` loads reviews from the Places API in the browser (Google's
+bootstrap loader, injected only when the Reviews section nears the viewport). Place ID
+`ChIJk0gR5uMP6IkRsc_qKOkMSEk`, verified via a Maps URL on 2026-10-10 to resolve to
+"Special Finishes Home Improvement". Google returns at most 5 reviews; they render as
+returned, never filtered or edited, with the "Google Maps" text attribution. `App.test.js`
+mocks the loader, so tests do not depend on the key.
+
+**No key is set yet.** `GOOGLE_MAPS_KEY` there is `process.env.REACT_APP_GOOGLE_MAPS_KEY || ''`.
+Before launch the key must be hardcoded as that `||` default, mirroring `storage.js` (build
+variables get forgotten, see Deploy). Until then the section shows only its heading and the
+two Google links.
+
+The key is public once shipped, so in Google Cloud:
+
+- Restrict it to BOTH **Maps JavaScript API** and **Places API (New)**. The loader script is
+  the Maps JS API; allowing Places alone breaks loading.
+- HTTP referrers: `https://specialfinisheshi.com/*`, `https://www.specialfinisheshi.com/*`,
+  `http://localhost:3000/*`, `https://*.ph-leao2099.workers.dev/*`.
+- Set a low daily quota cap on Places requests. The referrer check is spoofable outside a
+  browser, the key is public in the repo, and every visitor who scrolls to the section
+  triggers a Place Details request that includes reviews.
 
 ## Analytics
 
@@ -135,7 +159,7 @@ retrievable from history. Git history keeps its own copy of every mistake.
 Already in place, keep them working when restyling: `<main>` + skip link in `App.js`;
 `:focus-visible` and a `prefers-reduced-motion` block in `index.css`; `role="dialog"`,
 focus trap and focus-return in `Lightbox.js`; gallery triggers are real `<button>`s (a
-`<div onClick>` is not keyboard reachable); hamburger nav below 640px.
+`<div onClick>` is not keyboard reachable); hamburger nav at 1240px and below (six links do not fit beside the phone and CTA under that).
 
 Check contrast numerically rather than by eye — white on the `#e95517` accent is only
 3.64:1 and fails AA for small text, so filled accent buttons use dark text instead.

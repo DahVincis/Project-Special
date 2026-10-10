@@ -3,8 +3,7 @@
 }
 
 .work-selected,
-.case,
-.quotes {
+.case {
   padding: clamp(72px, 11vw, 150px) clamp(20px, 5vw, 84px);
 }
 
@@ -264,43 +263,5 @@
   .case-pairs {
     grid-template-columns: 1fr 1fr;
     gap: 60px 44px;
-  }
-}
-
-/* ---- testimonials ------------------------------------------------------ */
-
-.quote-list {
-  display: grid;
-  gap: 44px;
-}
-
-.quote {
-  margin: 0;
-  padding-left: 24px;
-  border-left: 1px solid var(--accent);
-}
-
-.quote p {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(1.15rem, 2.3vw, 1.6rem);
-  font-style: italic;
-  font-weight: 300;
-  line-height: 1.5;
-  color: var(--text-primary);
-  margin: 0 0 16px;
-}
-
-.quote cite {
-  font-style: normal;
-  font-size: 0.6rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-}
-
-@media (min-width: 901px) {
-  .quote-list {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 48px;
   }
 }

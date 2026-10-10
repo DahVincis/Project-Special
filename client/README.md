@@ -19,9 +19,12 @@ src/
 │   ├── Header          # Glass navbar with anchor nav
 │   ├── ParallaxSection # Full-height hero with text overlay
 │   ├── About           # Company intro + stats
-│   ├── OurWork         # Interior/exterior grid, before/after, portfolio gallery, testimonials
+│   ├── Services        # Services list
+│   ├── OurWork         # Interior/exterior grid, before/after, portfolio gallery
+│   ├── Reviews         # Google reviews, loaded on demand
 │   ├── MeetOwner       # Founder bio (Ruiter Fernandes)
 │   └── ContactUs       # Contact form
 ├── api.js              # Static data — no backend required
+├── googleReviews.js    # Places API loader for Reviews
 └── App.js
 ```
