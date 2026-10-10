@@ -47,10 +47,59 @@ test('renders what Google returns, with attribution and a Read more toggle', asy
 });
 
 test('zero reviews shows only the heading and the two links', async () => {
-  loadReviews.mockResolvedValue({ rating: undefined, ratingCount: 0, reviews: [] });
+  loadReviews.mockResolvedValue({ rating: null, ratingCount: 0, reviews: [] });
   render(<Reviews />);
   // The links render while loading, so wait for the load itself to finish.
   await waitFor(() => expect(document.querySelector('[aria-busy]')).toBeNull());
+  expect(screen.getByRole('heading', { name: /say about us/ })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'See all reviews on Google' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Leave a review' })).toBeInTheDocument();
   expect(screen.queryAllByRole('listitem')).toHaveLength(0);
   expect(screen.queryByText('Google Maps')).toBeNull();
+});
+
+test('a null overall rating renders the cards without a summary row', async () => {
+  loadReviews.mockResolvedValue({
+    rating: null,
+    ratingCount: null,
+    reviews: [{ rating: null, text: 'Fine work.', author: 'Cy C.', when: 'a week ago' }],
+  });
+  render(<Reviews />);
+  expect(await screen.findByText('Fine work.')).toBeInTheDocument();
+  expect(document.querySelector('.reviews-summary')).toBeNull();
+  expect(screen.queryByRole('img')).toBeNull(); // no Stars anywhere
+});
+
+test('a star-only review has no empty paragraph', async () => {
+  loadReviews.mockResolvedValue({
+    rating: 5,
+    ratingCount: 1,
+    reviews: [{ rating: 5, text: '', author: 'Di D.', when: 'today' }],
+  });
+  render(<Reviews />);
+  const card = (await screen.findAllByRole('listitem'))[0];
+  expect(card.querySelector('p')).toBeNull();
+  expect(within(card).getByText('Di D.')).toBeInTheDocument();
+});
+
+test('a non-https author URL is rendered as plain text', async () => {
+  loadReviews.mockResolvedValue({
+    rating: 5,
+    ratingCount: 1,
+    reviews: [{ rating: 5, text: 'Great.', author: 'Ed E.', authorUrl: 'javascript:alert(1)', when: 'today' }],
+  });
+  render(<Reviews />);
+  const card = (await screen.findAllByRole('listitem'))[0];
+  expect(within(card).queryByRole('link')).toBeNull();
+  expect(within(card).getByText('Ed E.')).toBeInTheDocument();
+});
+
+test('short text with many line breaks still gets Read more', async () => {
+  loadReviews.mockResolvedValue({
+    rating: 5,
+    ratingCount: 1,
+    reviews: [{ rating: 5, text: 'a\nb\nc\nd\ne\nf\ng', author: 'Fi F.', when: 'today' }],
+  });
+  render(<Reviews />);
+  expect(await screen.findByRole('button', { name: 'Read more' })).toBeInTheDocument();
 });

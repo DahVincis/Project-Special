@@ -18,19 +18,22 @@ const Stars = ({ value }) => (
 
 const ReviewCard = ({ review }) => {
     const [open, setOpen] = useState(false);
-    const long = (review.text || '').length > LONG_REVIEW;
+    const text = review.text || '';
+    // pre-line keeps line breaks, so a short multi-line review can still hit the clamp.
+    const long = text.length > LONG_REVIEW || text.split('\n').length > 6;
+    const safeAuthorUrl = review.authorUrl?.startsWith('https://');
 
     return (
         <li className="review">
-            <Stars value={review.rating} />
-            <p className={`review-text${long && !open ? ' is-clamped' : ''}`}>{review.text}</p>
+            {review.rating != null && <Stars value={review.rating} />}
+            {text && <p className={`review-text${long && !open ? ' is-clamped' : ''}`}>{text}</p>}
             {long && (
                 <button className="review-more" aria-expanded={open} onClick={() => setOpen(!open)}>
                     {open ? 'Show less' : 'Read more'}
                 </button>
             )}
             <div className="review-meta">
-                {review.authorUrl ? (
+                {safeAuthorUrl ? (
                     <a href={review.authorUrl} target="_blank" rel="noopener noreferrer">{review.author}</a>
                 ) : (
                     <span>{review.author}</span>
@@ -90,13 +93,17 @@ const Reviews = () => {
 
             {hasReviews && (
                 <>
-                    <div className="reviews-summary">
-                        <span className="reviews-score" aria-hidden="true">{data.rating.toFixed(1)}</span>
-                        <Stars value={data.rating} />
-                        <span className="reviews-count">
-                            {data.ratingCount} {data.ratingCount === 1 ? 'review' : 'reviews'}
-                        </span>
-                    </div>
+                    {data.rating != null && (
+                        <div className="reviews-summary">
+                            <span className="reviews-score" aria-hidden="true">{data.rating.toFixed(1)}</span>
+                            <Stars value={data.rating} />
+                            {typeof data.ratingCount === 'number' && (
+                                <span className="reviews-count">
+                                    {data.ratingCount} {data.ratingCount === 1 ? 'review' : 'reviews'}
+                                </span>
+                            )}
+                        </div>
+                    )}
                     <ul className="review-list">
                         {reviews.map((r, i) => <ReviewCard key={i} review={r} />)}
                     </ul>

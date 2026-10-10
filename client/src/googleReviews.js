@@ -2,9 +2,9 @@
 // API. No npm package: Google's official inline bootstrap loader is injected
 // from here, on demand, so none of it touches the initial page load.
 
-// Derived from the Maps link Pedro sent. Not yet confirmed against the API:
-// once a key exists, check that fetchFields({ fields: ['displayName'] }) reads
-// "Special Finishes Home Improvement".
+// Verified via a Maps URL on 2026-10-10: it resolves to "Special Finishes Home
+// Improvement". The displayName check through the API is still pending a key:
+// once one exists, check that fetchFields({ fields: ['displayName'] }) agrees.
 export const PLACE_ID = 'ChIJk0gR5uMP6IkRsc_qKOkMSEk';
 
 // Browser key, restricted by HTTP referrer in Google Cloud, so shipping it in
@@ -15,7 +15,7 @@ export const GOOGLE_MAPS_KEY = process.env.REACT_APP_GOOGLE_MAPS_KEY || '';
 
 export const WRITE_REVIEW_URL = `https://search.google.com/local/writereview?placeid=${PLACE_ID}`;
 // Used when there is no googleMapsURI to link to (no key, or the fetch failed).
-export const MAPS_FALLBACK_URL = `https://www.google.com/maps/place/?q=place_id:${PLACE_ID}`;
+export const MAPS_FALLBACK_URL = `https://www.google.com/maps/search/?api=1&query=Special%20Finishes%20Home%20Improvement&query_place_id=${PLACE_ID}`;
 
 // Google's documented bootstrap snippet, unmodified apart from taking the key
 // as an argument. It defines google.maps.importLibrary, which injects the real
@@ -43,8 +43,8 @@ export async function loadReviews() {
     });
 
     return {
-        rating: place.rating,
-        ratingCount: place.userRatingCount,
+        rating: place.rating ?? null,
+        ratingCount: place.userRatingCount ?? null,
         mapsUrl: place.googleMapsURI,
         // Passed through as Google returns them: no filtering, no editing.
         reviews: (place.reviews || []).slice(0, 5).map((r) => ({
