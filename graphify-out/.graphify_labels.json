@@ -1,1 +1,15 @@
-{"0": "Client Package Config", "1": "Contact Form & Icons", "2": "API Client & App Shell", "3": "Hero, Gallery & Testimonials", "4": "Client Dependencies", "5": "PWA Manifest", "6": "React Entry & Web Vitals", "7": "Portfolio Image Uploader", "8": "NPM Scripts", "9": "Root Package (Supabase)"}
+{
+  "0": "client/package.json",
+  "1": "ContactUs.js",
+  "2": "App.js",
+  "3": "OurWork.js",
+  "4": "dependencies",
+  "5": "manifest.json",
+  "6": "index.js",
+  "7": "upload-portfolio-images.mjs",
+  "8": "Instructions for Claude",
+  "9": "package.json",
+  "10": "Reviews.js",
+  "11": "Special Finishes",
+  "12": "Special Finishes — React Frontend"
+}
