@@ -11,7 +11,7 @@ export const PLACE_ID = 'ChIJk0gR5uMP6IkRsc_qKOkMSEk';
 // the bundle is safe (same reasoning as the Supabase anon key in storage.js).
 // Empty until one is created: loadReviews() then rejects and the section shows
 // its fallback links. REACT_APP_GOOGLE_MAPS_KEY overrides it.
-export const GOOGLE_MAPS_KEY = process.env.REACT_APP_GOOGLE_MAPS_KEY || '';
+export const GOOGLE_MAPS_KEY = process.env.REACT_APP_GOOGLE_MAPS_KEY || 'AIzaSyDFvrkNDhL_xIzc2cxsSKPeK2-FAu91jKQ';
 
 export const WRITE_REVIEW_URL = `https://search.google.com/local/writereview?placeid=${PLACE_ID}`;
 // Used when there is no googleMapsURI to link to (no key, or the fetch failed).
