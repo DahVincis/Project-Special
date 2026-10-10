@@ -143,9 +143,9 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* Six nav links plus phone and CTA do not fit side by side below ~1180px, so the
+/* Six nav links plus phone and CTA do not fit side by side below ~1240px, so the
    hamburger takes over there. */
-@media (max-width: 1180px) {
+@media (max-width: 1240px) {
   .header-menu-toggle {
     display: flex;
   }
@@ -179,8 +179,14 @@
 }
 
 @media (max-width: 900px) {
+  /* Below 901px the hero stacks and leads with a photograph instead of a dark
+     panel, so a transparent header sits on sunlit glass and vanishes. Keep the
+     scrim from the start rather than waiting for .scrolled. */
   .header {
     padding: 16px 24px;
+    background: rgba(var(--scrim), 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
   .header.scrolled {
     padding: 10px 24px;
@@ -191,14 +197,6 @@
 }
 
 @media (max-width: 640px) {
-  /* The mobile hero now leads with a photograph instead of a dark parallax, so
-     a transparent header sits on sunlit glass and vanishes. Keep the scrim from
-     the start rather than waiting for .scrolled. */
-  .header {
-    background: rgba(var(--scrim), 0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
   /* The official mark carries the name; the repeated wordmark wrapped onto two
      lines and collided with the CTA and the hamburger. */
   .header .logo span {
