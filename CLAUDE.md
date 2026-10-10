@@ -70,22 +70,24 @@ Cloudflare.
 
 `client/src/googleReviews.js` loads reviews from the Places API in the browser (Google's
 bootstrap loader, injected only when the Reviews section nears the viewport). Place ID
-`ChIJk0gR5uMP6IkRsc_qKOkMSEk`, verified via a Maps URL on 2026-10-10 to resolve to
-"Special Finishes Home Improvement". Google returns at most 5 reviews; they render as
+`ChIJk0gR5uMP6IkRsc_qKOkMSEk`, verified on 2026-10-10 (Maps URL and the API's `displayName`
+on the live site) to resolve to "Special Finishes Home Improvement". Google returns at most 5 reviews; they render as
 returned, never filtered or edited, with the "Google Maps" text attribution. `App.test.js`
 mocks the loader, so tests do not depend on the key.
 
-**No key is set yet.** `GOOGLE_MAPS_KEY` there is `process.env.REACT_APP_GOOGLE_MAPS_KEY || ''`.
-Before launch the key must be hardcoded as that `||` default, mirroring `storage.js` (build
-variables get forgotten, see Deploy). Until then the section shows only its heading and the
-two Google links.
+The key is hardcoded as the `||` default of `GOOGLE_MAPS_KEY` there, mirroring `storage.js`
+(build variables get forgotten, see Deploy; the Cloudflare build-variable form also refused
+to save it). `REACT_APP_GOOGLE_MAPS_KEY` still overrides it. If the request fails for any
+reason the section shows only its heading and the two Google links; "Requests from referer
+… are blocked" in the console means the referrer list below is missing that origin.
 
 The key is public once shipped, so in Google Cloud:
 
 - Restrict it to BOTH **Maps JavaScript API** and **Places API (New)**. The loader script is
   the Maps JS API; allowing Places alone breaks loading.
 - HTTP referrers: `https://specialfinisheshi.com/*`, `https://www.specialfinisheshi.com/*`,
-  `http://localhost:3000/*`, `https://*.ph-leao2099.workers.dev/*`.
+  `http://localhost:3000/*`. Branch previews on `*.workers.dev` are not listed, so reviews
+  fall back to the links there.
 - Set a low daily quota cap on Places requests. The referrer check is spoofable outside a
   browser, the key is public in the repo, and every visitor who scrolls to the section
   triggers a Place Details request that includes reviews.

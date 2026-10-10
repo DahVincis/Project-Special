@@ -2,15 +2,17 @@
 // API. No npm package: Google's official inline bootstrap loader is injected
 // from here, on demand, so none of it touches the initial page load.
 
-// Verified via a Maps URL on 2026-10-10: it resolves to "Special Finishes Home
-// Improvement". The displayName check through the API is still pending a key:
-// once one exists, check that fetchFields({ fields: ['displayName'] }) agrees.
+// Verified on 2026-10-10 both via a Maps URL and through the API on the live
+// site: fetchFields({ fields: ['displayName'] }) returns "Special Finishes Home
+// Improvement".
 export const PLACE_ID = 'ChIJk0gR5uMP6IkRsc_qKOkMSEk';
 
-// Browser key, restricted by HTTP referrer in Google Cloud, so shipping it in
-// the bundle is safe (same reasoning as the Supabase anon key in storage.js).
-// Empty until one is created: loadReviews() then rejects and the section shows
-// its fallback links. REACT_APP_GOOGLE_MAPS_KEY overrides it.
+// Browser key. It ships in the bundle whatever we do, so it is hardcoded like
+// the Supabase anon key in storage.js rather than left to a build variable.
+// What protects it lives in Google Cloud, not here: the HTTP-referrer list, the
+// API restriction and the daily quota cap (see CLAUDE.md). If loading fails,
+// loadReviews() rejects and the section shows its fallback links.
+// REACT_APP_GOOGLE_MAPS_KEY overrides it.
 export const GOOGLE_MAPS_KEY = process.env.REACT_APP_GOOGLE_MAPS_KEY || 'AIzaSyDFvrkNDhL_xIzc2cxsSKPeK2-FAu91jKQ';
 
 export const WRITE_REVIEW_URL = `https://search.google.com/local/writereview?placeid=${PLACE_ID}`;
