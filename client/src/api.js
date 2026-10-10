@@ -25,3 +25,19 @@ const staticData = {
 export const fetchAboutCompany = async () => staticData.about;
 export const fetchTestimonials = async () => staticData.testimonials;
 export const fetchMeetOwner = async () => staticData.owner;
+
+export const services = [
+  'Interior & Exterior Remodeling',
+  'Interior & Exterior Painting',
+  'Kitchen & Bathroom Specialists',
+  'Tiling',
+  'Hardwood Flooring: Installation & Refinishing',
+  'Pool Construction',
+  'Paving: Asphalt & Concrete Driveways',
+  'Masonry',
+  'Rough & Finish Carpentry',
+  'Decks',
+  'Framing',
+  'Residential Roofing',
+  'Vinyl & Wood Siding: Installation & Repair',
+];

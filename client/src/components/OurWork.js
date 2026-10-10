@@ -50,7 +50,7 @@ const OurWork = () => {
     return (
         <div id="work" className="work">
             <section className="work-selected">
-                <div className="rule-header" data-num="02">
+                <div className="rule-header" data-num="03">
                     <span className="section-label">Selected Work</span>
                     <h2>Finishes that<br /><em>hold up close.</em></h2>
                 </div>
@@ -71,7 +71,7 @@ const OurWork = () => {
 
             <section className="case">
                 <div className="case-intro">
-                    <div className="rule-header" data-num="03">
+                    <div className="rule-header" data-num="04">
                         <span className="section-label">Case Study</span>
                         <h2>A 1970s modernist,<br /><em>rebuilt.</em></h2>
                     </div>
@@ -126,7 +126,7 @@ const OurWork = () => {
             </section>
 
             <section className="quotes">
-                <div className="rule-header" data-num="04">
+                <div className="rule-header" data-num="05">
                     <span className="section-label">Client Feedback</span>
                 </div>
                 <div className="quote-list">

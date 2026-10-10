@@ -23,6 +23,7 @@ const Footer = () => {
 
                 <nav className="footer-nav">
                     <a href="#about">About</a>
+                    <a href="#services">Services</a>
                     <a href="#work">Work</a>
                     <a href="#owner">Team</a>
                     <a href="#contact">Contact</a>
