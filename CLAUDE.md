@@ -159,7 +159,7 @@ retrievable from history. Git history keeps its own copy of every mistake.
 Already in place, keep them working when restyling: `<main>` + skip link in `App.js`;
 `:focus-visible` and a `prefers-reduced-motion` block in `index.css`; `role="dialog"`,
 focus trap and focus-return in `Lightbox.js`; gallery triggers are real `<button>`s (a
-`<div onClick>` is not keyboard reachable); hamburger nav below 640px.
+`<div onClick>` is not keyboard reachable); hamburger nav at 1240px and below (six links do not fit beside the phone and CTA under that).
 
 Check contrast numerically rather than by eye — white on the `#e95517` accent is only
 3.64:1 and fails AA for small text, so filled accent buttons use dark text instead.
