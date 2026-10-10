@@ -1,0 +1,140 @@
+{
+  ".vscode/tasks.json": {
+    "mtime": 1786931315.6194985,
+    "seen": 1791655177.4989004,
+    "ast_hash": "c6c81736255696c67d61f4eb6f0ff79f",
+    "semantic_hash": "c6c81736255696c67d61f4eb6f0ff79f"
+  },
+  "client/package.json": {
+    "mtime": 1787435519.305754,
+    "seen": 1791655177.4989076,
+    "ast_hash": "53e7b0824168ee3225ef9915a545efe2",
+    "semantic_hash": "53e7b0824168ee3225ef9915a545efe2"
+  },
+  "client/public/manifest.json": {
+    "mtime": 1786939862.2940114,
+    "seen": 1791655177.4989126,
+    "ast_hash": "e66455c1acd0aba3444e18e5d2056dd5",
+    "semantic_hash": "e66455c1acd0aba3444e18e5d2056dd5"
+  },
+  "client/src/App.js": {
+    "mtime": 1787435506.1684225,
+    "seen": 1791655177.498917,
+    "ast_hash": "a8f9cf1482bf59a71cda1e69638b4a73",
+    "semantic_hash": "a8f9cf1482bf59a71cda1e69638b4a73"
+  },
+  "client/src/App.test.js": {
+    "mtime": 1786931315.7942374,
+    "seen": 1791655177.4989214,
+    "ast_hash": "d18ac434afb00158b91831ac1e36c491",
+    "semantic_hash": "d18ac434afb00158b91831ac1e36c491"
+  },
+  "client/src/api.js": {
+    "mtime": 1789840577.3962216,
+    "seen": 1791655177.4989264,
+    "ast_hash": "9d88aedb5aab0aac34224ab11a37bd8a",
+    "semantic_hash": "9d88aedb5aab0aac34224ab11a37bd8a"
+  },
+  "client/src/components/About.js": {
+    "mtime": 1789840577.3998463,
+    "seen": 1791655177.4989312,
+    "ast_hash": "b963be5746c57ee508f7437f822b1838",
+    "semantic_hash": "b963be5746c57ee508f7437f822b1838"
+  },
+  "client/src/components/ContactUs.js": {
+    "mtime": 1787442154.5003736,
+    "seen": 1791655177.4989357,
+    "ast_hash": "0756d9005748466dd54d546f0989d692",
+    "semantic_hash": "0756d9005748466dd54d546f0989d692"
+  },
+  "client/src/components/Footer.js": {
+    "mtime": 1789840577.4023013,
+    "seen": 1791655177.4989405,
+    "ast_hash": "33183a736d550fda01d18efb5e946243",
+    "semantic_hash": "33183a736d550fda01d18efb5e946243"
+  },
+  "client/src/components/Header.js": {
+    "mtime": 1786940165.607096,
+    "seen": 1791655177.4989448,
+    "ast_hash": "96fdbc6107c2ebc8280018e6cc586d4e",
+    "semantic_hash": "96fdbc6107c2ebc8280018e6cc586d4e"
+  },
+  "client/src/components/Hero.js": {
+    "mtime": 1789840577.4049127,
+    "seen": 1791655177.4989495,
+    "ast_hash": "c1f7c47287ed7ab8a0dcb11a2fc9b785",
+    "semantic_hash": "c1f7c47287ed7ab8a0dcb11a2fc9b785"
+  },
+  "client/src/components/Icons.js": {
+    "mtime": 1787442104.871309,
+    "seen": 1791655177.4989545,
+    "ast_hash": "74904c40b0c9cd37dd8ccb957fbdbee9",
+    "semantic_hash": "74904c40b0c9cd37dd8ccb957fbdbee9"
+  },
+  "client/src/components/Lightbox.js": {
+    "mtime": 1786940084.93068,
+    "seen": 1791655177.4989593,
+    "ast_hash": "23270a33e128b1c2bba88a0379cc6beb",
+    "semantic_hash": "23270a33e128b1c2bba88a0379cc6beb"
+  },
+  "client/src/components/MeetOwner.js": {
+    "mtime": 1789843380.3744795,
+    "seen": 1791655177.4989634,
+    "ast_hash": "29d19eda2b721b25362bc7cd5443a9a3",
+    "semantic_hash": "29d19eda2b721b25362bc7cd5443a9a3"
+  },
+  "client/src/components/OurWork.js": {
+    "mtime": 1787436486.0350578,
+    "seen": 1791655177.4989684,
+    "ast_hash": "bcd4c04601ee719e599c7a20abc6cd7f",
+    "semantic_hash": "bcd4c04601ee719e599c7a20abc6cd7f"
+  },
+  "client/src/components/WhatsAppButton.js": {
+    "mtime": 1787442154.500597,
+    "seen": 1791655177.498973,
+    "ast_hash": "479dddb054afa5b4d6fc316ab710b211",
+    "semantic_hash": "479dddb054afa5b4d6fc316ab710b211"
+  },
+  "client/src/index.js": {
+    "mtime": 1786931315.7962375,
+    "seen": 1791655177.4989774,
+    "ast_hash": "de8d7d2b70f260537bba30e87a711959",
+    "semantic_hash": "de8d7d2b70f260537bba30e87a711959"
+  },
+  "client/src/reportWebVitals.js": {
+    "mtime": 1786931315.7962375,
+    "seen": 1791655177.4989824,
+    "ast_hash": "240e2381f826a9bb84d178b29b7b9abe",
+    "semantic_hash": "240e2381f826a9bb84d178b29b7b9abe"
+  },
+  "client/src/setupTests.js": {
+    "mtime": 1786931315.7962375,
+    "seen": 1791655177.4989872,
+    "ast_hash": "1a77571e1a8cf36018a41bcedf60db75",
+    "semantic_hash": "1a77571e1a8cf36018a41bcedf60db75"
+  },
+  "client/src/storage.js": {
+    "mtime": 1787437705.5417576,
+    "seen": 1791655177.4990082,
+    "ast_hash": "7d2bdad2ab8d722f194ad51439a9b7b9",
+    "semantic_hash": "7d2bdad2ab8d722f194ad51439a9b7b9"
+  },
+  "client/src/whatsapp.js": {
+    "mtime": 1787443373.1546252,
+    "seen": 1791655177.4990127,
+    "ast_hash": "26de2cc2e29a1561774516733517fa36",
+    "semantic_hash": "26de2cc2e29a1561774516733517fa36"
+  },
+  "package.json": {
+    "mtime": 1786935144.7477832,
+    "seen": 1791655177.4990175,
+    "ast_hash": "9e300c388a12d8510e40f626787f1e34",
+    "semantic_hash": "9e300c388a12d8510e40f626787f1e34"
+  },
+  "scripts/upload-portfolio-images.mjs": {
+    "mtime": 1787434517.1725545,
+    "seen": 1791655177.499022,
+    "ast_hash": "a32eccb117a93b24e3f8d9feccc49704",
+    "semantic_hash": "a32eccb117a93b24e3f8d9feccc49704"
+  }
+}
