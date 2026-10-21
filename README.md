@@ -17,14 +17,15 @@ Project-Special/
 │   │   ├── api.js             # Site copy (no backend)
 │   │   ├── storage.js         # Supabase config + storageUrl() helper
 │   │   └── whatsapp.js        # Contact channel definitions
-│   └── wrangler.jsonc         # Cloudflare Workers deploy config
+│   ├── wrangler.jsonc         # Cloudflare Workers deploy config
+│   └── worker/index.mjs      # GET /api/reviews (Google key stays on the Worker)
 └── scripts/
     └── upload-portfolio-images.mjs
 ```
 
-There is no backend. The Django project that used to live at `special_finishes/` was
-removed — it had no models, no database usage, and every endpoint returned a hardcoded
-dict.
+The site is the React app plus one Worker route, `GET /api/reviews`. The Django project
+that used to live at `special_finishes/` was removed — it had no models, no database
+usage, and every endpoint returned a hardcoded dict.
 
 ## Develop
 
@@ -56,9 +57,11 @@ production), and **check for faces and identifying details** before publishing.
 
 ## Deploy
 
-Cloudflare Workers static assets, built and deployed automatically from `main` — roughly
-80 seconds from push to live. `client/wrangler.jsonc` is the source of truth. No
-environment variables need to be configured anywhere; see `CLAUDE.md` for why.
+Cloudflare Workers static assets plus `GET /api/reviews`, built and deployed automatically
+from `main` — roughly 80 seconds from push to live. `client/wrangler.jsonc` is the source
+of truth. Supabase needs no dashboard configuration. The Google reviews key is the Worker
+secret `GOOGLE_MAPS_KEY`; see `CLAUDE.md` for how to set it and why it must not be a
+`REACT_APP_` build variable.
 
 ## Contact form
 

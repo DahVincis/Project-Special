@@ -25,6 +25,6 @@ src/
 │   ├── MeetOwner       # Founder bio (Ruiter Fernandes)
 │   └── ContactUs       # Contact form
 ├── api.js              # Static data — no backend required
-├── googleReviews.js    # Places API loader for Reviews
+├── googleReviews.js    # Fetches GET /api/reviews for the Reviews section
 └── App.js
 ```

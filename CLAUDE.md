@@ -53,12 +53,18 @@ Workers Builds runs **two** commands — build, then deploy. Pages ran only one.
 `npm run build` in the deploy field (an easy mistake, the fields are adjacent) builds
 twice and never deploys.
 
-Nothing needs configuring in the dashboard. `client/src/storage.js` hardcodes the
+Supabase needs nothing in the dashboard. `client/src/storage.js` hardcodes the
 Supabase URL, bucket and anon key as defaults, with `REACT_APP_SUPABASE_*` still
 overriding them if set. That is deliberate: those values ship inside the public bundle
 regardless, so the env vars protected nothing while silently shipping a site with every
 image 404ing whenever a build variable was forgotten — which happened on two
-consecutive deploys. Do not "restore" them to required env vars.
+consecutive deploys. Do not "restore" them to required build variables.
+
+The Google reviews key is the exception, and it is not a build variable. It is the
+Worker secret `GOOGLE_MAPS_KEY`, read at runtime by `client/worker/index.mjs`.
+`secrets.required` in `wrangler.jsonc` makes `wrangler deploy` refuse to publish
+while that secret is unset, which leaves the previous production version in place.
+Set the secret before merging a change that introduces it. See Google reviews.
 
 `wrangler` is a pinned devDependency so a wrangler major bump cannot break a production
 deploy on its own.
@@ -68,29 +74,39 @@ Cloudflare.
 
 ## Google reviews
 
-`client/src/googleReviews.js` loads reviews from the Places API in the browser (Google's
-bootstrap loader, injected only when the Reviews section nears the viewport). Place ID
+`client/src/googleReviews.js` fetches `GET /api/reviews` when the Reviews section nears
+the viewport. The Worker in `client/worker/index.mjs` calls Place Details (New) with the
+secret `GOOGLE_MAPS_KEY` and returns only rating, rating count, the maps link, and up to
+five reviews (text, stars, author, author URL, relative time). Place ID
 `ChIJk0gR5uMP6IkRsc_qKOkMSEk`, verified on 2026-10-10 (Maps URL and the API's `displayName`
-on the live site) to resolve to "Special Finishes Home Improvement". Google returns at most 5 reviews; they render as
-returned, never filtered or edited, with the "Google Maps" text attribution. `App.test.js`
-mocks the loader, so tests do not depend on the key.
+on the live site) to resolve to "Special Finishes Home Improvement". Review text renders
+as returned, with the "Google Maps" text attribution. `App.test.js` mocks `loadReviews()`,
+so tests do not call the endpoint.
 
-The key is hardcoded as the `||` default of `GOOGLE_MAPS_KEY` there, mirroring `storage.js`
-(build variables get forgotten, see Deploy; the Cloudflare build-variable form also refused
-to save it). `REACT_APP_GOOGLE_MAPS_KEY` still overrides it. If the request fails for any
-reason the section shows only its heading and the two Google links; "Requests from referer
-… are blocked" in the console means the referrer list below is missing that origin.
+The key must not ship in the bundle. Do not put it back in client source, and do not add
+`REACT_APP_GOOGLE_MAPS_KEY`: CRA inlines that into the public JavaScript. The Cloudflare
+build-variable form is the wrong place too (it also refused to save a key once). The
+Worker reads `env.GOOGLE_MAPS_KEY`. If the request fails for any reason the section shows
+only its heading and the two Google links.
 
-The key is public once shipped, so in Google Cloud:
+Workers Caching is on. A successful response is `Cache-Control: public, max-age=3600,
+s-maxage=21600` (browser one hour, edge six hours), so scrolling to the section is not a
+Place Details call for every visitor. The route rejects query strings and any method other
+than GET or HEAD, and the place id is fixed in the Worker.
 
-- Restrict it to BOTH **Maps JavaScript API** and **Places API (New)**. The loader script is
-  the Maps JS API; allowing Places alone breaks loading.
-- HTTP referrers: `https://specialfinisheshi.com/*`, `https://www.specialfinisheshi.com/*`,
-  `http://localhost:3000/*`. Branch previews on `*.workers.dev` are not listed, so reviews
-  fall back to the links there.
-- Set a low daily quota cap on Places requests. The referrer check is spoofable outside a
-  browser, the key is public in the repo, and every visitor who scrolls to the section
-  triggers a Place Details request that includes reviews.
+In Google Cloud the key has to be a server key:
+
+- Restrict it to **Places API (New)** only. The Maps JavaScript API is no longer used.
+- Application restriction: **None**. An HTTP-referrer restriction rejects the Worker,
+  which does not send a browser referrer. Workers egress IPs are not stable, so an IP
+  restriction does not fit this deploy.
+- Keep a low daily quota cap on Places requests. The edge cache should make that a
+  handful of calls a day rather than one per visitor.
+
+Locally, `npm start` proxies `/api/reviews` to `127.0.0.1:8787`. From `client/`, build
+once so `./build` exists, copy `.dev.vars.example` to `.dev.vars`, then `npx wrangler dev`.
+Without the Worker running, the section falls back to the two links. `.dev.vars` is
+gitignored.
 
 ## Analytics
 

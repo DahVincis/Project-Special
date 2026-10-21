@@ -1,0 +1,4 @@
+# Local secret for `npx wrangler dev` (run from client/, after `npm run build`).
+# Copy this file to client/.dev.vars and paste a Places API (New) key.
+# Do not commit .dev.vars. Do not put this key in a REACT_APP_ variable.
+GOOGLE_MAPS_KEY=
