@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": ".",
+  "proxy": "http://127.0.0.1:8787",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -16,6 +17,7 @@
     "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
     "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test",
+    "test:worker": "node --test worker/index.test.mjs",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

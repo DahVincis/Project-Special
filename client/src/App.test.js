@@ -1,8 +1,7 @@
 import { render, screen, waitFor, within } from '@testing-library/react';
 import App from './App';
 
-// Keep the test independent of whether a key is configured: with one, the real
-// loader would inject a script jsdom never loads. A plain function, not
+// Keep the test independent of the reviews endpoint. A plain function, not
 // jest.fn(): CRA's resetMocks wipes jest.fn() implementations before each test.
 jest.mock('./googleReviews', () => ({
   ...jest.requireActual('./googleReviews'),

@@ -1,9 +1,34 @@
 {
-  // Pure static site — no Worker script, just the CRA build output.
-  // Cloudflare recommends Workers Static Assets over Pages for new projects.
+  // Static site plus GET /api/reviews. The Google key is the Worker secret
+  // GOOGLE_MAPS_KEY — not a build variable, and not in the client bundle.
+  "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "special-finishes-hi",
+  "main": "./worker/index.mjs",
   "compatibility_date": "2026-08-22",
   "assets": {
-    "directory": "./build"
+    "directory": "./build",
+    // /api/reviews is not a file in ./build. Run the Worker for that path
+    // before asset matching so a future file cannot shadow it.
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/reviews"]
+  },
+  // Workers Caching stores the reviews response from its Cache-Control header
+  // and serves later requests without running the Worker. See worker/index.mjs.
+  "cache": {
+    "enabled": true
+  },
+  "secrets": {
+    "required": ["GOOGLE_MAPS_KEY"]
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 1
+    }
   }
 }

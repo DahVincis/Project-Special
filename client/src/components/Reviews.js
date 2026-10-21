@@ -59,8 +59,8 @@ const Reviews = () => {
                 .finally(() => !cancelled && setLoading(false));
         };
 
-        // Fetch only when the section nears the viewport, so Google's script
-        // and the API call stay off the first load. No IntersectionObserver
+        // Fetch only when the section nears the viewport, so the reviews
+        // request stays off the first load. No IntersectionObserver
         // (old browsers, jsdom): just load.
         if (!('IntersectionObserver' in window)) {
             load();
