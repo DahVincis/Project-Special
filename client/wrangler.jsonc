@@ -17,8 +17,21 @@
   "cache": {
     "enabled": true
   },
+  // GA4_SA_KEY and RESEND_API_KEY are read by the Monday report and are
+  // intentionally omitted from secrets.required. A required secret that is
+  // still unset makes wrangler deploy refuse to publish. Until they are set,
+  // the cron logs and returns; /api/reviews is unaffected. See client/README.md.
   "secrets": {
     "required": ["GOOGLE_MAPS_KEY"]
+  },
+  "vars": {
+    "REPORT_TO": "specialfinisheshi@gmail.com,ruiterfernandes77@gmail.com"
+  },
+  // Monday 8:00 AM America/New_York. Cron triggers are UTC. Eastern is UTC-5
+  // in winter (EST) and UTC-4 in summer (EDT), so both hours are registered.
+  // scheduled() sends only when the America/New_York hour is 8.
+  "triggers": {
+    "crons": ["0 12 * * 1", "0 13 * * 1"]
   },
   "observability": {
     "enabled": true,

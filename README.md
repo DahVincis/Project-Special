@@ -18,14 +18,16 @@ Project-Special/
 │   │   ├── storage.js         # Supabase config + storageUrl() helper
 │   │   └── whatsapp.js        # Contact channel definitions
 │   ├── wrangler.jsonc         # Cloudflare Workers deploy config
-│   └── worker/index.mjs      # GET /api/reviews (Google key stays on the Worker)
+│   ├── worker/index.mjs       # GET /api/reviews and the Monday report cron
+│   ├── worker/report.mjs      # GA4 fetch, email HTML, Resend send
+│   └── scripts/send-report.mjs # Local preview of the Monday report
 └── scripts/
     └── upload-portfolio-images.mjs
 ```
 
-The site is the React app plus one Worker route, `GET /api/reviews`. The Django project
-that used to live at `special_finishes/` was removed — it had no models, no database
-usage, and every endpoint returned a hardcoded dict.
+The site is the React app, `GET /api/reviews`, and a Monday morning analytics email.
+The Django project that used to live at `special_finishes/` was removed — it had no
+models, no database usage, and every endpoint returned a hardcoded dict.
 
 ## Develop
 
@@ -71,8 +73,11 @@ prefilled message. Every submission also writes a backup row to the Supabase
 
 ## Analytics
 
-Google Analytics 4, with a weekly visitor report scheduled out of Looker Studio to the
-company address.
+Google Analytics 4. The Worker emails a Monday morning summary at 8:00 AM Eastern
+(the last seven full days, compared with the seven before). Setup, the local preview
+script, and the `GA4_SA_KEY` / `RESEND_API_KEY` secrets are in `client/README.md`.
+Those two secrets are not in `secrets.required`, so a deploy still publishes before
+they are set; the cron logs and returns until they are.
 
 ## Notes for contributors
 
