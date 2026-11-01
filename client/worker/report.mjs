@@ -60,13 +60,13 @@ const CHANNEL_LABELS = {
     SMS: 'Text messages',
 };
 
-const EVENT_LABELS = {
-    click: 'Link clicks',
-    generate_lead: 'Contact form submissions',
-    contact: 'Contact actions',
-    form_submit: 'Form submissions',
-    click_to_call: 'Calls from the site',
-};
+// Names the site records. Order is the order they appear in the email.
+export const TRACKED_ACTIONS = [
+    { name: 'click_to_call', label: 'Calls tapped' },
+    { name: 'whatsapp_click', label: 'WhatsApp messages started' },
+    { name: 'email_click', label: 'Emails started' },
+    { name: 'generate_lead', label: 'Quote requests' },
+];
 
 const numberFormat = new Intl.NumberFormat('en-US');
 
@@ -79,29 +79,11 @@ function exactEvent(value) {
     };
 }
 
-function containsEvent(value) {
-    return {
-        filter: {
-            fieldName: 'eventName',
-            stringFilter: { matchType: 'CONTAINS', value, caseSensitive: false },
-        },
-    };
-}
-
-// Outbound clicks, lead and contact events, form submissions, and any event
-// whose name mentions WhatsApp, a phone, or a call. form_submit is included
-// because enhanced measurement records form submissions under that name.
+// Only the four events the site sends. A wide third range tells us the event
+// exists in the property even when this week and last week are both zero.
 export const ACTION_EVENT_FILTER = {
     orGroup: {
-        expressions: [
-            exactEvent('click'),
-            exactEvent('generate_lead'),
-            exactEvent('contact'),
-            exactEvent('form_submit'),
-            containsEvent('whatsapp'),
-            containsEvent('phone'),
-            containsEvent('call'),
-        ],
+        expressions: TRACKED_ACTIONS.map((action) => exactEvent(action.name)),
     },
 };
 
@@ -326,12 +308,15 @@ export function reportRequests(ranges) {
             limit: '8',
         },
         events: {
-            dateRanges: [ranges.current],
-            dimensions: [{ name: 'eventName' }],
+            dateRanges: [
+                { ...ranges.current, name: 'current' },
+                { ...ranges.previous, name: 'previous' },
+                { startDate: '2020-01-01', endDate: ranges.current.endDate, name: 'all' },
+            ],
+            dimensions: [{ name: 'eventName' }, { name: 'dateRange' }],
             metrics: [{ name: 'eventCount' }],
             dimensionFilter: ACTION_EVENT_FILTER,
-            orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
-            limit: '15',
+            limit: '30',
         },
     };
 }
@@ -404,20 +389,41 @@ function deviceLabel(name) {
     return 'Other';
 }
 
-function isActionEvent(name) {
-    const key = String(name || '').toLowerCase();
-    if (key === 'click' || key === 'generate_lead' || key === 'contact' || key === 'form_submit') return true;
-    return key.includes('whatsapp') || key.includes('phone') || key.includes('call');
+function dateRangeKey(value) {
+    const key = String(value || '').toLowerCase();
+    if (key === 'current' || key === 'date_range_0') return 'current';
+    if (key === 'previous' || key === 'date_range_1') return 'previous';
+    if (key === 'all' || key === 'date_range_2') return 'all';
+    if (!key) return 'current';
+    return '';
 }
 
-function eventLabel(name) {
-    const raw = cleanLabel(name, 80);
-    const key = raw.toLowerCase();
-    if (!isActionEvent(key)) return null;
-    if (EVENT_LABELS[key]) return EVENT_LABELS[key];
-    if (key.includes('whatsapp')) return 'WhatsApp taps';
-    if (key.includes('phone') || key.includes('call')) return 'Phone calls';
-    return raw.replace(/_/g, ' ');
+function assembleActions(rows) {
+    const tracked = new Map(TRACKED_ACTIONS.map((action) => [action.name, action.label]));
+    const counts = new Map();
+    const seen = new Set();
+    for (const row of rows || []) {
+        const name = String(row.eventName || '').toLowerCase();
+        if (!tracked.has(name)) continue;
+        const count = Number(row.eventCount) || 0;
+        const range = dateRangeKey(row.dateRange);
+        if (!counts.has(name)) counts.set(name, { current: 0, previous: 0 });
+        const bucket = counts.get(name);
+        if (range === 'current' || range === 'previous') bucket[range] += count;
+        if (count > 0) seen.add(name);
+    }
+    const actions = TRACKED_ACTIONS
+        .filter((action) => seen.has(action.name))
+        .map((action) => ({
+            name: action.name,
+            label: action.label,
+            current: counts.get(action.name)?.current || 0,
+            previous: counts.get(action.name)?.previous || 0,
+        }));
+    return {
+        actions,
+        actionsFresh: actions.length > 0 && actions.every((action) => action.previous === 0),
+    };
 }
 
 function mostlyFrom(channels, sources) {
@@ -547,16 +553,7 @@ export function assembleReport(raw, ranges, options = {}) {
         if (cities.length === 5) break;
     }
 
-    const actions = [];
-    const seenActions = new Set();
-    for (const row of raw.events || []) {
-        const label = eventLabel(row.eventName);
-        const count = row.eventCount || 0;
-        if (!label || count <= 0 || seenActions.has(label)) continue;
-        seenActions.add(label);
-        actions.push({ name: cleanLabel(row.eventName, 80), label, count });
-        if (actions.length === 8) break;
-    }
+    const { actions, actionsFresh } = assembleActions(raw.events);
 
     const phrase = mostlyFrom(channels, sources);
     const metrics = {
@@ -581,6 +578,7 @@ export function assembleReport(raw, ranges, options = {}) {
         devices: deviceRows,
         cities,
         actions,
+        actionsFresh,
         mostlyFrom: phrase,
         headline: buildHeadline(metrics.visitors, phrase),
     };
@@ -649,9 +647,17 @@ export function exampleReport() {
             { city: 'Ridgefield', totalUsers: 14 },
         ],
         events: [
-            { eventName: 'whatsapp_click', eventCount: 7 },
-            { eventName: 'click_to_call', eventCount: 4 },
-            { eventName: 'generate_lead', eventCount: 2 },
+            { eventName: 'click_to_call', dateRange: 'current', eventCount: 4 },
+            { eventName: 'click_to_call', dateRange: 'previous', eventCount: 2 },
+            { eventName: 'click_to_call', dateRange: 'all', eventCount: 6 },
+            { eventName: 'whatsapp_click', dateRange: 'current', eventCount: 7 },
+            { eventName: 'whatsapp_click', dateRange: 'previous', eventCount: 3 },
+            { eventName: 'whatsapp_click', dateRange: 'all', eventCount: 10 },
+            { eventName: 'email_click', dateRange: 'previous', eventCount: 3 },
+            { eventName: 'email_click', dateRange: 'all', eventCount: 3 },
+            { eventName: 'generate_lead', dateRange: 'current', eventCount: 2 },
+            { eventName: 'generate_lead', dateRange: 'previous', eventCount: 1 },
+            { eventName: 'generate_lead', dateRange: 'all', eventCount: 3 },
         ],
     }, ranges, { example: true });
 }
@@ -780,11 +786,26 @@ export function renderHtml(report) {
         ? report.cities.map((city) => stackRow(city.name, `${formatCount(city.visitors)} visitors`)).join('')
         : `<tr><td style="font-family:${SANS};font-size:14px;color:${MUTED};">No city data for this week.</td></tr>`;
 
+    const actionRows = report.actions.map((action) => {
+        const change = changeParts(action.current, action.previous);
+        return `<tr>
+          <th scope="row" align="left" style="padding:14px 8px 14px 0;border-bottom:1px solid ${RULE};font-family:${SANS};font-size:14px;font-weight:500;line-height:1.35;color:${TEXT};">
+            ${esc(action.label)}
+            <div style="margin-top:3px;font-size:12px;font-weight:400;color:${MUTED};">${esc(formatCount(action.previous))} the week before</div>
+          </th>
+          <td align="right" valign="top" style="padding:14px 8px;border-bottom:1px solid ${RULE};font-family:${SERIF};font-size:28px;line-height:1;color:${TEXT};white-space:nowrap;">${esc(formatCount(action.current))}</td>
+          <td align="right" valign="top" style="padding:16px 0 14px 8px;border-bottom:1px solid ${RULE};font-family:${SANS};font-size:14px;font-weight:600;line-height:1.3;color:${changeColor(change.direction)};white-space:nowrap;">${esc(change.label)}</td>
+        </tr>`;
+    }).join('');
+    const freshNote = report.actionsFresh
+        ? `<p style="margin:0 0 8px;font-family:${SANS};font-size:14px;line-height:1.5;color:${MUTED};">Tracking just started, so last week was zero and the change is not a comparison yet.</p>`
+        : '';
     const actionBlock = report.actions.length
         ? `${sectionHeading('Customer actions')}
         <p style="margin:0 0 8px;font-family:${SANS};font-size:14px;line-height:1.5;color:${MUTED};">Things people did besides reading a page.</p>
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
-          ${report.actions.map((action) => stackRow(action.label, formatCount(action.count))).join('')}
+        ${freshNote}
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+          <tbody>${actionRows}</tbody>
         </table>`
         : '';
 
@@ -969,7 +990,12 @@ export function renderText(report) {
     if (report.actions.length) {
         lines.push('');
         lines.push('Customer actions');
-        for (const action of report.actions) lines.push(`${action.label}: ${formatCount(action.count)}`);
+        if (report.actionsFresh) {
+            lines.push('Tracking just started, so last week was zero and the change is not a comparison yet.');
+        }
+        for (const action of report.actions) {
+            lines.push(`${action.label}: ${formatCount(action.current)} (${formatCount(action.previous)} the week before, ${textChange(action.current, action.previous)})`);
+        }
     }
     lines.push('');
     lines.push('Visit the Special Finishes website');

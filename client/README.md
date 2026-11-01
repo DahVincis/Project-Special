@@ -47,8 +47,9 @@ node scripts/send-report.mjs --sa /path/sa.json --resend-key-file /path/key.txt 
 
 `--dry-run` writes the HTML and does not call Resend. `--example` refuses to send.
 
-Recipients come from the `REPORT_TO` var (comma-separated), currently
-`ph.leao2099@gmail.com`. The mail is from
+Recipients come from the `REPORT_TO` var (comma-separated):
+`specialfinisheshi@gmail.com` and `ruiterfernandes77@gmail.com`. A one-off test
+send uses `--to` on the script instead of that var. The mail is from
 `Special Finishes Reports <reports@specialfinisheshi.com>` with reply-to
 `specialfinisheshi@gmail.com`, sent through the Resend API.
 
@@ -59,6 +60,6 @@ Two Worker secrets are read at runtime and are **not** listed in `secrets.requir
 
 `secrets.required` makes `wrangler deploy` refuse to publish while a listed secret is unset, which would leave the previous production version in place. Add the secrets with `npx wrangler secret put` before relying on the email. Until then the cron logs the missing names and returns; `GET /api/reviews` is unchanged.
 
-The site's GA4 tag is the default config only. It does not send custom events today, so the "Customer actions" section stays hidden unless Analytics already has events named `click`, `generate_lead`, `contact`, or `form_submit`, or any event whose name contains `whatsapp`, `phone`, or `call`.
+The page records four events when visitors tap a real link or submit the quote form: `click_to_call` (tel:), `whatsapp_click` (wa.me, including the floating button and the form's WhatsApp button), `email_click` (mailto:), and `generate_lead` (the quote form). Each event includes `link_location` (header, footer, hero, contact, and so on). The "Customer actions" section lists those four, with the week before, once any of them has been recorded in the property. A zero this week still shows. If last week was all zeros, the email says tracking just started.
 
 Resend sending needs the domain verified (SPF and DKIM). Add those records beside the existing mail records. Do not replace the MX records; the company mailbox is not hosted at Resend.

@@ -61,7 +61,7 @@ test('the example reads as a made-up week and names Google search', () => {
     assert.equal(report.daily.length, 7);
     assert.equal(report.daily[0].label, 'Mon');
     assert.equal(report.daily[6].label, 'Sun');
-    assert.equal(report.actions.length, 3);
+    assert.equal(report.actions.length, 4);
 
     const html = renderHtml(report);
     const text = renderText(report);
@@ -78,7 +78,12 @@ test('the example reads as a made-up week and names Google search', () => {
     assert.match(html, /Prepared for Special Finishes by Ouroboros Studios/);
     assert.match(html, /Visit the Special Finishes website/);
     assert.match(html, /Customer actions/);
-    assert.match(html, /WhatsApp taps/);
+    assert.match(html, /Calls tapped/);
+    assert.match(html, /WhatsApp messages started/);
+    assert.match(html, /Emails started/);
+    assert.match(html, /Quote requests/);
+    assert.match(html, /↓ 100%/);
+    assert.doesNotMatch(html, /Tracking just started/);
     assert.match(html, /lang="en"/);
     assert.match(html, /role="presentation"/);
     assert.match(text, /EXAMPLE ONLY/);
@@ -129,14 +134,51 @@ test('a quiet week does not invent a percent', () => {
     assert.equal(report.headline, 'No visits were recorded this week.');
 });
 
-test('the event query asks for calls, forms, and whatsapp by name', () => {
+test('the event query counts the four site events across both weeks', () => {
     const ranges = weekRanges(new Date('2026-11-02T13:00:00Z'));
-    const filter = reportRequests(ranges).events.dimensionFilter;
-    assert.deepEqual(filter, ACTION_EVENT_FILTER);
-    const encoded = JSON.stringify(filter);
-    for (const name of ['click', 'generate_lead', 'contact', 'form_submit', 'whatsapp', 'phone', 'call']) {
-        assert.match(encoded, new RegExp(name));
-    }
+    const events = reportRequests(ranges).events;
+    assert.deepEqual(events.dimensionFilter, ACTION_EVENT_FILTER);
+    assert.deepEqual(events.dateRanges.map((range) => range.name), ['current', 'previous', 'all']);
+    assert.deepEqual(events.dimensions.map((dimension) => dimension.name), ['eventName', 'dateRange']);
+    const names = events.dimensionFilter.orGroup.expressions.map((item) => item.filter.stringFilter.value);
+    assert.deepEqual(names, ['click_to_call', 'whatsapp_click', 'email_click', 'generate_lead']);
+});
+
+test('a known action still shows when this week is zero', () => {
+    const ranges = {
+        current: { startDate: '2026-10-26', endDate: '2026-11-01' },
+        previous: { startDate: '2026-10-19', endDate: '2026-10-25' },
+    };
+    const quietWeek = assembleReport({
+        current: { totalUsers: 5 },
+        previous: { totalUsers: 4 },
+        events: [
+            { eventName: 'click_to_call', dateRange: 'previous', eventCount: 4 },
+            { eventName: 'click_to_call', dateRange: 'all', eventCount: 4 },
+            { eventName: 'page_view', dateRange: 'all', eventCount: 80 },
+        ],
+    }, ranges);
+    assert.deepEqual(quietWeek.actions, [{
+        name: 'click_to_call',
+        label: 'Calls tapped',
+        current: 0,
+        previous: 4,
+    }]);
+    assert.equal(quietWeek.actionsFresh, false);
+    assert.match(renderText(quietWeek), /Calls tapped: 0 \(4 the week before, down 100%\)/);
+
+    const justStarted = assembleReport({
+        current: { totalUsers: 5 },
+        previous: { totalUsers: 4 },
+        events: [
+            { eventName: 'whatsapp_click', dateRange: 'current', eventCount: 2 },
+            { eventName: 'email_click', dateRange: 'all', eventCount: 1 },
+        ],
+    }, ranges);
+    assert.equal(justStarted.actionsFresh, true);
+    assert.equal(justStarted.actions.find((action) => action.name === 'email_click').current, 0);
+    assert.match(renderHtml(justStarted), /Tracking just started/);
+    assert.match(renderText(justStarted), /Tracking just started/);
 });
 
 test('recipients are a comma-separated list of addresses', () => {
@@ -177,7 +219,7 @@ test('wrangler keeps the reviews secret required and adds both eastern hours', (
     assert.equal(required[1].replace(/\s/g, ''), '"GOOGLE_MAPS_KEY"');
     assert.match(config, /"0 12 \* \* 1"/);
     assert.match(config, /"0 13 \* \* 1"/);
-    assert.match(config, /"REPORT_TO": "ph\.leao2099@gmail\.com"/);
+    assert.match(config, /"REPORT_TO": "specialfinisheshi@gmail.com,ruiterfernandes77@gmail.com"/);
     assert.match(config, /"run_worker_first": \["\/api\/reviews"\]/);
 });
 

@@ -25,7 +25,7 @@
     "required": ["GOOGLE_MAPS_KEY"]
   },
   "vars": {
-    "REPORT_TO": "ph.leao2099@gmail.com"
+    "REPORT_TO": "specialfinisheshi@gmail.com,ruiterfernandes77@gmail.com"
   },
   // Monday 8:00 AM America/New_York. Cron triggers are UTC. Eastern is UTC-5
   // in winter (EST) and UTC-4 in summer (EDT), so both hours are registered.

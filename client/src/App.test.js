@@ -16,6 +16,22 @@ const settled = async () => {
   await waitFor(() => expect(document.querySelector('#reviews [aria-busy]')).toBeNull());
 };
 
+test('the header phone records a call without blocking the link', async () => {
+  const calls = [];
+  window.gtag = (...args) => calls.push(args);
+  render(<App />);
+  const phone = document.querySelector('header a.header-phone');
+  expect(phone).toHaveAttribute('href', 'tel:2034436007');
+  phone.addEventListener('click', (event) => {
+    expect(event.defaultPrevented).toBe(false);
+    event.preventDefault();
+  });
+  phone.click();
+  expect(calls).toEqual([['event', 'click_to_call', { link_location: 'header' }]]);
+  delete window.gtag;
+  await settled();
+});
+
 test('renders the Services section with all 13 services', async () => {
   render(<App />);
   expect(screen.getByRole('heading', { name: 'Services' })).toBeInTheDocument();

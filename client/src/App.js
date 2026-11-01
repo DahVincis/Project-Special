@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { installClickTracking } from './analytics';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -11,6 +12,8 @@ import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 
 function App() {
+    useEffect(() => installClickTracking(), []);
+
     return (
         <div className="App">
             <a href="#main-content" className="skip-link">Skip to content</a>

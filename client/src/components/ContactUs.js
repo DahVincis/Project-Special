@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { trackEvent } from '../analytics';
 import { CHANNELS } from '../whatsapp';
 import { MailIcon, SmsIcon, WhatsAppIcon } from './Icons';
 import './ContactUs.css';
@@ -13,6 +14,9 @@ const ContactUs = () => {
     const [form, setForm] = useState(initialForm);
     const [status, setStatus] = useState('idle');
     const [sentVia, setSentVia] = useState('email');
+    // Set on the button click, before submit. `submitter` is missing in some
+    // browsers, and the click is the only signal for which channel was used.
+    const channelRef = useRef('email');
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,11 +26,19 @@ const ContactUs = () => {
         e.preventDefault();
 
         // Every button in this form is a submit, so the browser's own required-field
-        // validation runs whichever channel the visitor picks. `submitter` tells us
-        // which one they used; it predates no browser we support, but default anyway.
-        const key = e.nativeEvent.submitter?.value || 'email';
+        // validation runs whichever channel the visitor picks. `submitter` names the
+        // button when the browser provides it; the click handler covers the rest.
+        const key = e.nativeEvent.submitter?.value || channelRef.current || 'email';
         const channel = CHANNELS[key] || CHANNELS.email;
         setSentVia(key);
+
+        // The form is a quote request. The WhatsApp button also opens a chat, so
+        // that tap counts as both. mailto: and tel: anchors are counted by the
+        // document listener; this handoff is not one of those links.
+        trackEvent('generate_lead', { link_location: 'contact', method: key });
+        if (key === 'whatsapp') {
+            trackEvent('whatsapp_click', { link_location: 'contact' });
+        }
 
         // Hand off first and synchronously: a window opened after an await has lost
         // the user-gesture context and gets blocked as a popup.
@@ -115,6 +127,7 @@ const ContactUs = () => {
                                     value={key}
                                     className={channel.primary ? 'is-primary' : undefined}
                                     disabled={status === 'submitting'}
+                                    onClick={() => { channelRef.current = key; }}
                                 >
                                     <Icon />
                                     {channel.label}
