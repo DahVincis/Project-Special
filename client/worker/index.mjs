@@ -1,6 +1,9 @@
 // GET /api/reviews — Place Details for the reviews section.
+// scheduled() — Monday 8:00 AM Eastern website report (see report.mjs).
 // The Google key is env.GOOGLE_MAPS_KEY (a Worker secret). The place id is
 // fixed here so the client cannot ask for any other place or field.
+
+import { handleScheduled } from './report.mjs';
 
 const PLACE_ID = 'ChIJk0gR5uMP6IkRsc_qKOkMSEk';
 const REVIEWS_PATH = '/api/reviews';
@@ -143,5 +146,9 @@ export default {
             return env.ASSETS.fetch(request);
         }
         return new Response('Not found', { status: 404, headers: { 'Cache-Control': 'no-store' } });
+    },
+
+    async scheduled(controller, env) {
+        return handleScheduled(controller, env);
     },
 };
