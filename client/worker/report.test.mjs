@@ -10,9 +10,12 @@ import {
     assembleReport,
     changeParts,
     exampleReport,
+    fetchGa4,
     formatShortRange,
+    googleErrorDetail,
     isEasternMondayAtEight,
     parseRecipients,
+    reportIdempotencyKey,
     renderHtml,
     renderText,
     reportRequests,
@@ -138,8 +141,9 @@ test('the event query counts the four site events across both weeks', () => {
     const ranges = weekRanges(new Date('2026-11-02T13:00:00Z'));
     const events = reportRequests(ranges).events;
     assert.deepEqual(events.dimensionFilter, ACTION_EVENT_FILTER);
-    assert.deepEqual(events.dateRanges.map((range) => range.name), ['current', 'previous', 'all']);
-    assert.deepEqual(events.dimensions.map((dimension) => dimension.name), ['eventName', 'dateRange']);
+    assert.deepEqual(events.dateRanges.map((range) => range.name), ['current', 'previous']);
+    assert.deepEqual(events.dimensions.map((dimension) => dimension.name), ['eventName']);
+    assert.equal(JSON.stringify(events.dimensions).includes('dateRange'), false);
     const names = events.dimensionFilter.orGroup.expressions.map((item) => item.filter.stringFilter.value);
     assert.deepEqual(names, ['click_to_call', 'whatsapp_click', 'email_click', 'generate_lead']);
 });
@@ -179,6 +183,65 @@ test('a known action still shows when this week is zero', () => {
     assert.equal(justStarted.actions.find((action) => action.name === 'email_click').current, 0);
     assert.match(renderHtml(justStarted), /Tracking just started/);
     assert.match(renderText(justStarted), /Tracking just started/);
+});
+
+test('a GA4 error is logged without secrets, and missing events are not an error', async () => {
+    assert.equal(
+        googleErrorDetail(JSON.stringify({
+            error: { message: 'Field dateRange is not a valid dimension. ya29.SUPERSECRET' },
+        })),
+        'Field dateRange is not a valid dimension. [token]',
+    );
+
+    const ranges = weekRanges(new Date('2026-11-02T13:00:00Z'));
+    const errors = [];
+    const logs = [];
+    const previousError = console.error;
+    const previousLog = console.log;
+    console.error = (line) => errors.push(String(line));
+    console.log = (line) => logs.push(String(line));
+    const empty = () => new Response(JSON.stringify({ rows: [] }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+    });
+    try {
+        const failed = await fetchGa4('token', ranges, async (_url, init) => {
+            const body = JSON.parse(init.body);
+            if (body.dimensionFilter) {
+                return new Response(JSON.stringify({
+                    error: { message: 'Requested events were not found ya29.SUPERSECRET' },
+                }), { status: 400 });
+            }
+            return empty();
+        });
+        assert.deepEqual(failed.events, []);
+        const loggedError = errors.join('\n');
+        assert.match(loggedError, /Requested events were not found/);
+        assert.doesNotMatch(loggedError, /SUPERSECRET/);
+        assert.doesNotMatch(logs.join('\n'), /no events yet/);
+
+        errors.length = 0;
+        logs.length = 0;
+        const quiet = await fetchGa4('token', ranges, async () => empty());
+        assert.deepEqual(quiet.events, []);
+        assert.equal(errors.length, 0);
+        assert.match(logs.join('\n'), /no events yet/);
+    } finally {
+        console.error = previousError;
+        console.log = previousLog;
+    }
+});
+
+test('the cron idempotency key includes recipients and the script key changes every run', () => {
+    const report = { current: { startDate: '2026-10-26' } };
+    const cron = reportIdempotencyKey(report, 'Ruiterfernandes77@gmail.com, specialfinisheshi@gmail.com');
+    assert.equal(cron, reportIdempotencyKey(report, ['specialfinisheshi@gmail.com', 'ruiterfernandes77@gmail.com']));
+    assert.equal(cron, 'weekly-report/2026-10-26/ruiterfernandes77@gmail.com,specialfinisheshi@gmail.com');
+    const first = reportIdempotencyKey(report, 'a@b.com', { unique: true });
+    const second = reportIdempotencyKey(report, 'a@b.com', { unique: true });
+    assert.notEqual(first, second);
+    assert.ok(first.startsWith('weekly-report/2026-10-26/a@b.com/'));
+    assert.equal(reportIdempotencyKey(report, 'a@b.com', { unique: 'run-1' }), 'weekly-report/2026-10-26/a@b.com/run-1');
 });
 
 test('recipients are a comma-separated list of addresses', () => {

@@ -128,7 +128,7 @@ test('a Monday 8 AM Eastern cron signs in, asks GA4, and sends one email', async
         if (url === 'https://api.resend.com/emails') {
             resendBody = JSON.parse(init.body);
             assert.equal(init.headers.Authorization, 'Bearer re_test_key');
-            assert.equal(init.headers['Idempotency-Key'], 'weekly-report/2026-10-26');
+            assert.equal(init.headers['Idempotency-Key'], 'weekly-report/2026-10-26/ph.leao2099@gmail.com');
             assert.equal(JSON.stringify(resendBody).includes('PRIVATE KEY'), false);
             assert.equal(JSON.stringify(resendBody).includes('ya29.test-token'), false);
             return jsonResponse({ id: 'email_123' });

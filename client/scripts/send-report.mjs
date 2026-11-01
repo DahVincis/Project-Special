@@ -100,7 +100,9 @@ try {
 }
 
 try {
-    const result = await sendWeeklyEmail({ apiKey, to: args.to, report });
+    // A new key every run. The cron keeps a stable key so the two UTC triggers
+    // cannot deliver the same week twice.
+    const result = await sendWeeklyEmail({ apiKey, to: args.to, report, uniqueKey: true });
     if (result.sent) console.log(result.id ? `Sent ${result.id}` : 'Sent');
     else console.log('Already sent for this week.');
 } catch (error) {

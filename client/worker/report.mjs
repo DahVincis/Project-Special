@@ -79,8 +79,8 @@ function exactEvent(value) {
     };
 }
 
-// Only the four events the site sends. A wide third range tells us the event
-// exists in the property even when this week and last week are both zero.
+// Only the four events the site sends. A week with no rows is "no events yet",
+// not an error: these names are new and may not exist in the property.
 export const ACTION_EVENT_FILTER = {
     orGroup: {
         expressions: TRACKED_ACTIONS.map((action) => exactEvent(action.name)),
@@ -307,16 +307,19 @@ export function reportRequests(ranges) {
             orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }],
             limit: '8',
         },
+        // eventName + eventCount only. `dateRange` is not a requestable dimension
+        // (GA4 answers 400), and a start date before the property's retention can
+        // 400 as well. Two ranges are enough: the API adds the date-range column
+        // itself. No matching rows is a normal empty report, not an error.
         events: {
             dateRanges: [
                 { ...ranges.current, name: 'current' },
                 { ...ranges.previous, name: 'previous' },
-                { startDate: '2020-01-01', endDate: ranges.current.endDate, name: 'all' },
             ],
-            dimensions: [{ name: 'eventName' }, { name: 'dateRange' }],
+            dimensions: [{ name: 'eventName' }],
             metrics: [{ name: 'eventCount' }],
             dimensionFilter: ACTION_EVENT_FILTER,
-            limit: '30',
+            limit: '20',
         },
     };
 }
@@ -1042,6 +1045,27 @@ async function readJson(response) {
     }
 }
 
+// GA4's error.message is safe to log. Strip anything that could be a credential
+// if a response echoes one, and keep the text short.
+export function googleErrorDetail(bodyText) {
+    let message = String(bodyText || '');
+    try {
+        const body = JSON.parse(message);
+        if (typeof body?.error?.message === 'string') message = body.error.message;
+        else if (typeof body?.error === 'string') message = body.error;
+        else if (typeof body?.message === 'string') message = body.message;
+    } catch {
+        // Already plain text.
+    }
+    return message
+        .replace(/-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?-----END [A-Z ]*PRIVATE KEY-----/g, '[redacted]')
+        .replace(/\bya29\.[A-Za-z0-9._\-]+/g, '[token]')
+        .replace(/\bAIza[0-9A-Za-z_\-]{10,}/g, '[key]')
+        .replace(/[ \t]+/g, ' ')
+        .trim()
+        .slice(0, 500);
+}
+
 export async function googleAccessToken(serviceAccount, fetchImpl = globalThis.fetch, now = new Date()) {
     const clientEmail = serviceAccount?.client_email;
     const privateKey = normalizePem(serviceAccount?.private_key);
@@ -1102,7 +1126,12 @@ async function runReport(token, body, fetchImpl) {
         body: JSON.stringify(body),
         signal: AbortSignal.timeout(15000),
     });
-    if (!response.ok) throw new Error(`ga4_report_${response.status}`);
+    if (!response.ok) {
+        const detail = googleErrorDetail(await response.text());
+        const error = new Error(detail ? `ga4_report_${response.status}: ${detail}` : `ga4_report_${response.status}`);
+        error.detail = detail;
+        throw error;
+    }
     return readJson(response);
 }
 
@@ -1111,14 +1140,19 @@ export async function fetchGa4(token, ranges, fetchImpl = globalThis.fetch) {
     const keys = Object.keys(requests);
     const reports = await Promise.all(keys.map(async (key) => {
         try {
-            return await runReport(token, requests[key], fetchImpl);
+            const report = await runReport(token, requests[key], fetchImpl);
+            if (key === 'events' && !(report?.rows || []).length) {
+                console.log(JSON.stringify({ message: 'no events yet' }));
+            }
+            return report;
         } catch (error) {
             if (key !== 'events') throw error;
             console.error(JSON.stringify({
                 message: 'weekly report actions unavailable',
                 error: error instanceof Error ? error.message : 'Error',
+                detail: error?.detail || '',
             }));
-            return { rows: [] };
+            return { rows: [], unavailable: true };
         }
     }));
     const byKey = Object.fromEntries(keys.map((key, index) => [key, reports[index]]));
@@ -1150,7 +1184,21 @@ export function parseRecipients(value) {
         .slice(0, 50);
 }
 
-export async function sendWeeklyEmail({ apiKey, to, report, fetchImpl = globalThis.fetch }) {
+// Cron sends use a stable key so the two Monday UTC triggers cannot deliver
+// twice. The local script passes unique: true so a second test run is a new email.
+// Recipients are part of the key, sorted, so the same week to a different inbox
+// is not treated as the same send.
+export function reportIdempotencyKey(report, recipients, { unique = false } = {}) {
+    const list = (Array.isArray(recipients) ? recipients : parseRecipients(recipients))
+        .map((address) => address.toLowerCase())
+        .sort();
+    const base = `weekly-report/${report.current.startDate}/${list.join(',')}`;
+    if (!unique) return base.slice(0, 256);
+    const suffix = unique === true ? crypto.randomUUID() : String(unique);
+    return `${base}/${suffix}`.slice(0, 256);
+}
+
+export async function sendWeeklyEmail({ apiKey, to, report, fetchImpl = globalThis.fetch, uniqueKey = false }) {
     const recipients = Array.isArray(to) ? to : parseRecipients(to);
     if (!apiKey || recipients.length === 0) throw new Error('report_send_incomplete');
     const subject = subjectFor(report);
@@ -1161,7 +1209,7 @@ export async function sendWeeklyEmail({ apiKey, to, report, fetchImpl = globalTh
             Authorization: `Bearer ${apiKey}`,
             'Content-Type': 'application/json',
             Accept: 'application/json',
-            'Idempotency-Key': `weekly-report/${report.current.startDate}`,
+            'Idempotency-Key': reportIdempotencyKey(report, recipients, { unique: uniqueKey }),
         },
         body: JSON.stringify({
             from: FROM_ADDRESS,

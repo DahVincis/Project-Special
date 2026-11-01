@@ -46,6 +46,9 @@ node scripts/send-report.mjs --sa /path/sa.json --resend-key-file /path/key.txt 
 ```
 
 `--dry-run` writes the HTML and does not call Resend. `--example` refuses to send.
+Each real run of the script uses a new Resend idempotency key, so a second test
+send is delivered. The Monday cron keeps one key per week and recipient list,
+so the two UTC triggers cannot send the report twice.
 
 Recipients come from the `REPORT_TO` var (comma-separated):
 `specialfinisheshi@gmail.com` and `ruiterfernandes77@gmail.com`. A one-off test
