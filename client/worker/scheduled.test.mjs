@@ -82,7 +82,7 @@ function installFetch(impl) {
     };
 }
 
-function controllerAt(iso, cron = '0 13 * * 1') {
+function controllerAt(iso, cron = '0 13 * * MON') {
     const state = { cancelled: false };
     return {
         state,
@@ -167,7 +167,7 @@ test('the summer cron sends at 12:00 UTC and the winter twin does not', async ()
         throw new Error('should not fetch');
     };
     try {
-        const skipped = await worker.scheduled(controllerAt('2026-07-06T13:00:00Z', '0 13 * * 1'), {
+        const skipped = await worker.scheduled(controllerAt('2026-07-06T13:00:00Z', '0 13 * * MON'), {
             GA4_SA_KEY: '{"client_email":"a@b.c","private_key":"x"}',
             RESEND_API_KEY: 're_test_key',
             REPORT_TO: 'a@b.com',
@@ -175,7 +175,7 @@ test('the summer cron sends at 12:00 UTC and the winter twin does not', async ()
         assert.equal(skipped.reason, 'not_monday_8am_eastern');
         assert.equal(calls.length, 0);
 
-        const winterSkip = await worker.scheduled(controllerAt('2026-11-02T12:00:00Z', '0 12 * * 1'), {
+        const winterSkip = await worker.scheduled(controllerAt('2026-11-02T12:00:00Z', '0 12 * * MON'), {
             GA4_SA_KEY: '{"client_email":"a@b.c","private_key":"x"}',
             RESEND_API_KEY: 're_test_key',
             REPORT_TO: 'a@b.com',
@@ -228,6 +228,53 @@ test('an unreadable service account does not throw or call Google', async () => 
     }
 });
 
+test('both DST Mondays pass the hour gate on one UTC hour, and Sunday does not', async () => {
+    const previous = globalThis.fetch;
+    const logs = [];
+    const previousLog = console.log;
+    globalThis.fetch = async () => {
+        throw new Error('should not fetch');
+    };
+    console.log = (line) => logs.push(String(line));
+    const cases = [
+        ['2026-11-09T12:00:00Z', '0 12 * * MON', 'not_monday_8am_eastern'],
+        ['2026-11-09T13:00:00Z', '0 13 * * MON', 'missing_config'],
+        ['2026-07-06T12:00:00Z', '0 12 * * MON', 'missing_config'],
+        ['2026-07-06T13:00:00Z', '0 13 * * MON', 'not_monday_8am_eastern'],
+        ['2026-03-09T12:00:00Z', '0 12 * * MON', 'missing_config'],
+        ['2026-03-09T13:00:00Z', '0 13 * * MON', 'not_monday_8am_eastern'],
+        ['2026-11-02T12:00:00Z', '0 12 * * MON', 'not_monday_8am_eastern'],
+        ['2026-11-02T13:00:00Z', '0 13 * * MON', 'missing_config'],
+        ['2026-11-08T12:00:00Z', '0 12 * * MON', 'not_monday_8am_eastern'],
+        ['2026-11-08T13:00:00Z', '0 13 * * MON', 'not_monday_8am_eastern'],
+    ];
+    try {
+        for (const [iso, cron, reason] of cases) {
+            const waited = [];
+            const result = await worker.scheduled(
+                controllerAt(iso, cron),
+                {},
+                { waitUntil(promise) { waited.push(promise); } },
+            );
+            assert.equal(result.reason, reason, `${iso} ${cron}`);
+            assert.equal(waited.length, 1, iso);
+            assert.equal(await waited[0], result);
+        }
+        const sunday = logs
+            .map((line) => JSON.parse(line))
+            .filter((body) => body.message === 'weekly report skipped' && body.easternWeekday === 'Sun');
+        assert.equal(sunday.length, 2, logs.join('\n'));
+        const atEight = sunday.find((body) => body.cron === '0 13 * * MON');
+        const atSeven = sunday.find((body) => body.cron === '0 12 * * MON');
+        assert.equal(atEight.reason, 'not_monday_8am_eastern');
+        assert.equal(atEight.easternHour, 8);
+        assert.equal(atSeven.easternHour, 7);
+    } finally {
+        globalThis.fetch = previous;
+        console.log = previousLog;
+    }
+});
+
 test('a Google failure rejects so the cron can retry', async () => {
     const account = await serviceAccount();
     const scheduled = controllerAt('2026-11-02T13:00:00Z');
@@ -267,7 +314,7 @@ test('a failed actions query still sends the rest of the report', async () => {
         throw new Error(`unexpected ${url}`);
     });
     try {
-        const result = await worker.scheduled(controllerAt('2026-07-06T12:00:00Z', '0 12 * * 1'), {
+        const result = await worker.scheduled(controllerAt('2026-07-06T12:00:00Z', '0 12 * * MON'), {
             GA4_SA_KEY: account.json,
             RESEND_API_KEY: 're_test_key',
             REPORT_TO: 'a@b.com, second@example.com',

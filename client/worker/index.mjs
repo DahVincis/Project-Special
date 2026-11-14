@@ -148,7 +148,11 @@ export default {
         return new Response('Not found', { status: 404, headers: { 'Cache-Control': 'no-store' } });
     },
 
-    async scheduled(controller, env) {
-        return handleScheduled(controller, env);
+    async scheduled(controller, env, ctx) {
+        const work = handleScheduled(controller, env);
+        // The returned promise is what the runtime waits on. waitUntil records
+        // the same job as the cron outcome if the caller drops that return.
+        if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(work);
+        return work;
     },
 };

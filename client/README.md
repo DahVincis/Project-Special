@@ -32,10 +32,11 @@ src/
 ## Weekly report
 
 The Worker sends a branded analytics email at 8:00 AM America/New_York every Monday.
-Cloudflare cron triggers are UTC, and Eastern is UTC−5 in winter and UTC−4 in summer,
-so `wrangler.jsonc` registers both `0 12 * * 1` and `0 13 * * 1`. `scheduled()` sends
-only when the current Eastern hour is 8, and the other firing does nothing. The date
-range is the seven full Eastern days ending yesterday.
+Cloudflare cron triggers are UTC, and weekday numbers there count from 1 = Sunday,
+so Monday is `MON` rather than the digit 1. Eastern is UTC−5 in winter and UTC−4 in
+summer, so `wrangler.jsonc` registers both `0 12 * * MON` and `0 13 * * MON`.
+`scheduled()` sends only when the current Eastern hour is 8, and the other firing
+does nothing. The date range is the seven full Eastern days ending yesterday.
 
 Preview a made-up layout, or a live report, from this directory:
 
