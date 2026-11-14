@@ -7,6 +7,7 @@ import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import {
     ACTION_EVENT_FILTER,
+    SEND_CRONS,
     assembleReport,
     changeParts,
     exampleReport,
@@ -40,6 +41,24 @@ test('the send window is Monday 8 AM Eastern in both EST and EDT', () => {
     // Tuesday 8 AM Eastern does not send.
     assert.equal(isEasternMondayAtEight(new Date('2026-11-03T13:00:00Z')), false);
     assert.equal(isEasternMondayAtEight(new Date('not-a-date')), false);
+    // Each season's Monday has exactly one of the two UTC hours at 8 AM Eastern,
+    // including the Mondays after the clocks change. Sunday Nov 8 (when the
+    // deployed day-1 crons actually fired) is 8 AM Eastern and still not a send.
+    for (const [noon, one] of [
+        ['2026-11-09T12:00:00Z', '2026-11-09T13:00:00Z'],
+        ['2026-11-02T12:00:00Z', '2026-11-02T13:00:00Z'],
+        ['2026-03-09T12:00:00Z', '2026-03-09T13:00:00Z'],
+        ['2026-07-06T12:00:00Z', '2026-07-06T13:00:00Z'],
+    ]) {
+        const hits = [noon, one].filter((iso) => isEasternMondayAtEight(new Date(iso)));
+        assert.equal(hits.length, 1, `${noon} / ${one}`);
+    }
+    assert.equal(isEasternMondayAtEight(new Date('2026-11-08T12:00:00Z')), false);
+    assert.equal(isEasternMondayAtEight(new Date('2026-11-08T13:00:00Z')), false);
+});
+
+test('the registered crons name Monday, which Cloudflare does not number as 1', () => {
+    assert.deepEqual(SEND_CRONS, ['0 12 * * MON', '0 13 * * MON']);
 });
 
 test('week ranges are the last seven full Eastern days and the seven before', () => {
@@ -275,13 +294,16 @@ test('a same-week payload mismatch is not treated as a hard failure', async () =
     );
 });
 
-test('wrangler keeps the reviews secret required and adds both eastern hours', () => {
+test('wrangler keeps the reviews secret required and schedules Monday, not Sunday', () => {
     const config = readFileSync(new URL('../wrangler.jsonc', import.meta.url), 'utf8');
     const required = config.match(/"required"\s*:\s*\[([^\]]*)\]/);
     assert.ok(required);
     assert.equal(required[1].replace(/\s/g, ''), '"GOOGLE_MAPS_KEY"');
-    assert.match(config, /"0 12 \* \* 1"/);
-    assert.match(config, /"0 13 \* \* 1"/);
+    // Cloudflare weekdays are 1 = Sunday … 7 = Saturday. Unix day 1 is Monday,
+    // and that is the expression that fired on Sunday Nov 8 and was skipped.
+    assert.match(config, /"0 12 \* \* MON"/);
+    assert.match(config, /"0 13 \* \* MON"/);
+    assert.doesNotMatch(config, /"0 1[23] \* \* 1"/);
     assert.match(config, /"REPORT_TO": "specialfinisheshi@gmail.com,ruiterfernandes77@gmail.com"/);
     assert.match(config, /"run_worker_first": \["\/api\/reviews"\]/);
 });

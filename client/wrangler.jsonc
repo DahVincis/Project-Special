@@ -27,11 +27,13 @@
   "vars": {
     "REPORT_TO": "specialfinisheshi@gmail.com,ruiterfernandes77@gmail.com"
   },
-  // Monday 8:00 AM America/New_York. Cron triggers are UTC. Eastern is UTC-5
+  // Monday 8:00 AM America/New_York. Cron triggers are UTC. Cloudflare
+  // weekdays are 1 = Sunday through 7 = Saturday, so Monday is MON and not
+  // the digit 1 (that digit ran these triggers on Sunday). Eastern is UTC-5
   // in winter (EST) and UTC-4 in summer (EDT), so both hours are registered.
   // scheduled() sends only when the America/New_York hour is 8.
   "triggers": {
-    "crons": ["0 12 * * 1", "0 13 * * 1"]
+    "crons": ["0 12 * * MON", "0 13 * * MON"]
   },
   "observability": {
     "enabled": true,

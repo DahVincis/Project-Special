@@ -9,7 +9,9 @@ export const SITE_URL = 'https://specialfinisheshi.com';
 export const LOGO_URL = 'https://specialfinisheshi.com/logo192.png';
 export const FROM_ADDRESS = 'Special Finishes Reports <reports@specialfinisheshi.com>';
 export const REPLY_TO = 'specialfinisheshi@gmail.com';
-export const SEND_CRONS = ['0 12 * * 1', '0 13 * * 1'];
+// Cloudflare weekdays are 1 = Sunday … 7 = Saturday, unlike Unix cron.
+// MON is Monday in that numbering. Digit 1 fired these triggers on Sunday.
+export const SEND_CRONS = ['0 12 * * MON', '0 13 * * MON'];
 
 const GA4_SCOPE = 'https://www.googleapis.com/auth/analytics.readonly';
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
@@ -117,8 +119,9 @@ export function easternParts(date) {
 }
 
 // True only for Monday 8:00–8:59 America/New_York. The Worker registers both
-// 12:00 and 13:00 UTC because Eastern switches between UTC-4 and UTC-5;
-// the other firing is a no-op.
+// 12:00 and 13:00 UTC on Monday because Eastern switches between UTC-4 and
+// UTC-5. The other firing is a no-op. US clock changes fall on Sunday, so a
+// Monday is never inside the skipped or repeated hour.
 export function isEasternMondayAtEight(date) {
     const parts = easternParts(date);
     return !!parts && parts.weekday === 'Mon' && parts.hour === 8;
@@ -1234,20 +1237,38 @@ function cancelRetry(controller) {
     if (typeof controller?.noRetry === 'function') controller.noRetry();
 }
 
+function scheduledContext(controller, when) {
+    const scheduled = Number(controller?.scheduledTime);
+    const parts = easternParts(when);
+    return {
+        cron: typeof controller?.cron === 'string' ? controller.cron : null,
+        scheduledTime: Number.isFinite(scheduled) && scheduled > 0 ? scheduled : null,
+        easternWeekday: parts?.weekday ?? null,
+        easternHour: Number.isInteger(parts?.hour) ? parts.hour : null,
+    };
+}
+
+function logReport(level, fields) {
+    const line = JSON.stringify(fields);
+    if (level === 'error') console.error(line);
+    else console.log(line);
+}
+
 export async function handleScheduled(controller, env, fetchImpl = globalThis.fetch) {
     const scheduled = Number(controller?.scheduledTime);
     const when = Number.isFinite(scheduled) && scheduled > 0 ? new Date(scheduled) : new Date();
-    const cron = controller?.cron;
+    const context = scheduledContext(controller, when);
+    const cron = context.cron;
     if (cron && !SEND_CRONS.includes(cron)) {
-        console.log(JSON.stringify({ message: 'weekly report skipped', reason: 'unexpected_cron' }));
+        logReport('log', { message: 'weekly report skipped', reason: 'unexpected_cron', ...context });
         return { sent: false, reason: 'unexpected_cron' };
     }
     if (!isEasternMondayAtEight(when)) {
-        console.log(JSON.stringify({
+        logReport('log', {
             message: 'weekly report skipped',
             reason: 'not_monday_8am_eastern',
-            cron: cron || null,
-        }));
+            ...context,
+        });
         return { sent: false, reason: 'not_monday_8am_eastern' };
     }
 
@@ -1256,7 +1277,7 @@ export async function handleScheduled(controller, env, fetchImpl = globalThis.fe
     if (!env?.RESEND_API_KEY) missing.push('RESEND_API_KEY');
     if (!parseRecipients(env?.REPORT_TO).length) missing.push('REPORT_TO');
     if (missing.length) {
-        console.error(JSON.stringify({ message: 'weekly report not sent', reason: 'missing_config', missing }));
+        logReport('error', { message: 'weekly report not sent', reason: 'missing_config', missing, ...context });
         cancelRetry(controller);
         return { sent: false, reason: 'missing_config', missing };
     }
@@ -1265,7 +1286,7 @@ export async function handleScheduled(controller, env, fetchImpl = globalThis.fe
     try {
         serviceAccount = JSON.parse(env.GA4_SA_KEY);
     } catch {
-        console.error(JSON.stringify({ message: 'weekly report not sent', reason: 'ga4_key_unreadable' }));
+        logReport('error', { message: 'weekly report not sent', reason: 'ga4_key_unreadable', ...context });
         cancelRetry(controller);
         return { sent: false, reason: 'ga4_key_unreadable' };
     }
@@ -1278,19 +1299,21 @@ export async function handleScheduled(controller, env, fetchImpl = globalThis.fe
             report,
             fetchImpl,
         });
-        console.log(JSON.stringify({
+        logReport('log', {
             message: 'weekly report finished',
             sent: result.sent,
             duplicate: result.duplicate,
-        }));
+            ...context,
+        });
         return result;
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Error';
         const permanent = message === 'ga4_service_account_incomplete' || error?.name === 'DataError';
-        console.error(JSON.stringify({
+        logReport('error', {
             message: permanent ? 'weekly report not sent' : 'weekly report failed',
             error: message,
-        }));
+            ...context,
+        });
         if (permanent) {
             cancelRetry(controller);
             return { sent: false, reason: 'ga4_key_unreadable' };
